@@ -14,7 +14,7 @@ export function StoreProvider({children}){
  const addProduct=data=>{const slug=data.slug||`${data.code||'urun'}-${Date.now()}`.toLowerCase().replace(/[^a-z0-9-]+/g,'-');const p={slug,name:data.name||'Yeni ürün',code:data.code||`ALYA${Date.now().toString().slice(-4)}`,category:data.category||'Yeni Kategori',image:data.image||'/products/product-5.jpg',price:data.price===''?null:Number(data.price)||null,description:data.description||'ALYA HOMES ürün açıklaması.',specs:{}};setCustomProducts(x=>[...x,p]);return p};
  const deleteProduct=slug=>{setDeletedProducts(x=>x.includes(slug)?x:[...x,slug]);setCart(c=>c.filter(i=>i.slug!==slug));setWishlist(w=>w.filter(i=>i.slug!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:false})}).catch(()=>{});};
  const restoreProduct=slug=>{setDeletedProducts(x=>x.filter(s=>s!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:true})}).catch(()=>{});};
- const updateOrderStatus=(id,status)=>{setOrders(os=>os.map(o=>o.id===id?{...o,status}:o));const o=orders.find(x=>x.id===id);if(serverReady&&o)fetch('/api/orders',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:o.id,status})}).catch(()=>{});};
+ const updateOrderStatus=(id,status,shipment={})=>{setOrders(os=>os.map(o=>o.id===id?{...o,status,carrier:shipment.carrier??o.carrier,trackingNumber:shipment.trackingNumber??o.trackingNumber}:o));const o=orders.find(x=>x.id===id);if(serverReady&&o)fetch('/api/orders',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:o.id,status,carrier:shipment.carrier||undefined,trackingNumber:shipment.trackingNumber||undefined})}).catch(()=>{});};
  const addToCart=p=>{
   if(p.price==null)return false;
   const stock=Number.isFinite(Number(p.stock))?Number(p.stock):null;
@@ -26,15 +26,15 @@ export function StoreProvider({children}){
     return x?c.map(i=>i.slug===p.slug?{...i,qty:i.qty+1}:i):[...c,{...p,qty:1}];
   });
   return added;
-};
-const validateCart=()=>cart.map(i=>({slug:i.slug,name:i.name,qty:i.qty,stock:Number.isFinite(Number(i.stock))?Number(i.stock):null,valid:Number.isFinite(Number(i.stock))?i.qty<=Number(i.stock):true}));
+ };
+ const validateCart=()=>cart.map(i=>({slug:i.slug,name:i.name,qty:i.qty,stock:Number.isFinite(Number(i.stock))?Number(i.stock):null,valid:Number.isFinite(Number(i.stock))?i.qty<=Number(i.stock):true}));
  const changeQty=(slug,d)=>setCart(c=>c.map(i=>i.slug===slug?{...i,qty:i.qty+d}:i).filter(i=>i.qty>0));
  const remove=slug=>setCart(c=>c.filter(i=>i.slug!==slug));
  const toggleWishlist=p=>setWishlist(w=>w.some(x=>x.slug===p.slug)?w.filter(x=>x.slug!==p.slug):[...w,p]);
  const isWishlisted=slug=>wishlist.some(x=>x.slug===slug);
  const saveCustomer=data=>setCustomer(data); const clearCustomer=()=>setCustomer(null);
  const createOrder=async(details)=>{const subtotal=cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0);const shipping=subtotal>=1000?0:99;const order={id:`ALY-${Date.now().toString().slice(-8)}`,createdAt:new Date().toISOString(),status:"Sipariş alındı",customer:details,items:cart,total:subtotal+shipping,subtotal,shipping}; if(serverReady){try{const r=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Sipariş kaydedilemedi")}catch(e){return {error:e.message||"Sipariş oluşturulamadı"}}} setOrders(o=>[order,...o]);setCart([]);setCustomer(details);return order};
- const value=useMemo(()=>({cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts,serverReady,getProduct,getProducts,saveProductOverride,resetProductOverride,addProduct,deleteProduct,restoreProduct,updateOrderStatus,addToCart,changeQty,remove,toggleWishlist,isWishlisted,saveCustomer,clearCustomer,createOrder,count:cart.reduce((s,i)=>s+i.qty,0),wishlistCount:wishlist.length,total:cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0)}),[cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts]);
+ const value=useMemo(()=>({cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts,serverReady,getProduct,getProducts,saveProductOverride,resetProductOverride,addProduct,deleteProduct,restoreProduct,updateOrderStatus,addToCart,validateCart,changeQty,remove,toggleWishlist,isWishlisted,saveCustomer,clearCustomer,createOrder,count:cart.reduce((s,i)=>s+i.qty,0),wishlistCount:wishlist.length,total:cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0)}),[cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts]);
  return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
 }
 export const useStore=()=>useContext(StoreContext);
