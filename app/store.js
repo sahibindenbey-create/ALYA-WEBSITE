@@ -16,25 +16,14 @@ export function StoreProvider({children}){
  const deleteProduct=slug=>{setDeletedProducts(x=>x.includes(slug)?x:[...x,slug]);setCart(c=>c.filter(i=>i.slug!==slug));setWishlist(w=>w.filter(x=>x.slug!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:false})}).catch(()=>{});};
  const restoreProduct=slug=>{setDeletedProducts(x=>x.filter(s=>s!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:true})}).catch(()=>{});};
  const updateOrderStatus=async(id,status,shipment={})=>{const o=orders.find(x=>x.id===id||x.OrderNo===id);if(serverReady&&o){try{const r=await fetch('/api/orders',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:o.id||o.OrderNo,status,carrier:shipment.carrier||undefined,trackingNumber:shipment.trackingNumber||undefined})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Sipariş güncellenemedi')}catch(e){return {error:e.message||'Sipariş güncellenemedi'}}} setOrders(os=>os.map(x=>(x.id===id||x.OrderNo===id)?{...x,status,Status:status,carrier:shipment.carrier??x.carrier,Carrier:shipment.carrier??x.Carrier,trackingNumber:shipment.trackingNumber??x.trackingNumber,TrackingNumber:shipment.trackingNumber??x.TrackingNumber}:x));return {ok:true};};
- const addToCart=p=>{
-  if(p.price==null)return false;
-  const stock=Number.isFinite(Number(p.stock))?Number(p.stock):null;
-  if(stock!==null && stock<=0)return false;
-  let added=true;
-  setCart(c=>{
-    const x=c.find(i=>i.slug===p.slug);
-    if(x && stock!==null && x.qty>=stock){added=false;return c;}
-    return x?c.map(i=>i.slug===p.slug?{...i,qty:i.qty+1}:i):[...c,{...p,qty:1}];
-  });
-  return added;
- };
+ const addToCart=p=>{if(p.price==null)return false;const stock=Number.isFinite(Number(p.stock))?Number(p.stock):null;if(stock!==null&&stock<=0)return false;let added=true;setCart(c=>{const x=c.find(i=>i.slug===p.slug);if(x&&stock!==null&&x.qty>=stock){added=false;return c;}return x?c.map(i=>i.slug===p.slug?{...i,qty:i.qty+1}:i):[...c,{...p,qty:1}];});return added;};
  const validateCart=()=>cart.map(i=>({slug:i.slug,name:i.name,qty:i.qty,stock:Number.isFinite(Number(i.stock))?Number(i.stock):null,valid:Number.isFinite(Number(i.stock))?i.qty<=Number(i.stock):true}));
  const changeQty=(slug,d)=>setCart(c=>c.map(i=>{if(i.slug!==slug)return i;const stock=Number(i.stock);const hasStock=Number.isFinite(stock)&&stock>=0;const next=i.qty+d;return {...i,qty:hasStock?Math.min(Math.max(0,next),stock):next};}).filter(i=>i.qty>0));
  const remove=slug=>setCart(c=>c.filter(i=>i.slug!==slug));
  const toggleWishlist=p=>setWishlist(w=>w.some(x=>x.slug===p.slug)?w.filter(x=>x.slug!==p.slug):[...w,p]);
  const isWishlisted=slug=>wishlist.some(x=>x.slug===slug);
  const saveCustomer=data=>setCustomer(data); const clearCustomer=()=>setCustomer(null);
- const createOrder=async(details)=>{const subtotal=cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0);const shipping=subtotal>=1000?0:99;const order={id:`ALY-${Date.now().toString().slice(-8)}`,createdAt:new Date().toISOString(),status:"Sipariş alındı",customer:details,items:cart,total:subtotal+shipping,subtotal,shipping}; if(serverReady){try{const r=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Sipariş kaydedilemedi")}catch(e){return {error:e.message||"Sipariş oluşturulamadı"}}} setOrders(o=>[order,...o]);setCart([]);setCustomer(details);return order};
+ const createOrder=async(details)=>{if(!cart.length)return {error:"Sepetiniz boş."};const invalid=validateCart().some(i=>!i.valid);if(invalid)return {error:"Sepetinizde stok miktarını aşan ürün var. Lütfen miktarları kontrol edin."};const subtotal=cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0);const shipping=subtotal>=1000?0:99;const order={id:`ALY-${Date.now().toString().slice(-8)}`,createdAt:new Date().toISOString(),status:"Sipariş alındı",customer:details,items:cart,total:subtotal+shipping,subtotal,shipping};if(serverReady){try{const r=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Sipariş kaydedilemedi")}catch(e){return {error:e.message||"Sipariş oluşturulamadı"}}}setOrders(o=>[order,...o]);setCart([]);setCustomer(details);return order;};
  const value=useMemo(()=>({cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts,serverReady,getProduct,getProducts,saveProductOverride,resetProductOverride,addProduct,deleteProduct,restoreProduct,updateOrderStatus,addToCart,validateCart,changeQty,remove,toggleWishlist,isWishlisted,saveCustomer,clearCustomer,createOrder,count:cart.reduce((s,i)=>s+i.qty,0),wishlistCount:wishlist.length,total:cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0)}),[cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts,serverReady]);
  return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
 }
