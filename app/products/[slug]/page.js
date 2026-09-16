@@ -5,7 +5,7 @@ import { use, useMemo, useState } from 'react';
 import { useStore } from '../../store';
 import ProductGallery from '../../components/ProductGallery';
 
-const money = n => n == null ? 'Fiyat bilgisi için iletişime geçin' : new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY', maximumFractionDigits: 0 }).format(n);
+const money = n => n == null ? 'Fiyat bilgisi için iletişime geçin' : `${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }).format(n)} TL.`;
 const makeFeatures = p => { const features=[]; const specs=p.specs||{}; if(p.category==='Kurutmalıklar'){features.push('Alüminyum ve paslanmaz gövde'); features.push(/BALCONY/i.test(p.name)?'Balkon kullanımına uygun ayarlanabilir yapı':'Katlanabilir ve kolay saklanabilir tasarım'); features.push(/RAW/i.test(p.name)?'RAW seri yüzey ve gövde tasarımı':'Geniş kurutma kapasitesi');} else if(p.category==='Ütü Masaları'){features.push(specs.malzeme?`${specs.malzeme} gövde yapısı`:'Dayanıklı gövde yapısı');features.push('Ayarlanabilir çalışma yüksekliği');if(/PROBOARD/i.test(p.name))features.push('Geniş ütüleme alanı ve güçlü taşıyıcı yapı');if(/EASYBOARD/i.test(p.name))features.push('Pratik kullanım ve kolay saklama');if(/STEEL/i.test(p.name))features.push('Çelik konstrüksiyon');if(/HYBRID/i.test(p.name))features.push('Alüminyum tabla ve çelik ayak kombinasyonu');} return [...new Set(features)].slice(0,5);};
 
 export default function ProductPage({ params }) {
