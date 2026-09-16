@@ -19,7 +19,7 @@ export function StoreProvider({children}){
  const addToCart=p=>{if(p.price==null)return false;const stock=Number.isFinite(Number(p.stock))?Number(p.stock):null;if(stock!==null&&stock<=0)return false;let added=true;setCart(c=>{const x=c.find(i=>i.slug===p.slug);if(x&&stock!==null&&x.qty>=stock){added=false;return c;}return x?c.map(i=>i.slug===p.slug?{...i,qty:i.qty+1}:i):[...c,{...p,qty:1}];});return added;};
  const validateCart=()=>cart.map(i=>({slug:i.slug,name:i.name,qty:i.qty,stock:Number.isFinite(Number(i.stock))?Number(i.stock):null,valid:Number.isFinite(Number(i.stock))?i.qty<=Number(i.stock):true}));
  const changeQty=(slug,d)=>setCart(c=>c.map(i=>{if(i.slug!==slug)return i;const stock=Number(i.stock);const hasStock=Number.isFinite(stock)&&stock>=0;const next=i.qty+d;return {...i,qty:hasStock?Math.min(Math.max(0,next),stock):next};}).filter(i=>i.qty>0));
- const remove=slug=>setCart(c=>c.filter(i=>i.slug!==slug);
+ const remove=slug=>setCart(c=>c.filter(i=>i.slug!==slug));
  const toggleWishlist=p=>setWishlist(w=>w.some(x=>x.slug===p.slug)?w.filter(x=>x.slug!==p.slug):[...w,p]);
  const isWishlisted=slug=>wishlist.some(x=>x.slug===slug);
  const saveCustomer=data=>setCustomer(data); const clearCustomer=()=>setCustomer(null);
