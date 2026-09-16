@@ -13,7 +13,7 @@ export function StoreProvider({children}){
  const saveProductOverride=(slug,data)=>{setProductOverrides(o=>({...o,[slug]:{...(o[slug]||{}),...data}})); if(serverReady){ fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,...data})}).catch(()=>{}); }};
  const resetProductOverride=slug=>setProductOverrides(o=>{const n={...o};delete n[slug];return n});
  const addProduct=data=>{const slug=data.slug||`${data.code||'urun'}-${Date.now()}`.toLowerCase().replace(/[^a-z0-9-]+/g,'-');const p={slug,name:data.name||'Yeni ürün',code:data.code||`ALYA${Date.now().toString().slice(-4)}`,category:data.category||'Yeni Kategori',image:data.image||'/products/product-5.jpg',price:data.price===''?null:Number(data.price)||null,description:data.description||'ALYA HOMES ürün açıklaması.',specs:data.specs||{}};setCustomProducts(x=>[...x,p]);return p};
- const deleteProduct=slug=>{setDeletedProducts(x=>x.includes(slug)?x:[...x,slug]);setCart(c=>c.filter(i=>i.slug!==slug));setWishlist(w=>w.filter(i=>i.slug!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:false})}).catch(()=>{});};
+ const deleteProduct=slug=>{setDeletedProducts(x=>x.includes(slug)?x:[...x,slug]);setCart(c=>c.filter(i=>i.slug!==slug));setWishlist(w=>w.filter(x=>x.slug!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:false})}).catch(()=>{});};
  const restoreProduct=slug=>{setDeletedProducts(x=>x.filter(s=>s!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:true})}).catch(()=>{});};
  const updateOrderStatus=(id,status,shipment={})=>{setOrders(os=>os.map(o=>o.id===id?{...o,status,carrier:shipment.carrier??o.carrier,trackingNumber:shipment.trackingNumber??o.trackingNumber}:o));const o=orders.find(x=>x.id===id);if(serverReady&&o)fetch('/api/orders',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:o.id,status,carrier:shipment.carrier||undefined,trackingNumber:shipment.trackingNumber||undefined})}).catch(()=>{});};
  const addToCart=p=>{
@@ -29,7 +29,7 @@ export function StoreProvider({children}){
   return added;
  };
  const validateCart=()=>cart.map(i=>({slug:i.slug,name:i.name,qty:i.qty,stock:Number.isFinite(Number(i.stock))?Number(i.stock):null,valid:Number.isFinite(Number(i.stock))?i.qty<=Number(i.stock):true}));
- const changeQty=(slug,d)=>setCart(c=>c.map(i=>i.slug===slug?{...i,qty:i.qty+d}:i).filter(i=>i.qty>0));
+ const changeQty=(slug,d)=>setCart(c=>c.map(i=>{if(i.slug!==slug)return i;const stock=Number(i.stock);const hasStock=Number.isFinite(stock)&&stock>=0;const next=i.qty+d;return {...i,qty:hasStock?Math.min(Math.max(0,next),stock):next};}).filter(i=>i.qty>0));
  const remove=slug=>setCart(c=>c.filter(i=>i.slug!==slug));
  const toggleWishlist=p=>setWishlist(w=>w.some(x=>x.slug===p.slug)?w.filter(x=>x.slug!==p.slug):[...w,p]);
  const isWishlisted=slug=>wishlist.some(x=>x.slug===slug);
