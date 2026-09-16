@@ -4,7 +4,7 @@ import Link from "next/link";
 import {ArrowLeft,Package,MapPin,Truck,CreditCard,CheckCircle2,Circle} from "lucide-react";
 const money=n=>new Intl.NumberFormat("tr-TR",{style:"currency",currency:"TRY",maximumFractionDigits:0}).format(Number(n)||0);
 const steps=["Sipariş alındı","Hazırlanıyor","Kargoya verildi","Teslim edildi"];
-export default function OrderDetail({params}){const [order,setOrder]=useState(null),[loading,setLoading]=useState(true);useEffect(()=>{const no=decodeURIComponent(params.orderNo);fetch(`/api/orders?orderNo=${encodeURIComponent(no)}`,{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(d=>setOrder(d.order)).catch(()=>setOrder(null)).finally(()=>setLoading(false))},[params.orderNo]);
+export default function OrderDetail({params}){const [order,setOrder]=useState(null),[loading,setLoading]=useState(true);useEffect(()=>{let gone=false;Promise.resolve(params).then(({orderNo})=>{const no=decodeURIComponent(orderNo);return fetch(`/api/orders?orderNo=${encodeURIComponent(no)}`,{cache:"no-store"})}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(!gone)setOrder(d.order)}).catch(()=>{if(!gone)setOrder(null)}).finally(()=>{if(!gone)setLoading(false)});return()=>{gone=true}},[params]);
 if(loading)return <main className="account-page"><div className="account-hero"><small>ALYA HOMES / SİPARİŞ</small><h1>Yükleniyor…</h1></div></main>;
 if(!order)return <main className="account-page"><div className="account-hero"><small>ALYA HOMES / SİPARİŞ</small><h1>Sipariş bulunamadı</h1><Link href="/account" className="text-link"><ArrowLeft size={16}/> Hesabıma dön</Link></div></main>;
 const status=order.Status||"Sipariş alındı";const current=steps.indexOf(status);const history=order.history||[];
