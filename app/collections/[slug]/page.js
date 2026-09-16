@@ -7,11 +7,17 @@ import {useStore} from '../../store';
 
 const money=n=>n==null?'Fiyat için iletişime geçin':new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(n);
 const drying=p=>{const m=String(p.specs?.kurutma||'').match(/[0-9]+/); return m?Number(m[0]):0};
+const categoryTitles={
+  'kurutmalıklar':'Kurutmalıklar',
+  'ütü masaları':'Ütü Masaları',
+  'tüm ürünler':'Tüm Ürünler'
+};
+const categoryTitle=raw=>categoryTitles[raw.toLocaleLowerCase('tr-TR')]||raw.replace(/-/g,' ').replace(/(^|\s)([a-zçğıöşü])/giu,(_,space,letter)=>`${space}${letter.toLocaleUpperCase('tr-TR')}`);
 
 export default function CollectionPage({params}){
   const {slug}=use(params);
   const raw=decodeURIComponent(slug||'all');
-  const title=raw==='all'?'Tüm Ürünler':raw.replace(/-/g,' ').replace(/\b\w/g,m=>m.toUpperCase());
+  const title=raw==='all'?'Tüm Ürünler':categoryTitle(raw);
   const [sort,setSort]=useState('featured');
   const [query,setQuery]=useState('');
   const [material,setMaterial]=useState('all');
