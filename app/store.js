@@ -1,0 +1,40 @@
+"use client";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { products as catalogProducts } from "./products";
+const StoreContext=createContext(null);
+export function StoreProvider({children}){
+ const [cart,setCart]=useState([]),[wishlist,setWishlist]=useState([]),[customer,setCustomer]=useState(null),[orders,setOrders]=useState([]),[productOverrides,setProductOverrides]=useState({}),[customProducts,setCustomProducts]=useState([]),[deletedProducts,setDeletedProducts]=useState([]),[ready,setReady]=useState(false),[serverReady,setServerReady]=useState(false);
+ useEffect(()=>{let cancelled=false; const local=()=>{try{setCart(JSON.parse(localStorage.getItem("alya-cart")||"[]"));setWishlist(JSON.parse(localStorage.getItem("alya-wishlist")||"[]"));setCustomer(JSON.parse(localStorage.getItem("alya-customer")||"null"));setOrders(JSON.parse(localStorage.getItem("alya-orders")||"[]"));setProductOverrides(JSON.parse(localStorage.getItem("alya-product-overrides")||"{}"));setCustomProducts(JSON.parse(localStorage.getItem("alya-custom-products")||"[]"));setDeletedProducts(JSON.parse(localStorage.getItem("alya-deleted-products")||"[]"))}catch{}}; local(); fetch("/api/store",{cache:"no-store"}).then(r=>r.ok?r.json():Promise.reject()).then(data=>{if(cancelled)return; setOrders(data.orders||[]);setProductOverrides(data.productOverrides||{});setCustomProducts(data.customProducts||[]);setDeletedProducts(data.deletedProducts||[]);setServerReady(data.source === "sql" || data.source === "file")}).catch(()=>setServerReady(false)).finally(()=>setReady(true)); return ()=>{cancelled=true}},[]);
+ useEffect(()=>{if(ready){localStorage.setItem("alya-cart",JSON.stringify(cart));localStorage.setItem("alya-wishlist",JSON.stringify(wishlist));localStorage.setItem("alya-customer",JSON.stringify(customer));localStorage.setItem("alya-orders",JSON.stringify(orders));localStorage.setItem("alya-product-overrides",JSON.stringify(productOverrides));localStorage.setItem("alya-custom-products",JSON.stringify(customProducts));localStorage.setItem("alya-deleted-products",JSON.stringify(deletedProducts))}},[cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts,ready]);
+ useEffect(()=>{if(!ready||!serverReady)return; const timer=setTimeout(()=>{fetch("/api/store",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orders,productOverrides,customProducts,deletedProducts})}).catch(()=>{})},250); return ()=>clearTimeout(timer)},[orders,productOverrides,customProducts,deletedProducts,ready,serverReady]);
+ const getProduct=(slug)=>{const base=customProducts.find(p=>p.slug===slug)||catalogProducts.find(p=>p.slug===slug); if(!base||deletedProducts.includes(slug))return null; return {...base,...(productOverrides[slug]||{})};};
+ const getProducts=()=>[...catalogProducts,...customProducts].filter((p,i,a)=>a.findIndex(x=>x.slug===p.slug)===i&&!deletedProducts.includes(p.slug)).map(p=>({...p,...(productOverrides[p.slug]||{})}));
+ const saveProductOverride=(slug,data)=>{setProductOverrides(o=>({...o,[slug]:{...(o[slug]||{}),...data}})); if(serverReady){ fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,...data})}).catch(()=>{}); }};
+ const resetProductOverride=slug=>setProductOverrides(o=>{const n={...o};delete n[slug];return n});
+ const addProduct=data=>{const slug=data.slug||`${data.code||'urun'}-${Date.now()}`.toLowerCase().replace(/[^a-z0-9-]+/g,'-');const p={slug,name:data.name||'Yeni ürün',code:data.code||`ALYA${Date.now().toString().slice(-4)}`,category:data.category||'Yeni Kategori',image:data.image||'/products/product-5.jpg',price:data.price===''?null:Number(data.price)||null,description:data.description||'ALYA HOMES ürün açıklaması.',specs:{}};setCustomProducts(x=>[...x,p]);return p};
+ const deleteProduct=slug=>{setDeletedProducts(x=>x.includes(slug)?x:[...x,slug]);setCart(c=>c.filter(i=>i.slug!==slug));setWishlist(w=>w.filter(i=>i.slug!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:false})}).catch(()=>{});};
+ const restoreProduct=slug=>{setDeletedProducts(x=>x.filter(s=>s!==slug));if(serverReady)fetch('/api/products',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({slug,active:true})}).catch(()=>{});};
+ const updateOrderStatus=(id,status)=>{setOrders(os=>os.map(o=>o.id===id?{...o,status}:o));const o=orders.find(x=>x.id===id);if(serverReady&&o)fetch('/api/orders',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:o.id,status})}).catch(()=>{});};
+ const addToCart=p=>{
+  if(p.price==null)return false;
+  const stock=Number.isFinite(Number(p.stock))?Number(p.stock):null;
+  if(stock!==null && stock<=0)return false;
+  let added=true;
+  setCart(c=>{
+    const x=c.find(i=>i.slug===p.slug);
+    if(x && stock!==null && x.qty>=stock){added=false;return c;}
+    return x?c.map(i=>i.slug===p.slug?{...i,qty:i.qty+1}:i):[...c,{...p,qty:1}];
+  });
+  return added;
+};
+const validateCart=()=>cart.map(i=>({slug:i.slug,name:i.name,qty:i.qty,stock:Number.isFinite(Number(i.stock))?Number(i.stock):null,valid:Number.isFinite(Number(i.stock))?i.qty<=Number(i.stock):true}));
+ const changeQty=(slug,d)=>setCart(c=>c.map(i=>i.slug===slug?{...i,qty:i.qty+d}:i).filter(i=>i.qty>0));
+ const remove=slug=>setCart(c=>c.filter(i=>i.slug!==slug));
+ const toggleWishlist=p=>setWishlist(w=>w.some(x=>x.slug===p.slug)?w.filter(x=>x.slug!==p.slug):[...w,p]);
+ const isWishlisted=slug=>wishlist.some(x=>x.slug===slug);
+ const saveCustomer=data=>setCustomer(data); const clearCustomer=()=>setCustomer(null);
+ const createOrder=async(details)=>{const subtotal=cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0);const shipping=subtotal>=1000?0:99;const order={id:`ALY-${Date.now().toString().slice(-8)}`,createdAt:new Date().toISOString(),status:"Sipariş alındı",customer:details,items:cart,total:subtotal+shipping,subtotal,shipping}; if(serverReady){try{const r=await fetch('/api/orders',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(order)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||"Sipariş kaydedilemedi")}catch(e){return {error:e.message||"Sipariş oluşturulamadı"}}} setOrders(o=>[order,...o]);setCart([]);setCustomer(details);return order};
+ const value=useMemo(()=>({cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts,serverReady,getProduct,getProducts,saveProductOverride,resetProductOverride,addProduct,deleteProduct,restoreProduct,updateOrderStatus,addToCart,changeQty,remove,toggleWishlist,isWishlisted,saveCustomer,clearCustomer,createOrder,count:cart.reduce((s,i)=>s+i.qty,0),wishlistCount:wishlist.length,total:cart.reduce((s,i)=>s+(Number(i.price)||0)*i.qty,0)}),[cart,wishlist,customer,orders,productOverrides,customProducts,deletedProducts]);
+ return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>
+}
+export const useStore=()=>useContext(StoreContext);
