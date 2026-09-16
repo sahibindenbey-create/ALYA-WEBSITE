@@ -40,6 +40,7 @@ IF COL_LENGTH('dbo.AlyaOrders','ShippingAddressJson') IS NULL
 
 IF COL_LENGTH('dbo.AlyaOrders','SameAddress') IS NULL
     ALTER TABLE dbo.AlyaOrders ADD SameAddress BIT NULL;
+GO
 
 UPDATE dbo.AlyaCustomers
 SET CustomerType = COALESCE(CustomerType, N'Bireysel')
@@ -50,3 +51,4 @@ SET CustomerType = COALESCE(CustomerType, N'Bireysel')
 WHERE CustomerType IS NULL;
 
 PRINT N'ALYA checkout müşteri/fatura/sevk alanları hazır.';
+GO
