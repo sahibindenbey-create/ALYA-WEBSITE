@@ -6,6 +6,7 @@ import { useStore } from '../../store';
 import ProductGallery from '../../components/ProductGallery';
 
 const money = n => n == null ? 'Fiyat bilgisi için iletişime geçin' : `${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }).format(n)} TL.`;
+const specLabels={kurutma:'Kurutma uzunluğu',ütüleme:'Ütüleme alanı',ölçü:'Ölçü',yükseklik:'Yükseklik',ağırlık:'Ağırlık',koli:'Koli içi',ayar:'Ayarlanabilir aralık',malzeme:'Malzeme',özellik:'Özellik',renk:'Renk',renkler:'Renkler'};
 const makeFeatures = p => { const features=[]; const specs=p.specs||{}; if(p.category==='Kurutmalıklar'){features.push('Alüminyum ve paslanmaz gövde'); features.push(/BALCONY/i.test(p.name)?'Balkon kullanımına uygun ayarlanabilir yapı':'Katlanabilir ve kolay saklanabilir tasarım'); features.push(/RAW/i.test(p.name)?'RAW seri yüzey ve gövde tasarımı':'Geniş kurutma kapasitesi');} else if(p.category==='Ütü Masaları'){features.push(specs.malzeme?`${specs.malzeme} gövde yapısı`:'Dayanıklı gövde yapısı');features.push('Ayarlanabilir çalışma yüksekliği');if(/PROBOARD/i.test(p.name))features.push('Geniş ütüleme alanı ve güçlü taşıyıcı yapı');if(/EASYBOARD/i.test(p.name))features.push('Pratik kullanım ve kolay saklama');if(/STEEL/i.test(p.name))features.push('Çelik konstrüksiyon');if(/HYBRID/i.test(p.name))features.push('Alüminyum tabla ve çelik ayak kombinasyonu');} return [...new Set(features)].slice(0,5);};
 
 export default function ProductPage({ params }) {
@@ -20,7 +21,7 @@ export default function ProductPage({ params }) {
   return <main className="alya-product-page">
     <div className="alya-product-breadcrumbs"><Link href="/">Ana sayfa</Link><span>/</span><Link href={`/collections/${encodeURIComponent(p.category.toLowerCase())}`}>{p.category}</Link><span>/</span><strong>{p.name}</strong></div>
     <section className="alya-product-main">
-      <div className="alya-product-media"><ProductGallery product={p}/><p className="alya-image-note">Ürün görseli temsilidir. Renk ve yüzey detayları ürün serisine göre değişebilir.</p></div>
+      <div className="alya-product-media"><ProductGallery product={p}/><p className="alya-image-note">Ürün görselleri ürün serisine ait gerçek çekimlerden oluşur; renk ve yüzey görünümü ekran ayarlarına göre değişebilir.</p></div>
       <div className="alya-product-info">
         <span className="alya-eyebrow">{p.category}</span>
         <h1>{p.name}</h1>
@@ -42,7 +43,7 @@ export default function ProductPage({ params }) {
 
         <div className="alya-accordion">
           <button type="button" className="alya-accordion-trigger" onClick={()=>togglePanel('specs')} aria-expanded={openPanel==='specs'}><span>Teknik özellikler</span><ChevronDown size={18} className={openPanel==='specs'?'is-open':''}/></button>
-          {openPanel==='specs'&&<div className="alya-accordion-content alya-spec-list">{specs.length?specs.map(([k,v])=><div className="alya-spec-row" key={k}><span>{k}</span><strong>{v}</strong></div>):<p>Teknik özellikler yakında eklenecektir.</p>}</div>}
+          {openPanel==='specs'&&<div className="alya-accordion-content alya-spec-list">{specs.length?specs.map(([k,v])=><div className="alya-spec-row" key={k}><span>{specLabels[k]||k}</span><strong>{v}</strong></div>):<p>Teknik özellikler yakında eklenecektir.</p>}</div>}
         </div>
 
         <div className="alya-accordion">
