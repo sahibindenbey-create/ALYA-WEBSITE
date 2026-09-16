@@ -11,7 +11,6 @@ const drying=p=>{const m=String(p.specs?.kurutma||'').match(/[0-9]+/); return m?
 export default function CollectionPage({params}){
   const raw=decodeURIComponent(params.slug||'all');
   const title=raw==='all'?'Tüm Ürünler':raw.replace(/-/g,' ').replace(/\b\w/g,m=>m.toUpperCase());
-  const base=raw==='all'?products:products.filter(p=>p.category.toLowerCase()===raw.toLowerCase());
   const [sort,setSort]=useState('featured');
   const [query,setQuery]=useState('');
   const [material,setMaterial]=useState('all');
@@ -19,6 +18,7 @@ export default function CollectionPage({params}){
   const [filtersOpen,setFiltersOpen]=useState(false);
   const {toggleWishlist,isWishlisted,getProducts}=useStore();
   const products=getProducts();
+  const base=raw==='all'?products:products.filter(p=>p.category.toLowerCase()===raw.toLowerCase());
 
   const materials=useMemo(()=>[...new Set(base.map(p=>p.specs?.malzeme).filter(Boolean))],[base]);
   const items=useMemo(()=>{
