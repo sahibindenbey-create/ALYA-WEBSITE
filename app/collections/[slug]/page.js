@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import {ArrowRight, ChevronDown, SlidersHorizontal, X, Heart} from 'lucide-react';
-import {useMemo, useState} from 'react';
+import {use, useMemo, useState} from 'react';
 
 import {useStore} from '../../store';
 
@@ -9,7 +9,8 @@ const money=n=>n==null?'Fiyat için iletişime geçin':new Intl.NumberFormat('tr
 const drying=p=>{const m=String(p.specs?.kurutma||'').match(/[0-9]+/); return m?Number(m[0]):0};
 
 export default function CollectionPage({params}){
-  const raw=decodeURIComponent(params.slug||'all');
+  const {slug}=use(params);
+  const raw=decodeURIComponent(slug||'all');
   const title=raw==='all'?'Tüm Ürünler':raw.replace(/-/g,' ').replace(/\b\w/g,m=>m.toUpperCase());
   const [sort,setSort]=useState('featured');
   const [query,setQuery]=useState('');
