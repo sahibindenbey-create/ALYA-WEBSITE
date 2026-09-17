@@ -1,0 +1,61 @@
+:root{
+  --alya-orange:#f58a1f;
+  --alya-ink:#171717;
+  --alya-muted:#6d6d6d;
+  --alya-line:#e8e4de;
+  --alya-soft:#f7f5f1;
+  --alya-radius:0px;
+  --alya-max:1440px;
+}
+
+html{scroll-behavior:smooth}
+body{color:var(--alya-ink);background:#fff;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%}
+button,input,select,textarea{font-family:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--alya-orange);outline-offset:3px}
+
+/* Shared editorial rhythm */
+main{background:#fff}
+.section,.collection-content,.cart-page,.product-page{max-width:var(--alya-max);margin-left:auto;margin-right:auto}
+.section{padding-top:88px;padding-bottom:88px}
+.title h2,.alya-section-heading h2{font-weight:500}
+
+/* Buttons */
+.cta,.button,.alya-primary-button,.detail-add,.collection-add,.cart-summary button,.checkout,.add,.notify-button{transition:transform .18s ease,background-color .18s ease,color .18s ease,border-color .18s ease,opacity .18s ease}
+.cta,.button,.alya-primary-button,.detail-add,.cart-summary button,.checkout{background:var(--alya-orange)!important;color:#fff!important;border:1px solid var(--alya-orange)!important}
+.cta:hover,.button:hover,.alya-primary-button:hover:not(:disabled),.detail-add:hover,.cart-summary button:hover,.checkout:hover{background:var(--alya-ink)!important;border-color:var(--alya-ink)!important;transform:translateY(-1px)}
+
+/* Form controls */
+input,select,textarea{border-radius:0}
+input:not([type=checkbox]):not([type=radio]),select,textarea{border-color:var(--alya-line)}
+input:not([type=checkbox]):not([type=radio]):focus,select:focus,textarea:focus{border-color:var(--alya-ink);box-shadow:none}
+
+/* Product / collection cards */
+.product,.collection-product,.alya-related-card{min-width:0}
+.product-image,.collection-pic,.alya-related-image,.category-image{background:var(--alya-soft);border:1px solid #eeeae4}
+.product-image img,.collection-pic img,.alya-related-image img,.category-image img{transition:transform .35s cubic-bezier(.2,.65,.2,1),opacity .25s ease}
+.product:hover .product-image,.collection-product:hover .collection-pic,.alya-related-card:hover .alya-related-image,.category:hover .category-image{border-color:#e2ddd5}
+
+/* Quiet separators and metadata */
+.product-meta h3,.collection-product h2,.alya-related-card h3{letter-spacing:-.1px}
+.product-meta p,.collection-product p,.alya-related-card p{color:#666}
+
+/* Search / drawers */
+.search-overlay,.drawer-backdrop{backdrop-filter:blur(3px)}
+.search-box,.cart-drawer{box-shadow:0 22px 70px rgba(0,0,0,.16)}
+
+/* Mobile */
+@media(max-width:900px){
+  .section{padding-top:68px;padding-bottom:68px}
+  .collection-hero{padding-top:28px}
+  .alya-related-grid{gap:18px}
+}
+@media(max-width:600px){
+  .section{padding-top:56px;padding-bottom:56px}
+  .title{align-items:flex-start;gap:18px}
+  .title h2{font-size:30px}
+  .title>a{font-size:11px;white-space:nowrap}
+  .hero-copy h1{letter-spacing:-1.7px}
+  .button,.cta,.alya-primary-button,.detail-add,.cart-summary button,.checkout{min-height:48px}
+  .alya-related-grid{gap:14px}
+}
