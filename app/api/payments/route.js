@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic';
 
 let poolPromise = null;
 const configured = () => Boolean(process.env.SQL_SERVER && process.env.SQL_DATABASE && process.env.SQL_USER && process.env.SQL_PASSWORD);
+const envBool = (value, fallback = false) => value == null ? fallback : String(value).toLowerCase() === 'true';
 
 async function pool() {
   if (!configured()) return null;
@@ -16,8 +17,8 @@ async function pool() {
       password: process.env.SQL_PASSWORD,
       port: Number(process.env.SQL_PORT || 1433),
       options: {
-        encrypt: String(process.env.SQL_ENCRYPT || 'false').toLowerCase() === 'true',
-        trustServerCertificate: String(process.env.SQL_TRUST_SERVER_CERTIFICATE || 'true'),
+        encrypt: envBool(process.env.SQL_ENCRYPT, false),
+        trustServerCertificate: envBool(process.env.SQL_TRUST_SERVER_CERTIFICATE, true),
       },
     }).catch((error) => {
       poolPromise = null;
@@ -54,9 +55,26 @@ export async function POST(req) {
     if (!orderResult.recordset.length) return Response.json({ error: 'Sipariş bulunamadı' }, { status: 404 });
     const order = orderResult.recordset[0];
 
+    if (order.PaymentMethod && String(order.PaymentMethod) !== method) {
+      return Response.json({
+        error: `Sipariş ödeme yöntemi ${order.PaymentMethod} olarak kayıtlı. Ödeme yöntemi değişikliği için sipariş yeniden oluşturulmalı.`,
+      }, { status: 409 });
+    }
+
+    if (['Ödendi', 'Tamamlandı'].includes(String(order.PaymentStatus || ''))) {
+      return Response.json({
+        ok: true,
+        source: 'sql',
+        status: order.PaymentStatus,
+        alreadyPaid: true,
+        message: 'Bu sipariş için ödeme zaten tamamlanmış.',
+      });
+    }
+
     const pendingResult = await connection.request()
       .input('orderId', sql.BigInt, order.Id)
-      .query("SELECT TOP 1 Reference, Provider, Status FROM dbo.AlyaPaymentAttempts WHERE OrderId=@orderId AND Status=N'Bekliyor' ORDER BY CreatedAt DESC");
+      .input('method', sql.NVarChar(60), method)
+      .query("SELECT TOP 1 Reference, Provider, Status FROM dbo.AlyaPaymentAttempts WHERE OrderId=@orderId AND PaymentMethod=@method AND Status=N'Bekliyor' ORDER BY CreatedAt DESC");
 
     if (pendingResult.recordset.length) {
       const pending = pendingResult.recordset[0];
