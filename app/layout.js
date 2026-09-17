@@ -8,6 +8,7 @@ import './header-polish.css';
 import './collection-polish.css';
 import './product-detail-polish.css';
 import './product-gallery-final.css';
+import './product-image-scale.css';
 import './cart-polish.css';
 import './wishlist-polish.css';
 import './account-polish.css';
