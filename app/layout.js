@@ -12,6 +12,7 @@ import './wishlist-polish.css';
 import './account-polish.css';
 import './checkout-polish.css';
 import './order-success-polish.css';
+import './order-detail-polish.css';
 import { StoreProvider } from './store';
 import SiteHeader from './components/SiteHeader';
 export const metadata={title:'ALYA HOMES | Ev Yaşam Ürünleri',description:'ALYA HOMES ürün koleksiyonu'};
