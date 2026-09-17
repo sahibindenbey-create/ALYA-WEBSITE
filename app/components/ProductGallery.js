@@ -31,7 +31,7 @@ export default function ProductGallery({ product }) {
   const selectImage = index => { setSelectedIndex(index); setFailed(false); setImageOrientation('unknown'); };
   const openLightbox = () => { if (currentImage) setLightbox(true); };
   const handleTouchStart = event => { if (!hasMultiple) return; const touch = event.touches[0]; touchStart.current = { x: touch.clientX, y: touch.clientY }; };
-  const handleTouchEnd = event => { if (!hasMultiple || !touchStart.current) return; const touch = event.changedTouches[0]; const dx = touch.clientX - touchStart.x; const dy = touch.clientY - touchStart.y; touchStart.current = null; if (Math.abs(dx) < 45 || Math.abs(dx) <= Math.abs(dy) * 1.15) return; move(dx < 0 ? 1 : -1); };
+  const handleTouchEnd = event => { if (!hasMultiple || !touchStart.current) return; const touch = event.changedTouches[0]; const dx = touch.clientX - touchStart.current.x; const dy = touch.clientY - touchStart.current.y; touchStart.current = null; if (Math.abs(dx) < 45 || Math.abs(dx) <= Math.abs(dy) * 1.15) return; move(dx < 0 ? 1 : -1); };
 
   useEffect(() => {
     const onKey = event => { if (!lightbox) return; if (event.key === 'Escape') setLightbox(false); if (event.key === 'ArrowRight') move(1); if (event.key === 'ArrowLeft') move(-1); };
