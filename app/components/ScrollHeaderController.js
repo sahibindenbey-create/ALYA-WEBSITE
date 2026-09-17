@@ -6,13 +6,10 @@ export default function ScrollHeaderController(){
   let lastY=window.scrollY||0;
   const onScroll=()=>{
    const y=window.scrollY||0;
-   const header=document.querySelector("body header");
+   const header=document.querySelector("body header:has(.main-header)");
    if(!header){lastY=y;return}
-   if(y<=40||y<lastY){
-    header.classList.remove("header-hidden");
-   }else if(y>120){
-    header.classList.add("header-hidden");
-   }
+   if(y<=40||y<lastY)header.classList.remove("header-hidden");
+   else if(y>120)header.classList.add("header-hidden");
    lastY=y;
   };
   window.addEventListener("scroll",onScroll,{passive:true});
