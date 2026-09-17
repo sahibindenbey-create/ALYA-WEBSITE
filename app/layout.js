@@ -3,6 +3,7 @@ import './alyahomes-reference.css';
 import './home.css';
 import './brand.css';
 import './alya-experience.css';
+import './home-polish.css';
 import { StoreProvider } from './store';
 import SiteHeader from './components/SiteHeader';
 export const metadata={title:'ALYA HOMES | Ev Yaşam Ürünleri',description:'ALYA HOMES ürün koleksiyonu'};
