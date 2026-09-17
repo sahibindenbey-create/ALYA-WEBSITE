@@ -2,6 +2,7 @@ export const runtime='nodejs';
 
 const routes={
  'Aras Kargo':'/api/shipping/aras',
+ 'UPS':'/api/shipping/ups/create',
 };
 
 const providerKey=v=>String(v||'').trim().toLowerCase();
