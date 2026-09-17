@@ -11,13 +11,19 @@ const legalLinks=[
 const communicationLinks=[
  ['İletişim Aydınlatma Metni','/iletisim_aydinlatma_metni'],['Ticari İletişim Bilgilendirme Metni','/ticari-iletisim-bilgilendirme-metni'],['Güvenlik Sertifikaları','/guvenlik-sertifikalari']
 ];
+
 export default function SiteFooter(){
  return <footer className="alya-footer">
   <div className="alya-footer-inner">
    <div className="alya-footer-brand">
     <Link href="/" className="footer-brand"><img src="/alya-homes-logo.png" alt="ALYA HOMES"/></Link>
     <p>Ev yaşam ürünlerinde işlevsellik, dayanıklılık ve zamansız tasarım.</p>
-    <div className="footer-company"><strong>{COMPANY.name}</strong><span><MapPin size={13}/>{COMPANY.address}</span><span><Phone size={13}/>{COMPANY.phone}</span><span><Mail size={13}/>{COMPANY.email}</span></div>
+    <div className="footer-company">
+      <strong>{COMPANY.name}</strong>
+      <span><MapPin size={13}/><b>Adres</b>{COMPANY.address}</span>
+      <span><Phone size={13}/><b>Tel</b>{COMPANY.phone}</span>
+      <span><Mail size={13}/><b>E-posta</b>{COMPANY.email}</span>
+    </div>
     <Link href="/collections/all" className="footer-shop-link">Ürünleri keşfet <ArrowRight size={14}/></Link>
    </div>
    <div className="alya-footer-grid">
