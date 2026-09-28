@@ -3,7 +3,7 @@ import {useEffect,useState} from 'react';
 import Link from 'next/link';
 import {ArrowLeft,ArrowRight,Package,Truck,MapPin,Clock,ShoppingBag,CreditCard} from 'lucide-react';
 import {useParams} from 'next/navigation';
-import {useStore} from '../../store';
+import {useStore} from '../../../store';
 const money=n=>new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(Number(n)||0);
 const date=v=>v?new Date(v).toLocaleString('tr-TR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
 const statusClass=s=>{const v=String(s||'').toLocaleLowerCase('tr-TR');if(v.includes('teslim'))return 'done';if(v.includes('iptal'))return 'cancel';if(v.includes('kargo')||v.includes('hazır'))return 'progress';return 'pending'};
