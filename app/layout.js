@@ -18,6 +18,7 @@ import './order-detail-polish.css';
 import './legal-page.css';
 import './footer-polish.css';
 import './design-system-polish.css';
+import './retail-redesign.css';
 import { StoreProvider } from './store';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
