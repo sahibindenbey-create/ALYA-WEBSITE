@@ -21,7 +21,7 @@ function resultFrom(xml){return {resultCode:tag(xml,'ResultCode'),resultMessage:
 async function findExisting(integrationCode){
  const xml=`<GetOrderWithIntegrationCode xmlns="http://tempuri.org/"><userName>${esc(process.env.ARAS_USERNAME)}</userName><password>${esc(process.env.ARAS_PASSWORD)}</password><integrationCode>${esc(integrationCode)}</integrationCode></GetOrderWithIntegrationCode>`;
  const response=await soap('GetOrderWithIntegrationCode',xml);
- const order=response.match(/<Order(?:\\s[^>]*)?>([\\s\\S]*?)<\\/Order>/i)?.[1]||'';
+ const order=response.match(/<Order(?:\s[^>]*)?>([\s\S]*?)<\/Order>/i)?.[1]||'';
  if(!order)return null;
  return {trackingNumber:tag(order,'TrackingNumber')||tag(order,'InvoiceKey')||tag(order,'TradingWaybillNumber'),invoiceKey:tag(order,'InvoiceKey'),waybillNumber:tag(order,'TradingWaybillNumber')};
 }
