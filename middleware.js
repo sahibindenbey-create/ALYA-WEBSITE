@@ -1,28 +1,42 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 
 const ADMIN_COOKIE = 'alya_admin';
+const encoder = new TextEncoder();
 
-function expectedToken() {
+async function expectedToken() {
   const username = process.env.ADMIN_USERNAME || '';
   const password = process.env.ADMIN_PASSWORD || '';
   const secret = process.env.ADMIN_SESSION_SECRET || '';
   if (!username || !password || !secret) return null;
-  return crypto.createHmac('sha256', secret).update(`${username}:${password}`).digest('hex');
+
+  const key = await globalThis.crypto.subtle.importKey(
+    'raw',
+    encoder.encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const signature = await globalThis.crypto.subtle.sign(
+    'HMAC',
+    key,
+    encoder.encode(`${username}:${password}`),
+  );
+  return Array.from(new Uint8Array(signature), (byte) => byte.toString(16).padStart(2, '0')).join('');
 }
 
 function safeEqual(a, b) {
-  try {
-    const left = Buffer.from(String(a || ''), 'utf8');
-    const right = Buffer.from(String(b || ''), 'utf8');
-    return left.length === right.length && crypto.timingSafeEqual(left, right);
-  } catch {
-    return false;
+  const left = String(a || '');
+  const right = String(b || '');
+  if (!left || left.length !== right.length) return false;
+  let difference = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
   }
+  return difference === 0;
 }
 
-function isAdmin(req) {
-  const expected = expectedToken();
+async function isAdmin(req) {
+  const expected = await expectedToken();
   return Boolean(expected && safeEqual(req.cookies.get(ADMIN_COOKIE)?.value, expected));
 }
 
@@ -42,7 +56,7 @@ function isSameOrigin(req) {
   return Boolean(origin && origin === req.nextUrl.origin);
 }
 
-export function middleware(req) {
+export async function middleware(req) {
   const path = req.nextUrl.pathname;
   const isApi = path.startsWith('/api/');
 
@@ -53,7 +67,7 @@ export function middleware(req) {
   const protectedRequest = path === '/admin' || path.startsWith('/admin/') || requiresAdmin(req, path);
   if (!protectedRequest) return NextResponse.next();
 
-  if (!isAdmin(req)) {
+  if (!(await isAdmin(req))) {
     if (isApi) return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 });
     return NextResponse.redirect(new URL('/admin/login', req.url));
   }
