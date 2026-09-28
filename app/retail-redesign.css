@@ -1257,3 +1257,56 @@ body {
 .collection-page .catalog-image:hover img {
   transform: none !important;
 }
+
+/* Adaptive presentation for square 1301 photography */
+.alya-product-image:has(img[src*="/products-real/1301/"]) {
+  height: min(50vw, 760px) !important;
+  min-height: 620px !important;
+  aspect-ratio: auto !important;
+  background: #fff !important;
+}
+.alya-product-image:has(img[src*="/products-real/1301/"]) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #fff !important;
+}
+.alya-gallery-thumb:has(img[src*="/products-real/1301/"]) {
+  background: #fff !important;
+}
+.alya-gallery-thumb:has(img[src*="/products-real/1301/"]) img {
+  object-fit: contain !important;
+  background: #fff !important;
+}
+.collection-page .catalog-image:has(img[src*="/products-real/1301/"]),
+.wishlist-page .catalog-image:has(img[src*="/products-real/1301/"]),
+.retail-home .product-image:has(img[src*="/products-real/1301/"]),
+.alya-related-image:has(img[src*="/products-real/1301/"]) {
+  aspect-ratio: 1/1 !important;
+  background: #fff !important;
+}
+.collection-page .catalog-image:has(img[src*="/products-real/1301/"]) img,
+.wishlist-page .catalog-image:has(img[src*="/products-real/1301/"]) img,
+.retail-home .product-image:has(img[src*="/products-real/1301/"]) img,
+.alya-related-image:has(img[src*="/products-real/1301/"]) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #fff !important;
+}
+.main-header .mega-image:has(img[src*="/products-real/1301/"]) {
+  background: #fff !important;
+}
+.main-header .mega-image:has(img[src*="/products-real/1301/"]) img {
+  object-fit: contain !important;
+  background: #fff !important;
+}
+@media (max-width: 900px) {
+  .alya-product-image:has(img[src*="/products-real/1301/"]) {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1/1 !important;
+  }
+}
