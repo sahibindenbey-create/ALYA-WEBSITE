@@ -112,7 +112,7 @@ async function syncNormalized(pool, state) {
 export async function GET() {
   try {
     const { state, source } = await readStore();
-    return Response.json({ ...state, source }, { headers: { 'Cache-Control': 'no-store' } });
+    return Response.json({ ...state, orders: [], source }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     return Response.json({ ...empty, source: 'file', error: 'Veri kaynağına bağlanılamadı.' }, { status: 200 });
   }
@@ -123,7 +123,7 @@ export async function POST(request) {
     const incoming = await request.json();
     const { state: current } = await readStore();
     const next = {
-      orders: Array.isArray(incoming.orders) ? incoming.orders : current.orders,
+      orders: current.orders,
       productOverrides: incoming.productOverrides && typeof incoming.productOverrides === 'object' ? incoming.productOverrides : current.productOverrides,
       customProducts: Array.isArray(incoming.customProducts) ? incoming.customProducts : current.customProducts,
       deletedProducts: Array.isArray(incoming.deletedProducts) ? incoming.deletedProducts : current.deletedProducts
