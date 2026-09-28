@@ -1,30 +1,26 @@
 .alya-product-image {
+  display: grid !important;
+  place-items: center !important;
   min-height: 0 !important;
-  height: clamp(420px, 42vw, 520px) !important;
+  height: clamp(580px, 47vw, 760px) !important;
   overflow: hidden !important;
+  background: #5d5d5d !important;
 }
 
 .alya-product-image img,
 .alya-product-image.is-landscape img,
 .alya-product-image.is-portrait img {
-  width: auto !important;
-  height: auto !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
   object-fit: contain !important;
+  object-position: center !important;
 }
 
 @media (max-width: 900px) {
   .alya-product-image {
     height: auto !important;
-    max-height: none !important;
-    overflow: hidden !important;
-  }
-
-  .alya-product-image img,
-  .alya-product-image.is-landscape img,
-  .alya-product-image.is-portrait img {
-    width: 100% !important;
-    max-height: none !important;
+    aspect-ratio: 2 / 3 !important;
   }
 }
