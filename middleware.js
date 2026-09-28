@@ -43,6 +43,7 @@ async function isAdmin(req) {
 function requiresAdmin(req, path) {
   if (path.startsWith('/api/customers')) return true;
   if (path.startsWith('/api/stock')) return true;
+  if (path.startsWith('/api/store')) return req.method !== 'GET';
   if (path.startsWith('/api/orders')) return req.method !== 'POST';
   if (path.startsWith('/api/products')) return req.method !== 'GET';
   if (path.startsWith('/api/shipping/create')) return true;
@@ -86,6 +87,7 @@ export const config = {
     '/api/customers/:path*',
     '/api/products/:path*',
     '/api/stock/:path*',
+    '/api/store/:path*',
     '/api/shipping/create/:path*',
     '/api/shipping/aras/:path*',
     '/api/shipping/ups/create/:path*',
