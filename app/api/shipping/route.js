@@ -1,4 +1,4 @@
-import {getShippingProviders,createShipment,trackShipment,getShipmentPayload} from '@/lib/shipping';
+import {getShippingProviders,createShipment,trackShipment,getShipmentPayload} from '../../../lib/shipping';
 import sql from 'mssql';
 export const runtime='nodejs';
 export const dynamic='force-dynamic';
