@@ -1239,3 +1239,21 @@ body {
     height: 210px !important;
   }
 }
+
+/* Never crop catalog product photography */
+.collection-page .catalog-image {
+  background: #626262 !important;
+  overflow: hidden !important;
+}
+.collection-page .catalog-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+.collection-page .catalog-image:hover img {
+  transform: none !important;
+}
