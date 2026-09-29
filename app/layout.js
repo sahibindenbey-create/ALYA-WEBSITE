@@ -23,5 +23,6 @@ import { StoreProvider } from './store';
 import SiteHeader from './components/SiteHeader';
 import SiteFooter from './components/SiteFooter';
 import ScrollHeaderController from './components/ScrollHeaderController';
-export const metadata={title:'ALYA HOMES | Ev Yaşam Ürünleri',description:'ALYA HOMES ürün koleksiyonu'};
+import {isCatalogMode} from './site-config';
+export const metadata={title:isCatalogMode?'ALYA HOMES | Ev Yaşam Ürünleri':'ALYA HOMES Shop | Online Mağaza',description:isCatalogMode?'ALYA HOMES ürün koleksiyonu':'ALYA HOMES online mağazası'};
 export default function RootLayout({children}){return <html lang="tr"><body><StoreProvider><SiteHeader/><ScrollHeaderController/>{children}<SiteFooter/></StoreProvider></body></html>}

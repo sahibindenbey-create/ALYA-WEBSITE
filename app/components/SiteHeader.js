@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { categories } from "../products";
 import { useStore } from "../store";
+import { isCatalogMode, SHOP_URL } from "../site-config";
 const navCategories = ["Kurutmalıklar", "Ütü Masaları"];
 export default function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false),
@@ -37,17 +38,19 @@ export default function SiteHeader() {
   return (
     <>
       <div className="announcement">
-        1.000 TL ve üzeri siparişlerde ücretsiz kargo
+        {isCatalogMode
+          ? "ALYA HOMES · İşlevsel ve dayanıklı ev yaşam ürünleri"
+          : "1.000 TL ve üzeri siparişlerde ücretsiz kargo"}
       </div>
       <header>
-        <div className="utility">
+        {!isCatalogMode && <div className="utility">
           <div className="utility-links">
             <span>3 yıl garanti</span>
             <span>30 gün içinde kolay iade</span>
             <span>Güvenli ödeme</span>
             <span>Türkiye / TRY</span>
           </div>
-        </div>
+        </div>}
         <div className="main-header">
           <button
             className="mobile-menu"
@@ -127,17 +130,25 @@ export default function SiteHeader() {
             ))}
           </nav>
           <div className="actions">
-            <Link href="/account" aria-label="Hesabım" className="icon-link">
-              <UserRound size={21} />
-            </Link>
-            <Link href="/wishlist" aria-label="Favoriler" className="icon-link">
-              <Heart size={21} />
-              <b>{wishlistCount}</b>
-            </Link>
-            <Link href="/cart" aria-label="Sepet" className="icon-link cart">
-              <ShoppingBag size={21} />
-              <b>{count}</b>
-            </Link>
+            {isCatalogMode ? (
+              <a className="catalog-shop-link" href={SHOP_URL}>
+                Online Mağaza <ArrowRight size={15} />
+              </a>
+            ) : (
+              <>
+                <Link href="/account" aria-label="Hesabım" className="icon-link">
+                  <UserRound size={21} />
+                </Link>
+                <Link href="/wishlist" aria-label="Favoriler" className="icon-link">
+                  <Heart size={21} />
+                  <b>{wishlistCount}</b>
+                </Link>
+                <Link href="/cart" aria-label="Sepet" className="icon-link cart">
+                  <ShoppingBag size={21} />
+                  <b>{count}</b>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -168,15 +179,23 @@ export default function SiteHeader() {
               <ArrowRight size={16} />
             </Link>
           ))}
-          <Link href="/account" onClick={() => setMenuOpen(false)}>
-            Hesabım <ArrowRight size={16} />
-          </Link>
-          <Link href="/wishlist" onClick={() => setMenuOpen(false)}>
-            Favoriler <ArrowRight size={16} />
-          </Link>
-          <Link href="/cart" onClick={() => setMenuOpen(false)}>
-            Sepet <ArrowRight size={16} />
-          </Link>
+          {isCatalogMode ? (
+            <a href={SHOP_URL} onClick={() => setMenuOpen(false)}>
+              Online Mağaza <ArrowRight size={16} />
+            </a>
+          ) : (
+            <>
+              <Link href="/account" onClick={() => setMenuOpen(false)}>
+                Hesabım <ArrowRight size={16} />
+              </Link>
+              <Link href="/wishlist" onClick={() => setMenuOpen(false)}>
+                Favoriler <ArrowRight size={16} />
+              </Link>
+              <Link href="/cart" onClick={() => setMenuOpen(false)}>
+                Sepet <ArrowRight size={16} />
+              </Link>
+            </>
+          )}
         </div>
       )}
       {searchOpen && (

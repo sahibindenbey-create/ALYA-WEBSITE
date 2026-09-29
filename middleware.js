@@ -2,6 +2,17 @@ import { NextResponse } from 'next/server';
 
 const ADMIN_COOKIE = 'alya_admin';
 const encoder = new TextEncoder();
+const catalogMode =
+  process.env.SITE_MODE === 'catalog' ||
+  process.env.NEXT_PUBLIC_SITE_MODE === 'catalog';
+
+const catalogBlockedPaths = [
+  '/cart',
+  '/checkout',
+  '/wishlist',
+  '/account',
+  '/order-success',
+];
 
 async function expectedToken() {
   const username = process.env.ADMIN_USERNAME || '';
@@ -61,6 +72,16 @@ export async function middleware(req) {
   const path = req.nextUrl.pathname;
   const isApi = path.startsWith('/api/');
 
+  if (
+    catalogMode &&
+    catalogBlockedPaths.some(
+      (blockedPath) =>
+        path === blockedPath || path.startsWith(`${blockedPath}/`),
+    )
+  ) {
+    return NextResponse.redirect(new URL('/collections/all', req.url));
+  }
+
   if (path === '/admin/login' || path.startsWith('/api/admin/login')) {
     return NextResponse.next();
   }
@@ -91,5 +112,10 @@ export const config = {
     '/api/shipping/create/:path*',
     '/api/shipping/aras/:path*',
     '/api/shipping/ups/create/:path*',
+    '/cart/:path*',
+    '/checkout/:path*',
+    '/wishlist/:path*',
+    '/account/:path*',
+    '/order-success/:path*',
   ],
 };

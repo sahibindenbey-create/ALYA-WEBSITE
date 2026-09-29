@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import {ArrowRight, ShieldCheck, LockKeyhole, MapPin, Phone, Mail} from 'lucide-react';
 import {COMPANY} from '../company-info';
+import {isCatalogMode, SHOP_URL} from '../site-config';
 
 const customerLinks=[
  ['Yardım Merkezi','/yardim'],['İletişim','/iletisim'],['Güvenli Alışveriş','/guvenli_alisveris'],['Kampanyalar','/kampanyalar']
@@ -13,6 +14,8 @@ const communicationLinks=[
 ];
 
 export default function SiteFooter(){
+ const visibleCustomerLinks=isCatalogMode?customerLinks.filter(([,href])=>!['/guvenli_alisveris','/kampanyalar'].includes(href)):customerLinks;
+ const visibleLegalLinks=isCatalogMode?legalLinks.filter(([,href])=>href!=='/uyelik_sozlesmesi'):legalLinks;
  return <footer className="alya-footer">
   <div className="alya-footer-inner">
    <div className="alya-footer-brand">
@@ -24,17 +27,17 @@ export default function SiteFooter(){
       <span><Phone size={13}/><b>Tel</b>{COMPANY.phone}</span>
       <span><Mail size={13}/><b>E-posta</b>{COMPANY.email}</span>
     </div>
-    <Link href="/collections/all" className="footer-shop-link">Ürünleri keşfet <ArrowRight size={14}/></Link>
+    {isCatalogMode?<a href={SHOP_URL} className="footer-shop-link">Online mağazaya git <ArrowRight size={14}/></a>:<Link href="/collections/all" className="footer-shop-link">Ürünleri keşfet <ArrowRight size={14}/></Link>}
    </div>
    <div className="alya-footer-grid">
-    <div><h4>Müşteri Hizmetleri</h4>{customerLinks.map(([t,h])=><Link key={h} href={h}>{t}</Link>)}</div>
-    <div><h4>Yasal Bilgiler</h4>{legalLinks.map(([t,h])=><Link key={h} href={h}>{t}</Link>)}</div>
+    <div><h4>{isCatalogMode?'Kurumsal':'Müşteri Hizmetleri'}</h4>{visibleCustomerLinks.map(([t,h])=><Link key={h} href={h}>{t}</Link>)}</div>
+    <div><h4>Yasal Bilgiler</h4>{visibleLegalLinks.map(([t,h])=><Link key={h} href={h}>{t}</Link>)}</div>
     <div><h4>Bilgilendirme</h4>{communicationLinks.map(([t,h])=><Link key={h} href={h}>{t}</Link>)}</div>
    </div>
   </div>
   <div className="alya-footer-security">
-   <div><ShieldCheck size={18}/><span><b>Güvenli alışveriş</b><small>SSL/TLS ile şifreli bağlantı</small></span></div>
-   <div><LockKeyhole size={18}/><span><b>Güvenli ödeme</b><small>Ödeme bilgileriniz güvenli kanallarda işlenir</small></span></div>
+   <div><ShieldCheck size={18}/><span><b>{isCatalogMode?'Güvenli bağlantı':'Güvenli alışveriş'}</b><small>SSL/TLS ile şifreli bağlantı</small></span></div>
+   {isCatalogMode?<div><ArrowRight size={18}/><span><b>Online mağaza</b><small>Alışveriş için shop.alyahomes.com.tr</small></span></div>:<div><LockKeyhole size={18}/><span><b>Güvenli ödeme</b><small>Ödeme bilgileriniz güvenli kanallarda işlenir</small></span></div>}
    <div><span><b>Vergi Dairesi</b><small>{COMPANY.taxOffice} · VKN {COMPANY.taxNumber}</small></span></div>
    <div><span><b>MERSİS</b><small>{COMPANY.mersisNumber}</small></span></div>
   </div>

@@ -18,6 +18,33 @@ Optional:
 
 A real payment provider still requires the provider's merchant credentials and hosted/redirect API contract. The project deliberately does not collect or persist raw card numbers, CVV, or expiry data.
 
+## İki domain / tek ürün altyapısı
+
+Proje iki farklı modda dağıtılabilir:
+
+- `shop.alyahomes.com.tr`: fiyat, favori, sepet, ödeme ve sipariş akışlarını içeren online mağaza.
+- `alyahomes.com.tr`: fiyat ve alışveriş araçları bulunmayan ürün tanıtım sitesi.
+
+Online mağaza ortam değişkenleri:
+
+```env
+SITE_MODE=shop
+NEXT_PUBLIC_SITE_MODE=shop
+NEXT_PUBLIC_SHOP_URL=https://shop.alyahomes.com.tr
+```
+
+Ana tanıtım sitesi ortam değişkenleri:
+
+```env
+SITE_MODE=catalog
+NEXT_PUBLIC_SITE_MODE=catalog
+NEXT_PUBLIC_SHOP_URL=https://shop.alyahomes.com.tr
+```
+
+Tanıtım modunda fiyat, favori, hesap, sepet ve ödeme arayüzleri kaldırılır.
+Alışveriş rotaları ürün koleksiyonuna yönlendirilir; ürün sayfalarında online
+mağazaya geçiş bağlantısı gösterilir.
+
 ## V23 - Production checkout hardening
 - `/api/health` provides deployment health/configuration visibility.
 - Cart prevents quantities above known stock and exposes `validateCart()`.

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { products } from "./products";
 import { useStore } from "./store";
+import { isCatalogMode } from "./site-config";
 
 const money = (n) =>
   n == null
@@ -28,31 +29,35 @@ function ProductCard({ product, onAdd }) {
       <Link href={`/products/${product.slug}`}>
         <div className="product-image">
           <span>{product.category}</span>
-          <button
-            aria-label="Favorilere ekle"
-            className={isWishlisted(product.slug) ? "wish-active" : ""}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleWishlist(product);
-            }}
-          >
-            <Heart
-              size={18}
-              fill={isWishlisted(product.slug) ? "currentColor" : "none"}
-            />
-          </button>
+          {!isCatalogMode && (
+            <button
+              aria-label="Favorilere ekle"
+              className={isWishlisted(product.slug) ? "wish-active" : ""}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleWishlist(product);
+              }}
+            >
+              <Heart
+                size={18}
+                fill={isWishlisted(product.slug) ? "currentColor" : "none"}
+              />
+            </button>
+          )}
           <img src={product.image} alt={product.name} />
         </div>
         <div className="product-meta">
           <span className="code">{product.code}</span>
           <h3>{product.name}</h3>
-          <p>{money(product.price)}</p>
+          {!isCatalogMode && <p>{money(product.price)}</p>}
         </div>
       </Link>
-      <button className="add" onClick={() => onAdd(product)}>
-        {product.price == null ? "Fiyat iste" : "Sepete ekle"}
-      </button>
+      {!isCatalogMode && (
+        <button className="add" onClick={() => onAdd(product)}>
+          {product.price == null ? "Fiyat iste" : "Sepete ekle"}
+        </button>
+      )}
     </article>
   );
 }
@@ -81,7 +86,7 @@ export default function Home() {
   };
   return (
     <main className="retail-home">
-      {added && (
+      {!isCatalogMode && added && (
         <div className="add-toast">
           Sepete eklendi <strong>{added}</strong>
         </div>
@@ -231,13 +236,19 @@ export default function Home() {
       <section className="benefits">
         <div>
           <Truck size={20} />
-          <strong>Ücretsiz kargo</strong>
-          <span>1.000 TL üzeri siparişlerde</span>
+          <strong>{isCatalogMode ? "İşlevsel tasarım" : "Ücretsiz kargo"}</strong>
+          <span>
+            {isCatalogMode
+              ? "Günlük yaşamı kolaylaştıran çözümler"
+              : "1.000 TL üzeri siparişlerde"}
+          </span>
         </div>
         <div>
           <ShieldCheck size={20} />
-          <strong>Güvenli alışveriş</strong>
-          <span>Korunan ödeme akışı</span>
+          <strong>{isCatalogMode ? "Dayanıklı yapı" : "Güvenli alışveriş"}</strong>
+          <span>
+            {isCatalogMode ? "Uzun ömürlü malzeme seçimi" : "Korunan ödeme akışı"}
+          </span>
         </div>
         <div>
           <Sparkles size={20} />
@@ -246,8 +257,8 @@ export default function Home() {
         </div>
         <div>
           <RotateCcw size={20} />
-          <strong>Kolay iade</strong>
-          <span>30 gün içinde</span>
+          <strong>{isCatalogMode ? "Ürün desteği" : "Kolay iade"}</strong>
+          <span>{isCatalogMode ? "ALYA HOMES iletişim desteği" : "30 gün içinde"}</span>
         </div>
       </section>
 
