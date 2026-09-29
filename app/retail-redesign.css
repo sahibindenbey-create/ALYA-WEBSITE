@@ -1310,3 +1310,56 @@ body {
     aspect-ratio: 1/1 !important;
   }
 }
+
+/* Adaptive presentation for square 1605 photography */
+.alya-product-image:has(img[src*="/products-real/1605/"]) {
+  height: min(50vw, 760px) !important;
+  min-height: 620px !important;
+  aspect-ratio: auto !important;
+  background: #fff !important;
+}
+.alya-product-image:has(img[src*="/products-real/1605/"]) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #fff !important;
+}
+.alya-gallery-thumb:has(img[src*="/products-real/1605/"]) {
+  background: #fff !important;
+}
+.alya-gallery-thumb:has(img[src*="/products-real/1605/"]) img {
+  object-fit: contain !important;
+  background: #fff !important;
+}
+.collection-page .catalog-image:has(img[src*="/products-real/1605/"]),
+.wishlist-page .catalog-image:has(img[src*="/products-real/1605/"]),
+.retail-home .product-image:has(img[src*="/products-real/1605/"]),
+.alya-related-image:has(img[src*="/products-real/1605/"]) {
+  aspect-ratio: 1/1 !important;
+  background: #fff !important;
+}
+.collection-page .catalog-image:has(img[src*="/products-real/1605/"]) img,
+.wishlist-page .catalog-image:has(img[src*="/products-real/1605/"]) img,
+.retail-home .product-image:has(img[src*="/products-real/1605/"]) img,
+.alya-related-image:has(img[src*="/products-real/1605/"]) img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  background: #fff !important;
+}
+.main-header .mega-image:has(img[src*="/products-real/1605/"]) {
+  background: #fff !important;
+}
+.main-header .mega-image:has(img[src*="/products-real/1605/"]) img {
+  object-fit: contain !important;
+  background: #fff !important;
+}
+@media (max-width: 900px) {
+  .alya-product-image:has(img[src*="/products-real/1605/"]) {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 1/1 !important;
+  }
+}
