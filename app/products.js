@@ -397,7 +397,7 @@ export const products = [
     "FOLDABLE STEEL",
     "AHBRD1605",
     "Ütü Masaları",
-    "/products/product-37.jpg",
+    real("1605", "1605-01.jpeg"),
     "Katlanabilir başlıklı çelik ütü masası.",
     {
       ütüleme: "45 × 120 cm",
