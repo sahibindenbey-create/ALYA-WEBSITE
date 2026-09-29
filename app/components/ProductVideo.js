@@ -8,8 +8,12 @@ import {
   Pause,
   Play,
 } from "lucide-react";
+import {useI18n} from "../i18n";
+
+const specLabels={kurutma:"Kurutma uzunluğu",ütüleme:"Ütüleme alanı",ölçü:"Ölçü",yükseklik:"Yükseklik",ağırlık:"Ağırlık",koli:"Koli içi",ayar:"Ayarlanabilir aralık",malzeme:"Malzeme",özellik:"Özellik",renk:"Renk",renkler:"Renkler"};
 
 export default function ProductVideo({ product }) {
+  const {t,category}=useI18n();
   const [images, setImages] = useState([]);
   const [index, setIndex] = useState(0);
   const [playing, setPlaying] = useState(true);
@@ -108,12 +112,11 @@ export default function ProductVideo({ product }) {
     >
       <div className="alya-showcase-heading">
         <div>
-          <span>ALYA HOMES / PRODUCT STORY</span>
-          <h2>Ürünü keşfet</h2>
+          <span>{t("ALYA HOMES / PRODUCT STORY")}</span>
+          <h2>{t("Ürünü keşfet")}</h2>
         </div>
         <p>
-          Ürünü gerçek çekimlerden hazırlanan video ve detay görselleriyle
-          inceleyin.
+          {t("Ürünü gerçek çekimlerden hazırlanan video ve detay görselleriyle inceleyin.")}
         </p>
       </div>
 
@@ -158,7 +161,7 @@ export default function ProductVideo({ product }) {
               : "PRODUCT PRESENTATION"}
           </small>
           <strong>{product.name}</strong>
-          <span>{product.category || "ALYA HOMES koleksiyonu"}</span>
+          <span>{product.category ? category(product.category) : t("ALYA HOMES koleksiyonu")}</span>
         </div>
         {!videoAvailable && images.length > 1 && (
           <>
@@ -237,8 +240,8 @@ export default function ProductVideo({ product }) {
         <div className="alya-showcase-specs">
           {featureItems.map(([key, value]) => (
             <div key={key}>
-              <span>{key}</span>
-              <strong>{value}</strong>
+              <span>{t(specLabels[key]||key)}</span>
+              <strong>{t(value)}</strong>
             </div>
           ))}
         </div>
@@ -247,7 +250,7 @@ export default function ProductVideo({ product }) {
       <div className="alya-showcase-note">
         <span>ALYA HOMES PRODUCT PRESENTATION</span>
         <span>•</span>
-        <span>{images.length} GÖRSEL</span>
+        <span>{images.length} {t("GÖRSEL")}</span>
       </div>
 
       <style jsx>{`

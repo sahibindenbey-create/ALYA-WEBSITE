@@ -12,6 +12,7 @@ import {
 import { products } from "./products";
 import { useStore } from "./store";
 import { isCatalogMode } from "./site-config";
+import {useI18n} from "./i18n";
 
 const money = (n) =>
   n == null
@@ -24,11 +25,12 @@ const money = (n) =>
 
 function ProductCard({ product, onAdd }) {
   const { toggleWishlist, isWishlisted } = useStore();
+  const {category}=useI18n();
   return (
     <article className="product">
       <Link href={`/products/${product.slug}`}>
         <div className="product-image">
-          <span>{product.category}</span>
+          <span>{category(product.category)}</span>
           {!isCatalogMode && (
             <button
               aria-label="Favorilere ekle"
@@ -63,6 +65,7 @@ function ProductCard({ product, onAdd }) {
 }
 
 export default function Home() {
+  const {t,category}=useI18n();
   const { addToCart } = useStore();
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterSent, setNewsletterSent] = useState(false);
@@ -93,18 +96,15 @@ export default function Home() {
       )}
       <section className="hero">
         <div className="hero-copy">
-          <p>ALYA HOMES / AKILLI EV ÇÖZÜMLERİ</p>
+          <p>{t("ALYA HOMES / AKILLI EV ÇÖZÜMLERİ")}</p>
           <h1>
-            Günlük hayatı
-            <br />
-            hafifleten tasarım.
+            {t("Günlük hayatı hafifleten tasarım.")}
           </h1>
           <span>
-            İşlevsel, dayanıklı ve zamansız ürünlerle evinizde daha düzenli
-            alanlar oluşturun.
+            {t("İşlevsel, dayanıklı ve zamansız ürünlerle evinizde daha düzenli alanlar oluşturun.")}
           </span>
           <Link href="/collections/all" className="button">
-            Şimdi keşfet <ArrowRight size={17} />
+            {t("Şimdi keşfet")} <ArrowRight size={17} />
           </Link>
         </div>
       </section>
@@ -112,11 +112,11 @@ export default function Home() {
       <section className="section products-section">
         <div className="section-heading">
           <div>
-            <small>ÖNE ÇIKANLAR</small>
-            <h2>Ev için akıllı seçimler</h2>
+            <small>{t("ÖNE ÇIKANLAR")}</small>
+            <h2>{t("Ev için akıllı seçimler")}</h2>
           </div>
           <Link href="/collections/all">
-            Tümünü gör <ArrowRight size={16} />
+            {t("Tümünü gör")} <ArrowRight size={16} />
           </Link>
         </div>
         <div className="products">
@@ -131,14 +131,13 @@ export default function Home() {
           <img src={featureDryingImage} alt={dryingProduct.name} />
         </div>
         <div className="feature-copy">
-          <small>ALAN KAZANDIRAN ÇÖZÜMLER</small>
-          <h2>Her santimetreyi işe dönüştürün.</h2>
+          <small>{t("ALAN KAZANDIRAN ÇÖZÜMLER")}</small>
+          <h2>{t("Her santimetreyi işe dönüştürün.")}</h2>
           <p>
-            Katlanabilir ve kompakt ürünlerle yaşam alanınızı verimli kullanın.
-            Sağlam malzemeler ve sade çizgiler günlük rutininize kolaylık katar.
+            {t("Katlanabilir ve kompakt ürünlerle yaşam alanınızı verimli kullanın. Sağlam malzemeler ve sade çizgiler günlük rutininize kolaylık katar.")}
           </p>
           <Link href="/collections/kurutmalıklar" className="button outline">
-            Koleksiyonu incele <ArrowRight size={16} />
+            {t("Koleksiyonu incele")} <ArrowRight size={16} />
           </Link>
         </div>
       </section>
@@ -146,11 +145,11 @@ export default function Home() {
       <section className="section new-arrivals">
         <div className="section-heading">
           <div>
-            <small>YENİ SEÇİMLER</small>
-            <h2>Günlük kullanım için tasarlandı</h2>
+            <small>{t("YENİ SEÇİMLER")}</small>
+            <h2>{t("Günlük kullanım için tasarlandı")}</h2>
           </div>
           <Link href="/collections/all">
-            Tüm ürünler <ArrowRight size={16} />
+            {t("Tüm ürünler")} <ArrowRight size={16} />
           </Link>
         </div>
         <div className="products">
@@ -163,8 +162,8 @@ export default function Home() {
       <section className="section categories">
         <div className="section-heading">
           <div>
-            <small>EVİNİZ, SİZİN DÜZENİNİZ</small>
-            <h2>Koleksiyonları keşfedin</h2>
+            <small>{t("EVİNİZ, SİZİN DÜZENİNİZ")}</small>
+            <h2>{t("Koleksiyonları keşfedin")}</h2>
           </div>
         </div>
         <div className="category-grid">
@@ -173,9 +172,9 @@ export default function Home() {
               <img src={dryingCategoryImage} alt="Kurutmalıklar" />
             </div>
             <div>
-              <h3>Kurutmalıklar</h3>
+              <h3>{category("Kurutmalıklar")}</h3>
               <span>
-                Ürünlere git <ArrowRight size={15} />
+                {t("Ürünlere git")} <ArrowRight size={15} />
               </span>
             </div>
           </Link>
@@ -184,9 +183,9 @@ export default function Home() {
               <img src={boardCategoryImage} alt="Ütü masaları" />
             </div>
             <div>
-              <h3>Ütü Masaları</h3>
+              <h3>{category("Ütü Masaları")}</h3>
               <span>
-                Ürünlere git <ArrowRight size={15} />
+                {t("Ürünlere git")} <ArrowRight size={15} />
               </span>
             </div>
           </Link>
@@ -195,40 +194,36 @@ export default function Home() {
 
       <section className="quotes">
         <p>
-          “İyi tasarım, evdeki küçük sorunları fark eder ve onları zahmetsiz
-          çözümlere dönüştürür.”
+          “{t("İyi tasarım, evdeki küçük sorunları fark eder ve onları zahmetsiz çözümlere dönüştürür.")}”
         </p>
         <span>ALYA HOMES</span>
       </section>
 
       <section className="design-story">
         <div className="design-story-intro">
-          <small>TASARIM FELSEFEMİZ</small>
+          <small>{t("TASARIM FELSEFEMİZ")}</small>
           <h2>
-            Daha az karmaşa.
-            <br />
-            Daha iyi yaşam.
+            {t("Daha az karmaşa. Daha iyi yaşam.")}
           </h2>
           <p>
-            Her üründe işlevi, dayanıklılığı ve sade estetiği bir araya
-            getiriyoruz.
+            {t("Her üründe işlevi, dayanıklılığı ve sade estetiği bir araya getiriyoruz.")}
           </p>
         </div>
         <div className="story-grid">
           <div>
             <ShieldCheck size={22} />
-            <h3>Uzun ömürlü</h3>
-            <p>Günlük kullanıma uygun, dayanıklı malzemeler.</p>
+            <h3>{t("Uzun ömürlü")}</h3>
+            <p>{t("Günlük kullanıma uygun, dayanıklı malzemeler.")}</p>
           </div>
           <div>
             <Sparkles size={22} />
-            <h3>Düşünülmüş detaylar</h3>
-            <p>Her hareketi kolaylaştıran pratik çözümler.</p>
+            <h3>{t("Düşünülmüş detaylar")}</h3>
+            <p>{t("Her hareketi kolaylaştıran pratik çözümler.")}</p>
           </div>
           <div>
             <RotateCcw size={22} />
-            <h3>Kolay kullanım</h3>
-            <p>Katlanabilir, taşınabilir ve yer kazandıran yapılar.</p>
+            <h3>{t("Kolay kullanım")}</h3>
+            <p>{t("Katlanabilir, taşınabilir ve yer kazandıran yapılar.")}</p>
           </div>
         </div>
       </section>
@@ -236,41 +231,41 @@ export default function Home() {
       <section className="benefits">
         <div>
           <Truck size={20} />
-          <strong>{isCatalogMode ? "İşlevsel tasarım" : "Ücretsiz kargo"}</strong>
+          <strong>{isCatalogMode ? t("İşlevsel tasarım") : "Ücretsiz kargo"}</strong>
           <span>
             {isCatalogMode
-              ? "Günlük yaşamı kolaylaştıran çözümler"
+              ? t("Günlük yaşamı kolaylaştıran çözümler")
               : "1.000 TL üzeri siparişlerde"}
           </span>
         </div>
         <div>
           <ShieldCheck size={20} />
-          <strong>{isCatalogMode ? "Dayanıklı yapı" : "Güvenli alışveriş"}</strong>
+          <strong>{isCatalogMode ? t("Dayanıklı yapı") : "Güvenli alışveriş"}</strong>
           <span>
-            {isCatalogMode ? "Uzun ömürlü malzeme seçimi" : "Korunan ödeme akışı"}
+            {isCatalogMode ? t("Uzun ömürlü malzeme seçimi") : "Korunan ödeme akışı"}
           </span>
         </div>
         <div>
           <Sparkles size={20} />
-          <strong>3 yıl garanti</strong>
-          <span>Güvenle kullanın</span>
+          <strong>{t("3 yıl garanti")}</strong>
+          <span>{t("Güvenle kullanın")}</span>
         </div>
         <div>
           <RotateCcw size={20} />
-          <strong>{isCatalogMode ? "Ürün desteği" : "Kolay iade"}</strong>
-          <span>{isCatalogMode ? "ALYA HOMES iletişim desteği" : "30 gün içinde"}</span>
+          <strong>{isCatalogMode ? t("Ürün desteği") : "Kolay iade"}</strong>
+          <span>{isCatalogMode ? t("ALYA HOMES iletişim desteği") : "30 gün içinde"}</span>
         </div>
       </section>
 
       <section className="newsletter">
-        <small>ALYA HOMES BÜLTENİ</small>
-        <h2>İlk siz haberdar olun.</h2>
+        <small>{t("ALYA HOMES BÜLTENİ")}</small>
+        <h2>{t("İlk siz haberdar olun.")}</h2>
         <p>
-          Yeni ürünler, ilham veren fikirler ve kampanyalar e-postanıza gelsin.
+          {t("Yeni ürünler, ilham veren fikirler ve kampanyalar e-postanıza gelsin.")}
         </p>
         {newsletterSent ? (
           <div className="newsletter-success">
-            Teşekkürler. Kaydınız alındı.
+            {t("Teşekkürler. Kaydınız alındı.")}
           </div>
         ) : (
           <form
@@ -285,9 +280,9 @@ export default function Home() {
               required
               value={newsletterEmail}
               onChange={(e) => setNewsletterEmail(e.target.value)}
-              placeholder="E-posta adresiniz"
+              placeholder={t("E-posta adresiniz")}
             />
-            <button>Kayıt ol</button>
+            <button>{t("Kayıt ol")}</button>
           </form>
         )}
       </section>

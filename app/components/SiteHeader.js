@@ -14,8 +14,10 @@ import {
 import { categories } from "../products";
 import { useStore } from "../store";
 import { isCatalogMode, SHOP_URL } from "../site-config";
+import {LanguageSelector, useI18n} from "../i18n";
 const navCategories = ["Kurutmalıklar", "Ütü Masaları"];
 export default function SiteHeader() {
+  const {t,category:categoryLabel}=useI18n();
   const [menuOpen, setMenuOpen] = useState(false),
     [searchOpen, setSearchOpen] = useState(false),
     [query, setQuery] = useState(""),
@@ -39,7 +41,7 @@ export default function SiteHeader() {
     <>
       <div className="announcement">
         {isCatalogMode
-          ? "ALYA HOMES · İşlevsel ve dayanıklı ev yaşam ürünleri"
+          ? t("ALYA HOMES · İşlevsel ve dayanıklı ev yaşam ürünleri")
           : "1.000 TL ve üzeri siparişlerde ücretsiz kargo"}
       </div>
       <header>
@@ -55,28 +57,28 @@ export default function SiteHeader() {
           <button
             className="mobile-menu"
             onClick={() => setMenuOpen(true)}
-            aria-label="Menüyü aç"
+            aria-label={t("Menüyü aç")}
           >
             <Menu />
           </button>
           <Link
             href="/"
             className="brand-logo"
-            aria-label="ALYA HOMES ana sayfa"
+            aria-label="ALYA HOMES"
           >
             <img src="/alya-homes-logo.png" alt="ALYA HOMES" />
           </Link>
           <button
             type="button"
-            aria-label="Ürün ara"
+            aria-label={t("Ürün ara")}
             className="header-searchbar"
             onClick={() => setSearchOpen(true)}
           >
             <Search size={17} />
-            <span>Ürün, kategori veya kod ara</span>
+            <span>{t("Ürün, kategori veya kod ara")}</span>
           </button>
           <nav onMouseLeave={() => setHovered(null)}>
-            <Link href="/collections/all">Tüm Ürünler</Link>
+            <Link href="/collections/all">{t("Tüm Ürünler")}</Link>
             {navCategories.map((category) => (
               <div
                 className="nav-item"
@@ -88,7 +90,7 @@ export default function SiteHeader() {
                   aria-haspopup="true"
                   aria-expanded={hovered === category}
                 >
-                  {category} <ChevronDown size={13} />
+                  {categoryLabel(category)} <ChevronDown size={13} />
                 </Link>
                 {hovered === category && (
                   <div
@@ -99,13 +101,13 @@ export default function SiteHeader() {
                       <div className="mega-heading">
                         <div>
                           <small>ALYA HOMES</small>
-                          <h3>{category}</h3>
+                          <h3>{categoryLabel(category)}</h3>
                         </div>
                         <Link
                           href={`/collections/${encodeURIComponent(category.toLowerCase())}`}
                           onClick={() => setHovered(null)}
                         >
-                          Tümünü gör <ArrowRight size={15} />
+                          {t("Tümünü gör")} <ArrowRight size={15} />
                         </Link>
                       </div>
                       <div className="mega-products">
@@ -131,11 +133,14 @@ export default function SiteHeader() {
           </nav>
           <div className="actions">
             {isCatalogMode ? (
-              <a className="catalog-shop-link" href={SHOP_URL}>
-                <ShoppingBag size={17} />
-                Shop Online
-                <ArrowRight size={14} />
-              </a>
+              <>
+                <LanguageSelector/>
+                <a className="catalog-shop-link" href={SHOP_URL}>
+                  <ShoppingBag size={17} />
+                  {t("Shop Online")}
+                  <ArrowRight size={14} />
+                </a>
+              </>
             ) : (
               <>
                 <Link href="/account" aria-label="Hesabım" className="icon-link">
@@ -166,10 +171,10 @@ export default function SiteHeader() {
             </button>
           </div>
           <Link href="/" onClick={() => setMenuOpen(false)}>
-            Ana Sayfa <ArrowRight size={16} />
+            {t("Ana Sayfa")} <ArrowRight size={16} />
           </Link>
           <Link href="/collections/all" onClick={() => setMenuOpen(false)}>
-            Tüm Ürünler <ArrowRight size={16} />
+            {t("Tüm Ürünler")} <ArrowRight size={16} />
           </Link>
           {categories.map((c) => (
             <Link
@@ -177,17 +182,20 @@ export default function SiteHeader() {
               href={`/collections/${encodeURIComponent(c.toLowerCase())}`}
               onClick={() => setMenuOpen(false)}
             >
-              {c}
+              {categoryLabel(c)}
               <ArrowRight size={16} />
             </Link>
           ))}
           {isCatalogMode ? (
-            <a href={SHOP_URL} onClick={() => setMenuOpen(false)}>
-              <span className="catalog-mobile-shop">
-                <ShoppingBag size={17} /> Shop Online
-              </span>
-              <ArrowRight size={16} />
-            </a>
+            <>
+              <div className="catalog-mobile-language"><LanguageSelector mobile/></div>
+              <a href={SHOP_URL} onClick={() => setMenuOpen(false)}>
+                <span className="catalog-mobile-shop">
+                  <ShoppingBag size={17} /> {t("Shop Online")}
+                </span>
+                <ArrowRight size={16} />
+              </a>
+            </>
           ) : (
             <>
               <Link href="/account" onClick={() => setMenuOpen(false)}>
@@ -212,7 +220,7 @@ export default function SiteHeader() {
             <div className="site-search-top">
               <div>
                 <small>ALYA HOMES</small>
-                <h2>Ürün ara</h2>
+                <h2>{t("Ürün ara")}</h2>
               </div>
               <button
                 onClick={() => setSearchOpen(false)}
@@ -227,7 +235,7 @@ export default function SiteHeader() {
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Ürün adı, kodu veya kategori"
+                placeholder={t("Ürün adı, kodu veya kategori")}
               />
             </div>
             {query.trim() && (
@@ -243,20 +251,19 @@ export default function SiteHeader() {
                       <span>
                         <strong>{p.name}</strong>
                         <small>
-                          {p.code} · {p.category}
+                          {p.code} · {categoryLabel(p.category)}
                         </small>
                       </span>
                     </Link>
                   ))
                 ) : (
-                  <p>Aramanızla eşleşen ürün bulunamadı.</p>
+                  <p>{t("Aramanızla eşleşen ürün bulunamadı.")}</p>
                 )}{" "}
               </div>
             )}{" "}
             {!query.trim() && (
               <div className="site-search-hint">
-                Ürün adı, ürün kodu veya kategori yazarak hızlıca arama
-                yapabilirsiniz.
+                {t("Ürün adı, ürün kodu veya kategori yazarak hızlıca arama yapabilirsiniz.")}
               </div>
             )}
           </div>
