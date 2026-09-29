@@ -1363,3 +1363,19 @@ body {
     aspect-ratio: 1/1 !important;
   }
 }
+
+/* Preserve dynamic gallery artwork on square ironing-board galleries. */
+.alya-product-image:has(.alya-gallery-probe[src*="/products-real/1301/"]),
+.alya-product-image:has(.alya-gallery-probe[src*="/products-real/1605/"]),
+.alya-gallery-thumb:has(.alya-gallery-probe[src*="/products-real/1301/"]),
+.alya-gallery-thumb:has(.alya-gallery-probe[src*="/products-real/1605/"]) {
+  background-color: #fff !important;
+  background-image: var(--gallery-image) !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  background-position: center top !important;
+}
+.alya-gallery-thumb:has(.alya-gallery-probe[src*="/products-real/1301/"]),
+.alya-gallery-thumb:has(.alya-gallery-probe[src*="/products-real/1605/"]) {
+  background-position: center !important;
+}
