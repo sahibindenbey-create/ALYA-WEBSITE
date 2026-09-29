@@ -4,7 +4,7 @@ export const SITE_MODE =
 export const isCatalogMode = SITE_MODE === "catalog";
 
 export const SHOP_URL =
-  process.env.NEXT_PUBLIC_SHOP_URL || "https://shop.alyahomes.com.tr";
+  process.env.NEXT_PUBLIC_SHOP_URL || "https://shop.alyahomes.com";
 
 export const shopProductUrl = (slug) =>
   `${SHOP_URL.replace(/\/$/, "")}/products/${slug}`;

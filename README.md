@@ -22,7 +22,7 @@ A real payment provider still requires the provider's merchant credentials and h
 
 Proje iki farklı modda dağıtılabilir:
 
-- `shop.alyahomes.com.tr`: fiyat, favori, sepet, ödeme ve sipariş akışlarını içeren online mağaza.
+- `shop.alyahomes.com`: fiyat, favori, sepet, ödeme ve sipariş akışlarını içeren online mağaza.
 - `alyahomes.com.tr`: fiyat ve alışveriş araçları bulunmayan ürün tanıtım sitesi.
 
 Online mağaza ortam değişkenleri:
@@ -30,7 +30,7 @@ Online mağaza ortam değişkenleri:
 ```env
 SITE_MODE=shop
 NEXT_PUBLIC_SITE_MODE=shop
-NEXT_PUBLIC_SHOP_URL=https://shop.alyahomes.com.tr
+NEXT_PUBLIC_SHOP_URL=https://shop.alyahomes.com
 ```
 
 Ana tanıtım sitesi ortam değişkenleri:
@@ -38,7 +38,7 @@ Ana tanıtım sitesi ortam değişkenleri:
 ```env
 SITE_MODE=catalog
 NEXT_PUBLIC_SITE_MODE=catalog
-NEXT_PUBLIC_SHOP_URL=https://shop.alyahomes.com.tr
+NEXT_PUBLIC_SHOP_URL=https://shop.alyahomes.com
 ```
 
 Tanıtım modunda fiyat, favori, hesap, sepet ve ödeme arayüzleri kaldırılır.

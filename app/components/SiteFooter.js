@@ -40,7 +40,7 @@ export default function SiteFooter(){
   </div>
   <div className="alya-footer-security">
    <div><ShieldCheck size={18}/><span><b>{isCatalogMode?t('Güvenli bağlantı'):'Güvenli alışveriş'}</b><small>{t('SSL/TLS ile şifreli bağlantı')}</small></span></div>
-   {isCatalogMode?<div><ArrowRight size={18}/><span><b>{t('Online mağaza')}</b><small>{t('Alışveriş için shop.alyahomes.com.tr')}</small></span></div>:<div><LockKeyhole size={18}/><span><b>Güvenli ödeme</b><small>Ödeme bilgileriniz güvenli kanallarda işlenir</small></span></div>}
+   {isCatalogMode?<div><ArrowRight size={18}/><span><b>{t('Online mağaza')}</b><small>{t('Alışveriş için shop.alyahomes.com')}</small></span></div>:<div><LockKeyhole size={18}/><span><b>Güvenli ödeme</b><small>Ödeme bilgileriniz güvenli kanallarda işlenir</small></span></div>}
    <div><span><b>{t('Vergi Dairesi')}</b><small>{COMPANY.taxOffice} · VKN {COMPANY.taxNumber}</small></span></div>
    <div><span><b>MERSİS</b><small>{COMPANY.mersisNumber}</small></span></div>
   </div>
