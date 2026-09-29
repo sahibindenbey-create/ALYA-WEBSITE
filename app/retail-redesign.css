@@ -1397,3 +1397,85 @@ body {
   filter: none !important;
   transform: none !important;
 }
+
+/* Homepage final spacing and media pass. */
+.retail-home .hero {
+  min-height: 560px !important;
+  height: clamp(560px, 43vw, 720px) !important;
+  max-height: 720px !important;
+  background-image:
+    linear-gradient(90deg, rgba(18,18,18,.62) 0%, rgba(18,18,18,.44) 38%, rgba(18,18,18,.06) 68%),
+    url('/home-hero-v2.webp') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+.retail-home .hero-copy { max-width: 590px !important; }
+.retail-home .section { padding-top: 64px !important; padding-bottom: 64px !important; }
+.retail-home .section-heading { margin-bottom: 24px !important; }
+.retail-home .products { gap: 28px 8px !important; }
+.retail-home .product-image {
+  aspect-ratio: 4/5 !important;
+  background: #626262 !important;
+  overflow: hidden !important;
+}
+.retail-home .product-image img {
+  object-fit: contain !important;
+  object-position: center !important;
+  padding: 0 !important;
+  transform: none !important;
+}
+.retail-home .product:hover .product-image img { transform: none !important; }
+.retail-home .feature { min-height: 520px !important; }
+.retail-home .feature-image { min-height: 520px !important; height: 520px !important; }
+.retail-home .feature-image img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  padding: 34px !important;
+  margin: 0 !important;
+}
+.retail-home .feature-copy { padding: 7.5% !important; }
+.retail-home .categories { padding-top: 64px !important; padding-bottom: 64px !important; }
+.retail-home .quotes { padding: 72px 24px !important; }
+.retail-home .design-story {
+  padding: 68px clamp(24px, 7vw, 110px) !important;
+  gap: 64px !important;
+  align-items: center !important;
+}
+.retail-home .design-story-intro h2 { margin: 12px 0 14px !important; }
+.retail-home .story-grid > div { padding: 17px 0 !important; }
+.retail-home .benefits > div { min-height: 92px !important; padding: 19px 14px !important; }
+.retail-home .newsletter { padding: 54px 20px 58px !important; }
+.retail-home .newsletter h2 { margin: 10px 0 12px !important; }
+.retail-home .newsletter p { margin: 0 0 20px !important; }
+.retail-home .signup { margin-top: 20px !important; }
+.alya-footer { padding: 26px 5% 12px !important; }
+.alya-footer-inner { padding-top: 0 !important; gap: 36px !important; }
+.alya-footer-brand p { margin: 9px 0 12px !important; }
+.footer-company { padding-top: 9px !important; }
+.footer-shop-link { margin-top: 8px !important; }
+.alya-footer-grid { gap: 24px !important; }
+.alya-footer-grid h4 { margin-bottom: 7px !important; }
+.alya-footer-grid a { margin: 5px 0 !important; }
+.alya-footer-security { margin-top: 17px !important; padding: 8px 0 !important; }
+.alya-footer-bottom { margin-top: 7px !important; }
+@media (max-width: 700px) {
+  .retail-home .hero {
+    min-height: 540px !important;
+    height: 540px !important;
+    background-position: 61% center !important;
+  }
+  .retail-home .hero-copy { padding: 0 22px !important; max-width: 86% !important; }
+  .retail-home .section { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .retail-home .product-image { aspect-ratio: 3/4 !important; }
+  .retail-home .feature { min-height: 0 !important; }
+  .retail-home .feature-image { min-height: 360px !important; height: 360px !important; }
+  .retail-home .feature-image img { padding: 20px !important; }
+  .retail-home .categories { padding-top: 48px !important; padding-bottom: 48px !important; }
+  .retail-home .quotes { padding: 58px 22px !important; }
+  .retail-home .design-story { padding: 54px 22px !important; gap: 32px !important; }
+  .retail-home .newsletter { padding: 46px 18px 50px !important; }
+}
