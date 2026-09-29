@@ -143,7 +143,7 @@ export default function ProductGallery({ product }) {
             className="alya-product-image"
             style={
               !failed && currentImage
-                ? { backgroundImage: `url("${currentImage}")` }
+                ? { "--gallery-image": `url("${currentImage}")` }
                 : undefined
             }
             onClick={openLightbox}
@@ -736,7 +736,7 @@ export default function ProductGallery({ product }) {
           margin: 0 !important;
         }
 
-        /* Important background shorthands elsewhere cannot clear this image variable. */
+        /* Bind the inline URL through an important CSS variable. */
         .alya-product-image,
         .alya-gallery-thumb {
           background-image: var(--gallery-image) !important;
