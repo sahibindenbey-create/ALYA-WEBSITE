@@ -654,6 +654,47 @@ export default function ProductGallery({ product }) {
             transform: none !important;
           }
         }
+
+        /* Hard-fit the image element itself instead of relying only on object-fit. */
+        @media (min-width: 901px) {
+          .alya-product-image img {
+            width: auto !important;
+            height: calc(100% - 20px) !important;
+            max-width: calc(100% - 20px) !important;
+            max-height: calc(100% - 20px) !important;
+            justify-self: center !important;
+            align-self: start !important;
+            margin: 8px auto 0 !important;
+            object-fit: contain !important;
+            object-position: center top !important;
+          }
+          .alya-gallery-thumb {
+            display: grid !important;
+            place-items: center !important;
+          }
+          .alya-gallery-thumb img {
+            width: auto !important;
+            height: calc(100% - 4px) !important;
+            max-width: calc(100% - 4px) !important;
+            max-height: calc(100% - 4px) !important;
+            margin: 2px auto !important;
+            object-fit: contain !important;
+            object-position: center !important;
+          }
+        }
+        @media (max-width: 900px) {
+          .alya-product-image img {
+            width: auto !important;
+            height: calc(100% - 12px) !important;
+            max-width: calc(100% - 12px) !important;
+            max-height: calc(100% - 12px) !important;
+            justify-self: center !important;
+            align-self: start !important;
+            margin: 6px auto 0 !important;
+            object-fit: contain !important;
+            object-position: center top !important;
+          }
+        }
       `}</style>
     </div>
   );
