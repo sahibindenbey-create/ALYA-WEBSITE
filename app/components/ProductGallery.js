@@ -116,10 +116,16 @@ export default function ProductGallery({ product }) {
                 type="button"
                 key={`${image}-${index}`}
                 className={`alya-gallery-thumb${index === selectedIndex ? " is-active" : ""}`}
+                style={{ backgroundImage: `url("${image}")` }}
                 onClick={() => selectImage(index)}
                 aria-label={`${product.name} fotoğrafı ${index + 1}`}
               >
-                <img src={image} alt="" loading="lazy" />
+                <img
+                  className="alya-gallery-probe"
+                  src={image}
+                  alt=""
+                  loading="lazy"
+                />
               </button>
             ))}
           </aside>
@@ -135,6 +141,11 @@ export default function ProductGallery({ product }) {
           </button>
           <div
             className="alya-product-image"
+            style={
+              !failed && currentImage
+                ? { backgroundImage: `url("${currentImage}")` }
+                : undefined
+            }
             onClick={openLightbox}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
@@ -150,6 +161,7 @@ export default function ProductGallery({ product }) {
           >
             {!failed && currentImage ? (
               <img
+                className="alya-gallery-probe"
                 src={currentImage}
                 alt={`${product.name} - ALYA HOMES`}
                 onError={() => setFailed(true)}
@@ -694,6 +706,34 @@ export default function ProductGallery({ product }) {
             object-fit: contain !important;
             object-position: center top !important;
           }
+        }
+
+        /* Render gallery artwork as a contained background to bypass legacy img rules. */
+        .alya-product-image {
+          background-color: #626262 !important;
+          background-repeat: no-repeat !important;
+          background-size: contain !important;
+          background-position: center top !important;
+        }
+        .alya-gallery-thumb {
+          background-color: #626262 !important;
+          background-repeat: no-repeat !important;
+          background-size: contain !important;
+          background-position: center !important;
+        }
+        .alya-gallery-probe {
+          position: absolute !important;
+          width: 1px !important;
+          height: 1px !important;
+          min-width: 0 !important;
+          min-height: 0 !important;
+          max-width: 1px !important;
+          max-height: 1px !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          overflow: hidden !important;
+          padding: 0 !important;
+          margin: 0 !important;
         }
       `}</style>
     </div>
