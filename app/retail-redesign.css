@@ -1379,3 +1379,21 @@ body {
 .alya-gallery-thumb:has(.alya-gallery-probe[src*="/products-real/1605/"]) {
   background-position: center !important;
 }
+
+/* Homepage collection artwork: clear, full product framing. */
+.retail-home .category-image {
+  background: #f4f2ee !important;
+}
+.retail-home .category-image img {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+  object-fit: cover !important;
+  object-position: center !important;
+  transform: none !important;
+}
+.retail-home .category:hover .category-image img {
+  opacity: 1 !important;
+  filter: none !important;
+  transform: none !important;
+}

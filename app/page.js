@@ -66,8 +66,8 @@ export default function Home() {
   const newProducts = products.slice(5, 9);
   const dryingProduct =
     products.find((p) => p.code === "AHDRY1409") || products[8] || products[0];
-  const dryingCategoryImage = "/category-drying.webp";
-  const boardCategoryImage = "/category-ironing.webp";
+  const dryingCategoryImage = "/category-drying-v2.webp";
+  const boardCategoryImage = "/category-ironing-v2.webp";
   const onAdd = (product) => {
     if (product.price == null) {
       window.location.href = `/products/${product.slug}`;
