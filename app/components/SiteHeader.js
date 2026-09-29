@@ -132,7 +132,9 @@ export default function SiteHeader() {
           <div className="actions">
             {isCatalogMode ? (
               <a className="catalog-shop-link" href={SHOP_URL}>
-                Online Mağaza <ArrowRight size={15} />
+                <ShoppingBag size={17} />
+                Shop Online
+                <ArrowRight size={14} />
               </a>
             ) : (
               <>
@@ -181,7 +183,10 @@ export default function SiteHeader() {
           ))}
           {isCatalogMode ? (
             <a href={SHOP_URL} onClick={() => setMenuOpen(false)}>
-              Online Mağaza <ArrowRight size={16} />
+              <span className="catalog-mobile-shop">
+                <ShoppingBag size={17} /> Shop Online
+              </span>
+              <ArrowRight size={16} />
             </a>
           ) : (
             <>
