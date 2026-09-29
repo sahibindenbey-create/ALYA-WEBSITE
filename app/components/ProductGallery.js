@@ -116,7 +116,7 @@ export default function ProductGallery({ product }) {
                 type="button"
                 key={`${image}-${index}`}
                 className={`alya-gallery-thumb${index === selectedIndex ? " is-active" : ""}`}
-                style={{ backgroundImage: `url("${image}")` }}
+                style={{ "--gallery-image": `url("${image}")` }}
                 onClick={() => selectImage(index)}
                 aria-label={`${product.name} fotoğrafı ${index + 1}`}
               >
@@ -734,6 +734,12 @@ export default function ProductGallery({ product }) {
           overflow: hidden !important;
           padding: 0 !important;
           margin: 0 !important;
+        }
+
+        /* Important background shorthands elsewhere cannot clear this image variable. */
+        .alya-product-image,
+        .alya-gallery-thumb {
+          background-image: var(--gallery-image) !important;
         }
       `}</style>
     </div>
