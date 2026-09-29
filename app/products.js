@@ -147,7 +147,7 @@ export const products = [
     real("1409", "Fuji-Capture One 0354.webp"),
     "Yan kanatlı katlanabilir kurutmalık.",
     {
-      kurutma: "22 m",
+      kurutma: "18 m",
       ölçü: "104 × 50 cm",
       yükseklik: "92 cm",
       ağırlık: "1,89 kg",
@@ -165,7 +165,7 @@ export const products = [
     real("1451", "Fuji-Capture One 0331.webp"),
     "Alüminyum ve paslanmaz gövdeli RAW serisi kanatlı kurutmalık.",
     {
-      kurutma: "22 m",
+      kurutma: "18 m",
       ölçü: "200 × 55 cm",
       yükseklik: "118 cm",
       ağırlık: "1,84 kg",
@@ -183,7 +183,7 @@ export const products = [
     real("1452", "Fuji-Capture One 0301.webp"),
     "Tamamı alüminyum, paslanmaz ve iç/dış mekâna uygun RAW serisi kelebek kurutmalık.",
     {
-      kurutma: "18 m",
+      kurutma: "16 m",
       ölçü: "142 × 55 cm",
       yükseklik: "103 cm",
       ağırlık: "1,94 kg",
