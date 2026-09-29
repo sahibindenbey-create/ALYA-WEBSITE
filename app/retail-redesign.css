@@ -1494,3 +1494,10 @@ body {
   object-position: center center !important;
   transform: none !important;
 }
+
+/* Prevent inherited blend effects from darkening the feature artwork. */
+.retail-home .feature-image img {
+  opacity: 1 !important;
+  filter: none !important;
+  mix-blend-mode: normal !important;
+}
