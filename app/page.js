@@ -67,6 +67,7 @@ export default function Home() {
   const dryingProduct =
     products.find((p) => p.code === "AHDRY1409") || products[8] || products[0];
   const dryingCategoryImage = "/category-drying-v2.webp";
+  const featureDryingImage = "/home-feature-drying-v2.webp";
   const boardCategoryImage = "/category-ironing-v2.webp";
   const onAdd = (product) => {
     if (product.price == null) {
@@ -122,7 +123,7 @@ export default function Home() {
 
       <section className="feature">
         <div className="feature-image">
-          <img src={dryingProduct.image} alt={dryingProduct.name} />
+          <img src={featureDryingImage} alt={dryingProduct.name} />
         </div>
         <div className="feature-copy">
           <small>ALAN KAZANDIRAN ÇÖZÜMLER</small>
