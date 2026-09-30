@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { Heart, ShoppingBag, ArrowRight, Mail, X, Check, Truck, ShieldCheck, Minus, Plus, ChevronDown } from 'lucide-react';
-import { use, useMemo, useState } from 'react';
+import { use, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../store';
 import ProductGallery from '../../components/ProductGallery';
 import ProductVideo from '../../components/ProductVideo';
@@ -9,6 +9,7 @@ import {shopProductUrl} from '../../site-config';
 import {getCatalogTechnical, productTechnicalRows, loadingTechnicalRows} from '../../catalog-technical';
 import {localizedProductDescription, useI18n} from '../../i18n';
 import {useSiteMode} from '../../site-mode';
+import {gaItem,trackEcommerce} from '../../analytics';
 
 const money = n => n == null ? 'Fiyat bilgisi için iletişime geçin' : `${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }).format(n)} TL.`;
 const specLabels={kurutma:'Kurutma uzunluğu',ütüleme:'Ütüleme alanı',ölçü:'Ölçü',yükseklik:'Yükseklik',ağırlık:'Ağırlık',koli:'Koli içi',ayar:'Ayarlanabilir aralık',malzeme:'Malzeme',özellik:'Özellik',renk:'Renk',renkler:'Renkler'};
@@ -20,6 +21,7 @@ export default function ProductPage({ params }) {
   const { slug }=use(params); const {cart,addToCart,toggleWishlist,isWishlisted,getProduct,getProducts}=useStore(); const p=getProduct(slug); const products=getProducts();
   const [notify,setNotify]=useState(false),[email,setEmail]=useState(''),[sent,setSent]=useState(false),[quantity,setQuantity]=useState(1),[openPanel,setOpenPanel]=useState('details'),[added,setAdded]=useState(false);
   const related=useMemo(()=>p?products.filter(x=>x.category===p.category&&x.slug!==p.slug).slice(0,4):[],[p,products]);
+  useEffect(()=>{if(!isCatalogMode&&p?.price!=null)trackEcommerce('view_item',{value:Number(p.price)||0,items:[gaItem(p,1)]})},[isCatalogMode,p?.slug]);
   if(!p)return <main className="not-found"><h1>Ürün bulunamadı</h1><Link href="/collections/all">Ürünlere dön</Link></main>;
   const wish=isWishlisted(p.slug),features=makeFeatures(p,t),specs=Object.entries(p.specs||{});
   const catalogTechnical=getCatalogTechnical(p.code);

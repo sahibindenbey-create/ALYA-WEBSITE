@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import {ArrowLeft,ArrowRight,LockKeyhole,AlertTriangle,Check,CreditCard} from 'lucide-react';
 import {useRouter} from "next/navigation";
-import {useState} from "react";
+import {useEffect,useState} from "react";
 import {useStore} from '../store';
+import {gaItems,trackEcommerce} from '../analytics';
 
 const money=n=>new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(n);
 
@@ -11,6 +12,7 @@ export default function Checkout(){
  const {cart,total,createOrder,ready,validateCart}=useStore();
  const router=useRouter();
  const [busy,setBusy]=useState(false),[error,setError]=useState(''),[customerType,setCustomerType]=useState('Bireysel'),[sameAddress,setSameAddress]=useState(true),[paymentMethod,setPaymentMethod]=useState('Kart');
+ useEffect(()=>{if(ready&&cart.length){const shipping=total>=1000?0:99;trackEcommerce('begin_checkout',{value:total+shipping,items:gaItems(cart)})}},[ready]);
  if(!ready)return <main className="checkout-page"><div className="checkout-head"><small>ALYA HOMES</small><h1>Ödeme</h1></div><div className="checkout-empty"><h2>Sepetiniz yükleniyor…</h2></div></main>;
  const shipping=total>=1000?0:99,finalTotal=total+shipping,invalid=validateCart().some(i=>!i.valid);
  if(!cart.length)return <main className="checkout-page"><div className="checkout-head"><small>ALYA HOMES</small><h1>Ödeme</h1></div><div className="checkout-empty"><h2>Ödeme için sepetinizde ürün olmalı.</h2><Link href="/collections/all" className="button dark">Ürünlere git <ArrowRight size={17}/></Link></div></main>;
@@ -22,6 +24,7 @@ export default function Checkout(){
     const billing={title:f.get('billingTitle'),addressLine:f.get('billingAddress'),neighborhood:f.get('billingNeighborhood'),city:f.get('billingCity'),district:f.get('billingDistrict'),postalCode:f.get('billingPostalCode')};
     const shippingAddress=sameAddress?{...billing}:{title:f.get('shippingTitle'),recipientName:f.get('shippingRecipientName'),phone:f.get('shippingPhone'),addressLine:f.get('shippingAddress'),neighborhood:f.get('shippingNeighborhood'),city:f.get('shippingCity'),district:f.get('shippingDistrict'),postalCode:f.get('shippingPostalCode'),note:f.get('shippingNote')};
     const details={customerType,name:customerType==='Bireysel'?`${f.get('firstName')} ${f.get('lastName')}`.trim():f.get('companyName'),firstName:f.get('firstName'),lastName:f.get('lastName'),companyName:f.get('companyName'),taxNumber:f.get('taxNumber'),taxOffice:f.get('taxOffice'),identityNumber:f.get('identityNumber'),email:f.get('email'),phone:f.get('phone'),billingAddress:billing,shippingAddress,sameAddress,payment:paymentMethod};
+    trackEcommerce('add_payment_info',{value:finalTotal,payment_type:paymentMethod,items:gaItems(cart)});
     const order=await createOrder(details);if(order?.error){setError(order.error);setBusy(false);return}const orderRef=order?.orderNo||order?.id;if(!orderRef){setError('Sipariş oluşturuldu ancak sipariş numarası alınamadı.');setBusy(false);return}router.push(`/order-success?order=${encodeURIComponent(orderRef)}`);
    }}>
     <div className="checkout-step"><span className="step-number">01</span><div className="step-content"><div className="step-heading"><div><small>ADIM 1</small><h2>Müşteri bilgileri</h2></div><Check size={18}/></div><div className="checkout-choice" role="radiogroup" aria-label="Müşteri tipi"><label className={customerType==='Bireysel'?'active':''}><input type="radio" name="customerType" value="Bireysel" checked={customerType==='Bireysel'} onChange={()=>setCustomerType('Bireysel')}/> Bireysel</label><label className={customerType==='Kurumsal'?'active':''}><input type="radio" name="customerType" value="Kurumsal" checked={customerType==='Kurumsal'} onChange={()=>setCustomerType('Kurumsal')}/> Kurumsal</label></div>{customerType==='Bireysel'?<><div className="two"><input name="firstName" required autoComplete="given-name" placeholder="Ad *"/><input name="lastName" required autoComplete="family-name" placeholder="Soyad *"/></div><input name="identityNumber" placeholder="T.C. Kimlik No (opsiyonel)" inputMode="numeric" autoComplete="off"/></>:<><input name="companyName" required placeholder="Firma unvanı *"/><div className="two"><input name="taxNumber" required placeholder="Vergi numarası *" inputMode="numeric"/><input name="taxOffice" required placeholder="Vergi dairesi *"/></div><div className="two"><input name="firstName" placeholder="Yetkili adı"/><input name="lastName" placeholder="Yetkili soyadı"/></div></>}<div className="two"><input name="email" required type="email" autoComplete="email" placeholder="E-posta *"/><input name="phone" required type="tel" autoComplete="tel" placeholder="Telefon *"/></div></div></div>
