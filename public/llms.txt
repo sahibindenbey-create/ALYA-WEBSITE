@@ -6,6 +6,7 @@ ALYA HOMES designs functional, durable and space-saving home living products.
 
 - Catalog: https://alyahomes.com
 - Online store: https://shop.alyahomes.com
+- Google Merchant product feed: https://shop.alyahomes.com/google-merchant.xml
 
 ## Main collections
 
