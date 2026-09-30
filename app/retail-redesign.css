@@ -1574,3 +1574,139 @@ body {
   color: #f28a22;
   font-weight: 600;
 }
+
+/* Mobile hardening: keep every route inside the viewport and preserve usable controls. */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@media (max-width: 900px) {
+  .main-header {
+    width: 100%;
+    max-width: 100%;
+    gap: 6px !important;
+    padding: 0 12px !important;
+  }
+  .main-header > .mobile-menu,
+  .main-header > .header-searchbar,
+  .main-header .actions .icon-link {
+    width: 36px !important;
+    height: 44px !important;
+    flex: 0 0 36px !important;
+  }
+  .main-header > .brand-logo {
+    width: 100px !important;
+    min-width: 0 !important;
+    margin-right: auto !important;
+  }
+  .main-header > .brand-logo img {
+    width: 100px !important;
+    max-width: 100% !important;
+  }
+  .main-header > .actions {
+    min-width: 0 !important;
+    flex: 0 0 auto !important;
+    gap: 2px !important;
+  }
+  .main-header .catalog-language:not(.is-mobile),
+  .main-header .catalog-shop-link {
+    display: none !important;
+  }
+  .mobile-panel,
+  .site-search-backdrop,
+  .site-search {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .mobile-panel {
+    inset: 0 !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  .site-search-backdrop,
+  .site-search {
+    inset: 0 !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  .alya-product-page,
+  .alya-product-main,
+  .alya-product-media,
+  .alya-product-story,
+  .alya-gallery,
+  .alya-gallery-layout,
+  .alya-gallery-main,
+  .alya-product-video,
+  .alya-showcase-strip {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .alya-gallery {
+    overflow: hidden !important;
+  }
+  .alya-gallery-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  .alya-gallery-thumbnails,
+  .alya-showcase-strip {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .alya-gallery-thumbnails::-webkit-scrollbar,
+  .alya-showcase-strip::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+  .collection-toolbar {
+    width: auto !important;
+    max-width: none !important;
+    min-height: 60px !important;
+    gap: 8px !important;
+    padding: 9px 14px !important;
+  }
+  .collection-toolbar .toolbar-actions {
+    min-width: 0 !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  .collection-toolbar .toolbar-actions button,
+  .collection-toolbar .toolbar-actions label {
+    min-width: 0 !important;
+    min-height: 42px !important;
+    padding: 0 8px !important;
+  }
+  .collection-toolbar .toolbar-actions select {
+    width: 82px !important;
+    max-width: 82px !important;
+    font-size: 12px !important;
+    text-overflow: ellipsis;
+  }
+  .alya-showcase-note {
+    flex-wrap: wrap;
+    line-height: 1.5;
+    text-align: center;
+  }
+}

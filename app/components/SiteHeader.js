@@ -1,5 +1,5 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import {
   Menu,
@@ -11,7 +11,6 @@ import {
   Search,
   ArrowRight,
 } from "lucide-react";
-import { categories } from "../products";
 import { useStore } from "../store";
 import {SHOP_URL} from "../site-config";
 import {LanguageSelector, useI18n} from "../i18n";
@@ -26,6 +25,14 @@ export default function SiteHeader() {
     [hovered, setHovered] = useState(null);
   const { count, wishlistCount, getProducts } = useStore();
   const products = getProducts();
+  useEffect(() => {
+    if (!menuOpen && !searchOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [menuOpen, searchOpen]);
   const results = useMemo(() => {
     const q = query.trim().toLocaleLowerCase("tr-TR");
     if (!q) return [];
@@ -178,7 +185,7 @@ export default function SiteHeader() {
           <Link href="/collections/all" onClick={() => setMenuOpen(false)}>
             {t("Tüm Ürünler")} <ArrowRight size={16} />
           </Link>
-          {categories.map((c) => (
+          {navCategories.map((c) => (
             <Link
               key={c}
               href={`/collections/${encodeURIComponent(c.toLowerCase())}`}

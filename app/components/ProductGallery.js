@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
-import ProductVideo from "./ProductVideo";
 
 export default function ProductGallery({ product }) {
   const [images, setImages] = useState([]);
@@ -265,7 +264,6 @@ export default function ProductGallery({ product }) {
           }
         </div>
       )}
-      <ProductVideo product={product} />
       <style jsx>{`
         .alya-gallery {
           width: 100%;
