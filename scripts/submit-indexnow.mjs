@@ -1,4 +1,5 @@
 import { products } from "../app/products.js";
+import {guides} from "../app/guides.js";
 
 const INDEXNOW_KEY = "7af3cbcc4ad75d2d399226c821b89fb0";
 const ENDPOINT = "https://api.indexnow.org/indexnow";
@@ -16,10 +17,11 @@ const STATIC_PATHS = [
 ];
 
 const productPaths = products.map((product) => `/products/${product.slug}`);
+const guidePaths = ["/rehberler",...guides.map((guide)=>`/rehberler/${guide.slug}`)];
 
 for (const origin of ORIGINS) {
   const host = new URL(origin).host;
-  const urlList = [...STATIC_PATHS, ...productPaths].map(
+  const urlList = [...STATIC_PATHS, ...productPaths,...(host==="alyahomes.com"?guidePaths:[])].map(
     (path) => new URL(path, `${origin}/`).toString(),
   );
   const payload = {

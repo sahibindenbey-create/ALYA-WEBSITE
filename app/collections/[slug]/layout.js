@@ -1,5 +1,7 @@
 import { headers } from "next/headers";
+import Link from "next/link";
 import { products } from "../../products";
+import {guides} from "../../guides";
 import {
   absoluteUrl,
   originForMode,
@@ -23,6 +25,12 @@ const details = {
     description:
       "ALYA HOMES alüminyum ve çelik ütü masaları. Ayarlanabilir yükseklik, geniş ütüleme alanı ve kolay saklama çözümleri.",
   },
+};
+
+const collectionGuides={
+  "kurutmalıklar":["balkon-icin-kurutmalik-nasil-secilir","aluminyum-ve-celik-kurutmalik-farklari","kurutma-kapasitesi-nasil-hesaplanir","kucuk-evler-icin-katlanabilir-kurutmalik"],
+  "ütü masaları":["utu-masasi-olcusu-nasil-secilir"],
+  all:["balkon-icin-kurutmalik-nasil-secilir","aluminyum-ve-celik-kurutmalik-farklari","utu-masasi-olcusu-nasil-secilir"],
 };
 
 async function collectionContext(rawSlug) {
@@ -123,10 +131,12 @@ export default async function CollectionSeoLayout({ children, params }) {
       },
     ],
   };
+  const relatedGuides=(collectionGuides[decoded]||collectionGuides.all).map(slug=>guides.find(guide=>guide.slug===slug)).filter(Boolean);
 
   return (
     <>
       {children}
+      {mode==="catalog"&&<section className="collection-guides"><div><small>ALYA HOMES / SEÇİM REHBERLERİ</small><h2>Karar vermeden önce ihtiyacınızı netleştirin.</h2><p>Ölçü, malzeme, kapasite ve kullanım alanına göre doğru ürünü seçmenize yardımcı olacak bilgiler.</p></div><div>{relatedGuides.map(guide=><Link href={`/rehberler/${guide.slug}`} key={guide.slug}><span>{guide.category}</span><strong>{guide.title}</strong><em>Rehberi oku →</em></Link>)}</div></section>}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(itemListSchema) }}

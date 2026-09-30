@@ -20,6 +20,8 @@ import './footer-polish.css';
 import './design-system-polish.css';
 import './retail-redesign.css';
 import './cookie-consent.css';
+import './guides.css';
+import './collection-guides.css';
 import {headers} from 'next/headers';
 import {StoreProvider} from './store';
 import SiteHeader from './components/SiteHeader';

@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 import { products } from "../products";
+import {guides} from "../guides";
 import {
   absoluteUrl,
   originForMode,
@@ -45,9 +46,14 @@ function urlNode({ location, priority, frequency, image, imageTitle }) {
 
 export async function GET() {
   const host = (await headers()).get("host") || "";
-  const origin = originForMode(siteModeFromHost(host));
+  const mode=siteModeFromHost(host);
+  const origin = originForMode(mode);
+  const guidePages=mode==="catalog"?[
+    ["/rehberler","0.8","weekly"],
+    ...guides.map(guide=>[`/rehberler/${guide.slug}`,"0.7","monthly"]),
+  ]:[];
   const nodes = [
-    ...staticPages.map(([path, priority, frequency]) =>
+    ...[...staticPages,...guidePages].map(([path, priority, frequency]) =>
       urlNode({
         location: absoluteUrl(origin, path),
         priority,

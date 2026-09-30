@@ -83,6 +83,13 @@ export async function middleware(req) {
     host === 'www.alyahomes.com' ||
     (!host.startsWith('shop.') && configuredCatalogMode);
 
+  if (!catalogMode && (path === '/rehberler' || path.startsWith('/rehberler/'))) {
+    const destination = new URL(req.url);
+    destination.protocol = 'https:';
+    destination.host = 'alyahomes.com';
+    return NextResponse.redirect(destination, 308);
+  }
+
   if (
     catalogMode &&
     catalogBlockedPaths.some(
@@ -137,5 +144,6 @@ export const config = {
     '/wishlist/:path*',
     '/account/:path*',
     '/order-success/:path*',
+    '/rehberler/:path*',
   ],
 };
