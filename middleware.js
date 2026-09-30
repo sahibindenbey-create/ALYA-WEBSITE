@@ -84,9 +84,7 @@ export async function middleware(req) {
     (!host.startsWith('shop.') && configuredCatalogMode);
 
   if (!catalogMode && (path === '/rehberler' || path.startsWith('/rehberler/'))) {
-    const destination = new URL(req.url);
-    destination.protocol = 'https:';
-    destination.host = 'alyahomes.com';
+    const destination = new URL(`${path}${req.nextUrl.search}`, 'https://alyahomes.com');
     return NextResponse.redirect(destination, 308);
   }
 
