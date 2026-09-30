@@ -19,6 +19,7 @@ import './legal-page.css';
 import './footer-polish.css';
 import './design-system-polish.css';
 import './retail-redesign.css';
+import './cookie-consent.css';
 import {headers} from 'next/headers';
 import {StoreProvider} from './store';
 import SiteHeader from './components/SiteHeader';
@@ -28,6 +29,8 @@ import {I18nProvider} from './i18n';
 import {SiteModeProvider} from './site-mode';
 import {COMPANY} from './company-info';
 import {absoluteUrl, originForMode, serializeJsonLd, siteModeFromHost} from './seo';
+import GoogleAnalytics from './components/GoogleAnalytics';
+import CookieConsentBanner from './components/CookieConsentBanner';
 
 async function getSiteMode(){
   const host=((await headers()).get('host')||'').split(':')[0].toLowerCase();
@@ -61,7 +64,8 @@ export async function generateMetadata(){
 export default async function RootLayout({children}){
   const mode=await getSiteMode();
   const origin=originForMode(mode);
+  const measurementId=process.env.GA_MEASUREMENT_ID||process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID||'';
   const organizationSchema={'@context':'https://schema.org','@type':'Organization','@id':`${origin}/#organization`,name:COMPANY.shortName,legalName:COMPANY.name,url:origin,logo:absoluteUrl(origin,'/alya-homes-logo.png'),email:COMPANY.email,telephone:COMPANY.phone,address:{'@type':'PostalAddress',streetAddress:'Cevizli Mah. Tugay Yolu Cad. Maltepe Park AVM No:67/B4-18/19',addressLocality:'Maltepe',addressRegion:'İstanbul',addressCountry:'TR'},...(mode==='shop'?{hasMerchantReturnPolicy:{'@type':'MerchantReturnPolicy',applicableCountry:'TR',returnPolicyCountry:'TR',returnPolicyCategory:'https://schema.org/MerchantReturnFiniteReturnWindow',merchantReturnDays:14,returnMethod:'https://schema.org/ReturnByMail',returnFees:'https://schema.org/ReturnShippingFees',merchantReturnLink:absoluteUrl(origin,'/iade-politikasi')}}:{})};
   const websiteSchema={'@context':'https://schema.org','@type':'WebSite','@id':`${origin}/#website`,url:origin,name:'ALYA HOMES',inLanguage:'tr-TR',publisher:{'@id':`${origin}/#organization`}};
-  return <html lang="tr"><body><StoreProvider><SiteModeProvider mode={mode}><I18nProvider><SiteHeader/><ScrollHeaderController/>{children}<SiteFooter/></I18nProvider></SiteModeProvider></StoreProvider><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(organizationSchema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(websiteSchema)}}/></body></html>;
+  return <html lang="tr"><body><StoreProvider><SiteModeProvider mode={mode}><I18nProvider><SiteHeader/><ScrollHeaderController/>{children}<SiteFooter/><CookieConsentBanner enabled={Boolean(measurementId)}/></I18nProvider></SiteModeProvider></StoreProvider><GoogleAnalytics measurementId={measurementId}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(organizationSchema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(websiteSchema)}}/></body></html>;
 }

@@ -5,6 +5,7 @@ import {COMPANY} from '../company-info';
 import {SHOP_URL} from '../site-config';
 import {useI18n} from '../i18n';
 import {useSiteMode} from '../site-mode';
+import {COOKIE_SETTINGS_EVENT} from './GoogleAnalytics';
 
 const customerLinks=[
  ['Yardım Merkezi','/yardim'],['İletişim','/iletisim'],['İade Politikası','/iade-politikasi'],['Güvenli Alışveriş','/guvenli_alisveris'],['Kampanyalar','/kampanyalar']
@@ -46,6 +47,6 @@ export default function SiteFooter(){
    <div><span><b>{t('Vergi Dairesi')}</b><small>{COMPANY.taxOffice} · VKN {COMPANY.taxNumber}</small></span></div>
    <div><span><b>MERSİS</b><small>{COMPANY.mersisNumber}</small></span></div>
   </div>
-  <div className="alya-footer-bottom"><span>© {new Date().getFullYear()} {COMPANY.shortName}. {t('Tüm hakları saklıdır.')}</span><span>{COMPANY.address}</span></div>
+  <div className="alya-footer-bottom"><span>© {new Date().getFullYear()} {COMPANY.shortName}. {t('Tüm hakları saklıdır.')}</span><button type="button" className="cookie-settings-button" onClick={()=>window.dispatchEvent(new Event(COOKIE_SETTINGS_EVENT))}>Çerez tercihleri</button><span>{COMPANY.address}</span></div>
  </footer>;
 }

@@ -1,0 +1,15 @@
+.cookie-consent{position:fixed;z-index:10000;left:20px;right:20px;bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:28px;max-width:1120px;margin:auto;padding:20px 22px;background:#fff;color:#171717;border:1px solid #d8d8d8;box-shadow:0 18px 55px rgba(0,0,0,.18)}
+.cookie-consent>div:first-child{max-width:720px}
+.cookie-consent strong{display:block;margin-bottom:7px;font-size:15px}
+.cookie-consent p{margin:0;color:#555;font-size:12px;line-height:1.6}
+.cookie-consent p a{text-decoration:underline;text-underline-offset:2px}
+.cookie-consent-actions{display:flex;gap:9px;flex:0 0 auto}
+.cookie-consent button{min-height:42px;padding:0 17px;border:1px solid #171717;font:inherit;font-size:12px;cursor:pointer}
+.cookie-reject{background:#fff;color:#171717}
+.cookie-accept{background:#171717;color:#fff}
+.cookie-settings-button{padding:0;border:0;background:transparent;color:inherit;font:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media(max-width:700px){
+  .cookie-consent{left:10px;right:10px;bottom:10px;display:block;padding:17px}
+  .cookie-consent-actions{display:grid;grid-template-columns:1fr;margin-top:14px}
+  .cookie-consent button{width:100%}
+}
