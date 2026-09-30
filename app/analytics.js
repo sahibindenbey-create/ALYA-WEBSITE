@@ -26,8 +26,18 @@ export function gaItems(products=[]){
   return products.map(product=>gaItem(product)).filter(Boolean);
 }
 
-export function trackEcommerce(event,params={}){
-  if(!analyticsAllowed()||typeof window.gtag!=='function') return false;
+export function trackEcommerce(event,params={},options={}){
+  if(typeof window==='undefined') return false;
+  const dedupeKey=options.dedupeKey||'';
+  if(dedupeKey&&window.localStorage.getItem(dedupeKey)) return false;
+  if(!analyticsAllowed()||typeof window.gtag!=='function'){
+    window.__alyaGaEcommerceQueue=window.__alyaGaEcommerceQueue||[];
+    const queueKey=dedupeKey||`${event}:${params.transaction_id||''}:${params.items?.[0]?.item_id||''}:${window.location.pathname}`;
+    if(!window.__alyaGaEcommerceQueue.some(item=>item.queueKey===queueKey)){
+      window.__alyaGaEcommerceQueue.push({event,params,dedupeKey,queueKey});
+    }
+    return false;
+  }
   window.gtag('event',event,{currency:'TRY',...params});
   return true;
 }

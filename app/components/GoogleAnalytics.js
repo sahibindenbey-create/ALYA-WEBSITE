@@ -66,9 +66,19 @@ export default function GoogleAnalytics({measurementId}){
         initialized.current=true;
       }
       sendPageView(window.location.pathname+window.location.search);
+      window.setTimeout(()=>{
+        const queued=window.__alyaGaEcommerceQueue||[];
+        window.__alyaGaEcommerceQueue=[];
+        for(const item of queued){
+          if(item.dedupeKey&&window.localStorage.getItem(item.dedupeKey)) continue;
+          window.gtag('event',item.event,{currency:'TRY',...item.params});
+          if(item.dedupeKey) window.localStorage.setItem(item.dedupeKey,'1');
+        }
+      },0);
     };
 
     const disableAnalytics=()=>{
+      window.__alyaGaEcommerceQueue=[];
       if(window.gtag) window.gtag('consent','update',{analytics_storage:'denied'});
     };
 
