@@ -71,6 +71,12 @@ function isSameOrigin(req) {
 export async function middleware(req) {
   const path = req.nextUrl.pathname;
   const isApi = path.startsWith('/api/');
+  const shouldNoIndex =
+    path.startsWith('/admin') ||
+    catalogBlockedPaths.some(
+      (blockedPath) =>
+        path === blockedPath || path.startsWith(`${blockedPath}/`),
+    );
   const host = (req.headers.get('host') || '').split(':')[0].toLowerCase();
   const catalogMode =
     host === 'alyahomes.com' ||
@@ -88,11 +94,18 @@ export async function middleware(req) {
   }
 
   if (path === '/admin/login' || path.startsWith('/api/admin/login')) {
-    return NextResponse.next();
+    const response = NextResponse.next();
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return response;
   }
 
   const protectedRequest = path === '/admin' || path.startsWith('/admin/') || requiresAdmin(req, path);
-  if (!protectedRequest) return NextResponse.next();
+  if (!protectedRequest) {
+    const response = NextResponse.next();
+    if (shouldNoIndex)
+      response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return response;
+  }
 
   if (!(await isAdmin(req))) {
     if (isApi) return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 });
@@ -103,7 +116,9 @@ export async function middleware(req) {
     return NextResponse.json({ error: 'Geçersiz istek kaynağı' }, { status: 403 });
   }
 
-  return NextResponse.next();
+  const response = NextResponse.next();
+  response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+  return response;
 }
 
 export const config = {
