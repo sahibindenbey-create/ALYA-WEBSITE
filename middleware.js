@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 const ADMIN_COOKIE = 'alya_admin';
 const encoder = new TextEncoder();
-const catalogMode =
+const configuredCatalogMode =
   process.env.SITE_MODE === 'catalog' ||
   process.env.NEXT_PUBLIC_SITE_MODE === 'catalog';
 
@@ -71,6 +71,11 @@ function isSameOrigin(req) {
 export async function middleware(req) {
   const path = req.nextUrl.pathname;
   const isApi = path.startsWith('/api/');
+  const host = (req.headers.get('host') || '').split(':')[0].toLowerCase();
+  const catalogMode =
+    host === 'alyahomes.com' ||
+    host === 'www.alyahomes.com' ||
+    (!host.startsWith('shop.') && configuredCatalogMode);
 
   if (
     catalogMode &&

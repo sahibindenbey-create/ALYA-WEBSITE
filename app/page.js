@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import { products } from "./products";
 import { useStore } from "./store";
-import { isCatalogMode } from "./site-config";
 import {useI18n} from "./i18n";
+import {useSiteMode} from "./site-mode";
 
 const money = (n) =>
   n == null
@@ -24,6 +24,7 @@ const money = (n) =>
       }).format(n);
 
 function ProductCard({ product, onAdd }) {
+  const {isCatalogMode}=useSiteMode();
   const { toggleWishlist, isWishlisted } = useStore();
   const {category}=useI18n();
   return (
@@ -65,6 +66,7 @@ function ProductCard({ product, onAdd }) {
 }
 
 export default function Home() {
+  const {isCatalogMode}=useSiteMode();
   const {t,category}=useI18n();
   const { addToCart } = useStore();
   const [newsletterEmail, setNewsletterEmail] = useState("");

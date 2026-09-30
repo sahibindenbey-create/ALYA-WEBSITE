@@ -4,15 +4,17 @@ import { Heart, ShoppingBag, ArrowRight, Mail, X, Check, Truck, ShieldCheck, Min
 import { use, useMemo, useState } from 'react';
 import { useStore } from '../../store';
 import ProductGallery from '../../components/ProductGallery';
-import {isCatalogMode, shopProductUrl} from '../../site-config';
+import {shopProductUrl} from '../../site-config';
 import {getCatalogTechnical, productTechnicalRows, loadingTechnicalRows} from '../../catalog-technical';
 import {localizedProductDescription, useI18n} from '../../i18n';
+import {useSiteMode} from '../../site-mode';
 
 const money = n => n == null ? 'Fiyat bilgisi için iletişime geçin' : `${new Intl.NumberFormat('tr-TR', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }).format(n)} TL.`;
 const specLabels={kurutma:'Kurutma uzunluğu',ütüleme:'Ütüleme alanı',ölçü:'Ölçü',yükseklik:'Yükseklik',ağırlık:'Ağırlık',koli:'Koli içi',ayar:'Ayarlanabilir aralık',malzeme:'Malzeme',özellik:'Özellik',renk:'Renk',renkler:'Renkler'};
 const makeFeatures = (p,t) => { const features=[]; const specs=p.specs||{}; if(p.category==='Kurutmalıklar'){features.push(t('Alüminyum ve paslanmaz gövde')); features.push(t(/BALCONY/i.test(p.name)?'Balkon kullanımına uygun ayarlanabilir yapı':'Katlanabilir ve kolay saklanabilir tasarım')); features.push(t(/RAW/i.test(p.name)?'RAW seri yüzey ve gövde tasarımı':'Geniş kurutma kapasitesi'));} else if(p.category==='Ütü Masaları'){features.push(t(specs.malzeme||'Dayanıklı gövde yapısı'));features.push(t('Ayarlanabilir çalışma yüksekliği'));if(/PROBOARD/i.test(p.name))features.push(t('Geniş ütüleme alanı ve güçlü taşıyıcı yapı'));if(/EASYBOARD/i.test(p.name))features.push(t('Pratik kullanım ve kolay saklama'));if(/STEEL/i.test(p.name))features.push(t('Çelik konstrüksiyon'));if(/HYBRID/i.test(p.name))features.push(t('Alüminyum tabla ve çelik ayak kombinasyonu'));} return [...new Set(features)].slice(0,5);};
 
 export default function ProductPage({ params }) {
+  const {isCatalogMode}=useSiteMode();
   const {t,category}=useI18n();
   const { slug }=use(params); const {cart,addToCart,toggleWishlist,isWishlisted,getProduct,getProducts}=useStore(); const p=getProduct(slug); const products=getProducts();
   const [notify,setNotify]=useState(false),[email,setEmail]=useState(''),[sent,setSent]=useState(false),[quantity,setQuantity]=useState(1),[openPanel,setOpenPanel]=useState('details'),[added,setAdded]=useState(false);

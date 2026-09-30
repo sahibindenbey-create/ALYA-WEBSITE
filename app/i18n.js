@@ -1,7 +1,7 @@
 "use client";
 
 import {createContext, useContext, useEffect, useMemo, useState} from "react";
-import {isCatalogMode} from "./site-config";
+import {useSiteMode} from "./site-mode";
 
 export const languages=[
   {code:"tr",short:"TR",label:"Türkçe"},
@@ -43,11 +43,12 @@ Object.assign(ru,{"İç ve dış mekân kullanımı için alüminyum ve paslanma
 
 const I18nContext=createContext({locale:"tr",setLocale:()=>{},t:(text)=>text,category:(text)=>text});
 export function I18nProvider({children}){
+ const {isCatalogMode}=useSiteMode();
  const [locale,setLocaleState]=useState("tr");
  useEffect(()=>{if(!isCatalogMode)return;const requested=new URLSearchParams(window.location.search).get("lang");const saved=localStorage.getItem("alya-catalog-language");const initial=languages.some(x=>x.code===requested)?requested:saved;if(languages.some(x=>x.code===initial)){setLocaleState(initial);localStorage.setItem("alya-catalog-language",initial);}},[]);
  const setLocale=(next)=>{if(!isCatalogMode)return;setLocaleState(next);localStorage.setItem("alya-catalog-language",next);document.documentElement.lang=next;};
  useEffect(()=>{document.documentElement.lang=isCatalogMode?locale:"tr";},[locale]);
- const value=useMemo(()=>({locale:isCatalogMode?locale:"tr",setLocale,t:(text)=>locale==="tr"?text:(sets[locale]?.[text]||text),category:(text)=>locale==="tr"?text:(sets[locale]?.[text]||text)}),[locale]);
+ const value=useMemo(()=>{const activeLocale=isCatalogMode?locale:"tr";return {locale:activeLocale,setLocale,t:(text)=>activeLocale==="tr"?text:(sets[activeLocale]?.[text]||text),category:(text)=>activeLocale==="tr"?text:(sets[activeLocale]?.[text]||text)};},[locale,isCatalogMode]);
  return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 export const useI18n=()=>useContext(I18nContext);

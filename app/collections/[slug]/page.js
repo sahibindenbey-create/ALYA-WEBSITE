@@ -3,20 +3,21 @@ import Link from 'next/link';
 import {ArrowRight, ChevronDown, SlidersHorizontal, X, Heart, ShoppingBag, Check} from 'lucide-react';
 import {use, useMemo, useState} from 'react';
 import {useStore} from '../../store';
-import {isCatalogMode} from '../../site-config';
 import {useI18n} from '../../i18n';
+import {useSiteMode} from '../../site-mode';
 const money=n=>n==null?'Fiyat için iletişime geçin':new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(n);
 const drying=p=>{const m=String(p.specs?.kurutma||'').match(/[0-9]+/);return m?Number(m[0]):0;};
 const categoryTitles={'kurutmalıklar':'Kurutmalıklar','ütü masaları':'Ütü Masaları','tüm ürünler':'Tüm Ürünler'};
 const categoryCopy={'Kurutmalıklar':'İç ve dış mekân kullanımı için alüminyum ve paslanmaz gövdeli, kolay saklanan kurutmalık çözümleri.','Ütü Masaları':'Alüminyum ve çelik gövdeli, farklı kullanım ihtiyaçlarına göre tasarlanmış ütü masalarını keşfedin.','Tüm Ürünler':'Ev yaşam alanları için dayanıklı malzeme, sade tasarım ve günlük kullanıma odaklanan ALYA HOMES koleksiyonu.'};
 const categoryTitle=raw=>categoryTitles[raw.toLocaleLowerCase('tr-TR')]||raw.replace(/-/g,' ').replace(/(^|\s)([a-zçğıöşü])/giu,(_,space,letter)=>`${space}${letter.toLocaleUpperCase('tr-TR')}`);
 export default function CollectionPage({params}){
+ const {isCatalogMode}=useSiteMode();
  const {t,category}=useI18n();
  const {slug}=use(params);const raw=decodeURIComponent(slug||'all');const title=raw==='all'?'Tüm Ürünler':categoryTitle(raw);
  const [sort,setSort]=useState('featured'),[query,setQuery]=useState(''),[material,setMaterial]=useState('all'),[minDry,setMinDry]=useState('all'),[filtersOpen,setFiltersOpen]=useState(false),[added,setAdded]=useState('');
  const {toggleWishlist,isWishlisted,getProducts,addToCart}=useStore();const products=getProducts();const base=raw==='all'?products:products.filter(p=>p.category.toLowerCase()===raw.toLowerCase());
  const materials=useMemo(()=>[...new Set(base.map(p=>p.specs?.malzeme).filter(Boolean))],[base]);
- const items=useMemo(()=>{let list=base.filter(p=>`${p.name} ${p.code}`.toLowerCase().includes(query.toLowerCase()));if(material!=='all')list=list.filter(p=>p.specs?.malzeme===material);if(minDry!=='all')list=list.filter(p=>drying(p)>=Number(minDry));if(sort==='name')list=[...list].sort((a,b)=>a.name.localeCompare(b.name,'tr'));if(sort==='dry-desc')list=[...list].sort((a,b)=>drying(b)-drying(a));if(!isCatalogMode&&sort==='price')list=[...list].sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));return list;},[base,query,material,minDry,sort]);
+ const items=useMemo(()=>{let list=base.filter(p=>`${p.name} ${p.code}`.toLowerCase().includes(query.toLowerCase()));if(material!=='all')list=list.filter(p=>p.specs?.malzeme===material);if(minDry!=='all')list=list.filter(p=>drying(p)>=Number(minDry));if(sort==='name')list=[...list].sort((a,b)=>a.name.localeCompare(b.name,'tr'));if(sort==='dry-desc')list=[...list].sort((a,b)=>drying(b)-drying(a));if(!isCatalogMode&&sort==='price')list=[...list].sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));return list;},[base,query,material,minDry,sort,isCatalogMode]);
  const clearFilters=()=>{setQuery('');setMaterial('all');setMinDry('all');setSort('featured');};const addProduct=p=>{if(addToCart(p)){setAdded(p.slug);window.setTimeout(()=>setAdded(''),1600);}};
  return <main className="collection-page"><section className="collection-hero"><small>{t('ALYA HOMES / KOLEKSİYON')}</small><h1>{category(title)}</h1><p>{t(categoryCopy[title]||'ALYA HOMES ürün koleksiyonunu keşfedin.')}</p></section><section className="collection-content">
   <div className="collection-toolbar"><span>{items.length} {t('ürün')}</span><div className="toolbar-actions"><button onClick={()=>setFiltersOpen(v=>!v)} aria-expanded={filtersOpen} aria-controls="collection-filters"><SlidersHorizontal size={15}/> {t('Filtrele')}</button><label>{t('Sırala:')}<select value={sort} onChange={e=>setSort(e.target.value)}><option value="featured">{t('Önerilen')}</option><option value="name">A–Z</option><option value="dry-desc">{t('Kurutma kapasitesi')}</option>{!isCatalogMode&&<option value="price">Fiyat</option>}</select><ChevronDown size={13}/></label></div></div>

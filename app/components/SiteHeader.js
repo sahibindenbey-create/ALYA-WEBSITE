@@ -13,10 +13,12 @@ import {
 } from "lucide-react";
 import { categories } from "../products";
 import { useStore } from "../store";
-import { isCatalogMode, SHOP_URL } from "../site-config";
+import {SHOP_URL} from "../site-config";
 import {LanguageSelector, useI18n} from "../i18n";
+import {useSiteMode} from "../site-mode";
 const navCategories = ["Kurutmalıklar", "Ütü Masaları"];
 export default function SiteHeader() {
+  const {isCatalogMode}=useSiteMode();
   const {t,category:categoryLabel}=useI18n();
   const [menuOpen, setMenuOpen] = useState(false),
     [searchOpen, setSearchOpen] = useState(false),

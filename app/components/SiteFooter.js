@@ -2,8 +2,9 @@
 import Link from 'next/link';
 import {ArrowRight, ShieldCheck, LockKeyhole, MapPin, Phone, Mail} from 'lucide-react';
 import {COMPANY} from '../company-info';
-import {isCatalogMode, SHOP_URL} from '../site-config';
+import {SHOP_URL} from '../site-config';
 import {useI18n} from '../i18n';
+import {useSiteMode} from '../site-mode';
 
 const customerLinks=[
  ['Yardım Merkezi','/yardim'],['İletişim','/iletisim'],['Güvenli Alışveriş','/guvenli_alisveris'],['Kampanyalar','/kampanyalar']
@@ -16,6 +17,7 @@ const communicationLinks=[
 ];
 
 export default function SiteFooter(){
+ const {isCatalogMode}=useSiteMode();
  const {t}=useI18n();
  const visibleCustomerLinks=isCatalogMode?customerLinks.filter(([,href])=>!['/guvenli_alisveris','/kampanyalar'].includes(href)):customerLinks;
  const visibleLegalLinks=isCatalogMode?legalLinks.filter(([,href])=>href!=='/uyelik_sozlesmesi'):legalLinks;
