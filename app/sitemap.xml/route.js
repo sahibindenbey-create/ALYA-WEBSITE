@@ -15,6 +15,7 @@ const staticPages = [
   ["/collections/%C3%BCt%C3%BC%20masalar%C4%B1", "0.9", "weekly"],
   ["/yardim", "0.5", "monthly"],
   ["/iletisim", "0.5", "monthly"],
+  ["/iade-politikasi", "0.5", "monthly"],
   ["/guvenli_alisveris", "0.4", "monthly"],
   ["/kampanyalar", "0.4", "weekly"],
   ["/guvenlik-sertifikalari", "0.3", "yearly"],

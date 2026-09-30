@@ -7,7 +7,7 @@ import {useI18n} from '../i18n';
 import {useSiteMode} from '../site-mode';
 
 const customerLinks=[
- ['Yardım Merkezi','/yardim'],['İletişim','/iletisim'],['Güvenli Alışveriş','/guvenli_alisveris'],['Kampanyalar','/kampanyalar']
+ ['Yardım Merkezi','/yardim'],['İletişim','/iletisim'],['İade Politikası','/iade-politikasi'],['Güvenli Alışveriş','/guvenli_alisveris'],['Kampanyalar','/kampanyalar']
 ];
 const legalLinks=[
  ['KVKK / Kişisel Verilerin Korunması','/kisisel_verilerin_korunmasi'],['Çerez Politikası','/cerez_politikasi'],['Üyelik Sözleşmesi','/uyelik_sozlesmesi'],['Kullanım Koşulları','/kullanim_kosullari']
@@ -19,7 +19,7 @@ const communicationLinks=[
 export default function SiteFooter(){
  const {isCatalogMode}=useSiteMode();
  const {t}=useI18n();
- const visibleCustomerLinks=isCatalogMode?customerLinks.filter(([,href])=>!['/guvenli_alisveris','/kampanyalar'].includes(href)):customerLinks;
+ const visibleCustomerLinks=isCatalogMode?customerLinks.filter(([,href])=>!['/iade-politikasi','/guvenli_alisveris','/kampanyalar'].includes(href)):customerLinks;
  const visibleLegalLinks=isCatalogMode?legalLinks.filter(([,href])=>href!=='/uyelik_sozlesmesi'):legalLinks;
  return <footer className="alya-footer">
   <div className="alya-footer-inner">
