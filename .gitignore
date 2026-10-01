@@ -1,3 +1,11 @@
 node_modules/
 .next/
 REAL_URUN_GORSELLERI/
+
+# Gizli bilgiler ve çalışma zamanı verisi (müşteri kişisel verisi içerebilir) — ASLA commit edilmez
+.env
+.env.*
+!.env.example
+data/store.json
+*.log
+.DS_Store

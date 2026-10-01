@@ -15,12 +15,12 @@ export async function GET(req){
   if(!trackingNumber)return Response.json({error:'trackingNumber gerekli.'},{status:400});
 
   if(carrier==='DHL eCommerce'){
-    const url=new URL('/api/shipping/dhl/track',new URL(req.url).origin);
+    const url=new URL('/api/shipping/dhl/track',process.env.INTERNAL_BASE_URL||new URL(req.url).origin);
     url.searchParams.set('trackingNumber',trackingNumber);
     if(searchParams.get('service'))url.searchParams.set('service',searchParams.get('service'));
     if(searchParams.get('originCountryCode'))url.searchParams.set('originCountryCode',searchParams.get('originCountryCode'));
     if(searchParams.get('requesterCountryCode'))url.searchParams.set('requesterCountryCode',searchParams.get('requesterCountryCode'));
-    const r=await fetch(url,{cache:'no-store'});
+    const r=await fetch(url,{headers:{cookie:req.headers.get('cookie')||''},cache:'no-store'});
     const data=await r.json().catch(()=>({error:'Kargo servisi geçersiz yanıt döndürdü.'}));
     return Response.json({...data,provider:carrier},{status:r.status});
   }
