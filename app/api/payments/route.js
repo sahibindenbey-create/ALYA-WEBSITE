@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import sql from 'mssql';
 
 export const runtime = 'nodejs';
@@ -89,7 +90,7 @@ export async function POST(req) {
       });
     }
 
-    const reference = `PAY-${Date.now().toString(36).toUpperCase()}`;
+    const reference = `PAY-${Date.now().toString(36).toUpperCase()}-${crypto.randomBytes(5).toString('hex').toUpperCase()}`;
     const provider = method === 'Havale/EFT' ? 'BankTransfer' : (process.env.PAYMENT_PROVIDER || 'NotConfigured');
 
     await connection.request()
@@ -120,6 +121,7 @@ export async function POST(req) {
           : 'Ödeme sağlayıcısına yönlendirme hazır.',
     });
   } catch (error) {
-    return Response.json({ error: error?.message || 'Ödeme oturumu oluşturulamadı' }, { status: 409 });
+    console.error('payments.POST', error?.message);
+    return Response.json({ error: 'Ödeme oturumu oluşturulamadı' }, { status: 409 });
   }
 }

@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '@/lib/auth';
 import { promises as fs } from 'fs';
 import path from 'path';
 import sql from 'mssql';
@@ -109,16 +110,19 @@ async function syncNormalized(pool, state) {
   }
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
+    const admin = await isAdminRequest(request);
     const { state, source } = await readStore();
-    return Response.json({ ...state, source }, { headers: { 'Cache-Control': 'no-store' } });
+    // Siparişler müşteri kişisel verisi içerir: yalnızca yönetici görebilir.
+    return Response.json({ ...state, orders: admin ? state.orders : [], admin, source }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     return Response.json({ ...empty, source: 'file', error: 'Veri kaynağına bağlanılamadı.' }, { status: 200 });
   }
 }
 
 export async function POST(request) {
+  if (!(await isAdminRequest(request))) return unauthorized();
   try {
     const incoming = await request.json();
     const { state: current } = await readStore();

@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '@/lib/auth';
 export const runtime='nodejs';
 
 const base=()=>process.env.UPS_API_BASE||'https://onlinetools.ups.com';
@@ -15,6 +16,7 @@ const clean=v=>String(v??'').trim();
 const addressOf=(b)=>b.ShippingAddress||b.shippingAddress||{};
 
 export async function POST(req){
+ if(!(await isAdminRequest(req)))return unauthorized();
  if(!configured())return Response.json({error:'UPS API bilgileri .env dosyasına girilmemiş. UPS_CLIENT_ID, UPS_CLIENT_SECRET ve UPS_ACCOUNT_NUMBER gerekli.',code:'PROVIDER_NOT_CONFIGURED'},{status:503});
  try{
   const b=await req.json();
