@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '../../../../lib/auth';
 export const runtime='nodejs';
 
 const routes={
@@ -24,7 +25,7 @@ const aliases={
  'kolay gelsin':'Kolay Gelsin'
 };
 
-export async function POST(req){
+export async function POST(req){ if(!(await isAdminRequest(req)))return unauthorized();
  try{
   const body=await req.json();
   const raw=providerKey(body.carrier||body.provider);
@@ -38,8 +39,8 @@ export async function POST(req){
    next:'Kargo firmasından API/web servis kullanıcı bilgileri alındığında bu gateway üzerinden aktif edilecek.'
   },{status:501});
 
-  const origin=new URL(req.url).origin;
-  const r=await fetch(`${origin}${path}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
+  const origin=process.env.INTERNAL_BASE_URL||new URL(req.url).origin;
+  const r=await fetch(`${origin}${path}`,{method:'POST',headers:{'Content-Type':'application/json',cookie:req.headers.get('cookie')||''},body:JSON.stringify(body),cache:'no-store'});
   const data=await r.json().catch(()=>({error:'Kargo servisi geçersiz yanıt döndürdü.'}));
   return Response.json({...data,provider:carrier},{status:r.status});
  }catch(e){return Response.json({error:e?.message||'Kargo gönderisi oluşturulamadı.'},{status:502})}

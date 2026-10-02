@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '../../../lib/auth';
 import { promises as fs } from 'fs';
 import path from 'path';
 import sql from 'mssql';
@@ -118,7 +119,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request) {
+export async function POST(request){ if(!(await isAdminRequest(request)))return unauthorized();
   try {
     const incoming = await request.json();
     const { state: current } = await readStore();

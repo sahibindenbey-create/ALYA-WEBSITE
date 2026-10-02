@@ -101,6 +101,6 @@ export async function POST(req){
       throw e;
     }
   }catch(e){
-    return Response.json({error:e?.message||'Webhook işlenemedi'},{status:409});
+    console.error('webhook',e?.message);return Response.json({error:'Webhook işlenemedi'},{status:500});
   }
 }

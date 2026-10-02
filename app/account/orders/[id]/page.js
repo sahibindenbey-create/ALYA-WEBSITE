@@ -8,8 +8,8 @@ const money=n=>new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',ma
 const date=v=>v?new Date(v).toLocaleString('tr-TR',{day:'2-digit',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
 const statusClass=s=>{const v=String(s||'').toLocaleLowerCase('tr-TR');if(v.includes('teslim'))return 'done';if(v.includes('iptal'))return 'cancel';if(v.includes('kargo')||v.includes('hazır'))return 'progress';return 'pending'};
 const paymentClass=s=>{const v=String(s||'').toLocaleLowerCase('tr-TR');if(v.includes('ödendi'))return 'paid';if(v.includes('başarısız'))return 'failed';if(v.includes('iade'))return 'refunded';return 'waiting'};
-export default function OrderDetail(){const params=useParams();const id=decodeURIComponent(params.id||'');const {orders}=useStore();const [order,setOrder]=useState(null);const [loading,setLoading]=useState(true);
- useEffect(()=>{if(!id){setLoading(false);return}let cancelled=false;fetch(`/api/orders?orderNo=${encodeURIComponent(id)}`,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(!cancelled)setOrder(d.order||null)}).catch(()=>{}).finally(()=>{if(!cancelled)setLoading(false)});return()=>{cancelled=true}},[id]);
+export default function OrderDetail(){const params=useParams();const id=decodeURIComponent(params.id||'');const {orders,customer}=useStore();const [order,setOrder]=useState(null);const [loading,setLoading]=useState(true);
+ useEffect(()=>{if(!id){setLoading(false);return}let cancelled=false;fetch(`/api/orders?orderNo=${encodeURIComponent(id)}&email=${encodeURIComponent(customer?.email||'')}`,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(!cancelled)setOrder(d.order||null)}).catch(()=>{}).finally(()=>{if(!cancelled)setLoading(false)});return()=>{cancelled=true}},[id]);
  useEffect(()=>{if(!order){const local=orders.find(o=>(o.OrderNo||o.id)===id);if(local)setOrder(local)}},[orders,order,id]);
  const items=order?.items||[];const history=Array.isArray(order?.history)?order.history:[];
  if(loading&&!order)return <main className="order-page"><div className="order-box loading"><Package size={22}/><p>Sipariş yükleniyor…</p></div></main>;

@@ -1,8 +1,9 @@
+import { isAdminRequest, unauthorized } from '../../../../../lib/auth';
 export const runtime='nodejs';
 
 const endpoint=()=>process.env.DHL_TRACKING_API_URL||'https://api-eu.dhl.com/track/shipments';
 
-export async function GET(req){
+export async function GET(req){ if(!(await isAdminRequest(req)))return unauthorized();
   const key=process.env.DHL_API_KEY;
   if(!key)return Response.json({error:'DHL API anahtarı .env dosyasına girilmemiş. DHL_API_KEY gerekli.',code:'DHL_NOT_CONFIGURED'},{status:503});
 

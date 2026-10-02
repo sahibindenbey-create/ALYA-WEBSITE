@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '../../../../../lib/auth';
 export const runtime='nodejs';
 
 const base=()=>process.env.UPS_API_BASE||'https://onlinetools.ups.com';
@@ -11,7 +12,7 @@ async function token(){
  return d.access_token;
 }
 
-export async function GET(req){
+export async function GET(req){ if(!(await isAdminRequest(req)))return unauthorized();
  const {searchParams}=new URL(req.url);
  const trackingNumber=String(searchParams.get('trackingNumber')||searchParams.get('tracking')||'').trim();
  if(!trackingNumber)return Response.json({error:'trackingNumber gerekli.'},{status:400});

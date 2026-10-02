@@ -16,7 +16,7 @@ function OrderSuccessContent(){
  const [payment,setPayment]=useState(null);
  const [paymentLoading,setPaymentLoading]=useState(false);
  const [paymentError,setPaymentError]=useState('');
- const loadOrder=()=>{if(!orderNo)return Promise.resolve();return fetch(`/api/orders?orderNo=${encodeURIComponent(orderNo)}`,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(d.order)setOrder(d.order)}).catch(()=>{})};
+ const loadOrder=()=>{if(!orderNo)return Promise.resolve();return fetch(`/api/orders?orderNo=${encodeURIComponent(orderNo)}&email=${encodeURIComponent(customer?.email||'')}`,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(d=>{if(d.order)setOrder(d.order)}).catch(()=>{})};
  useEffect(()=>{if(!orderNo){setLoading(false);return}let cancelled=false;loadOrder().finally(()=>{if(!cancelled)setLoading(false)});return()=>{cancelled=true}},[orderNo]);
  useEffect(()=>{if(!order&&orderNo){const local=orders.find(o=>(o.OrderNo||o.id)===orderNo);if(local)setOrder(local)}},[orders,order,orderNo]);
  useEffect(()=>{if(!orderNo||!order||paymentLoading||payment)return;const method=order.PaymentMethod||order.payment?.payment||order.customer?.payment;if(!method)return;let cancelled=false;setPaymentLoading(true);fetch('/api/payments',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo,method})}).then(async r=>{const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'Ödeme oturumu oluşturulamadı');if(!cancelled)setPayment(d)}).catch(e=>{if(!cancelled)setPaymentError(e.message||'Ödeme oturumu oluşturulamadı')}).finally(()=>{if(!cancelled)setPaymentLoading(false)});return()=>{cancelled=true}},[orderNo,order,paymentLoading,payment]);
