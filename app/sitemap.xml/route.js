@@ -18,7 +18,6 @@ const staticPages = [
   ["/iletisim", "0.5", "monthly"],
   ["/iade-politikasi", "0.5", "monthly"],
   ["/guvenli_alisveris", "0.4", "monthly"],
-  ["/kampanyalar", "0.4", "weekly"],
   ["/guvenlik-sertifikalari", "0.3", "yearly"],
   ["/kisisel_verilerin_korunmasi", "0.2", "yearly"],
   ["/cerez_politikasi", "0.2", "yearly"],

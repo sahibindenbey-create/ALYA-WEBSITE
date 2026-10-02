@@ -29,6 +29,12 @@ export async function GET() {
     rulesFor("OAI-SearchBot"),
     rulesFor("ChatGPT-User"),
     rulesFor("GPTBot"),
+    rulesFor("ClaudeBot"),
+    rulesFor("Claude-SearchBot"),
+    rulesFor("Claude-User"),
+    rulesFor("PerplexityBot"),
+    rulesFor("Perplexity-User"),
+    rulesFor("Google-Extended"),
     `Sitemap: ${origin}/sitemap.xml`,
     "",
   ].join("\n\n");

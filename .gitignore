@@ -4,3 +4,10 @@ REAL_URUN_GORSELLERI/
 .env
 .env.*
 !.env.example
+
+# Gizli bilgiler ve çalışma zamanı verisi — ASLA commit edilmez
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store

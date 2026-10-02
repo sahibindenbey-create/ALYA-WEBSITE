@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '../../../../lib/auth';
 export const runtime='nodejs';
 
 const endpoint=()=>process.env.ARAS_API_URL||'https://customerws.araskargo.com.tr/arascargoservice.asmx';
@@ -32,9 +33,9 @@ async function barcodeFor(integrationCode){
  return {trackingNumber:tag(response,'TrackingNumber'),barcode:tag(response,'Barcode'),waybillNumber:tag(response,'WaybillNumber'),message:tag(response,'Message')};
 }
 
-export async function GET(){return Response.json({provider:'Aras Kargo',configured:configured(),endpoint:endpoint(),capabilities:['gönderi kaydı','barkod','takip'],credentialsRequired:true});}
+export async function GET(req){ if(!(await isAdminRequest(req)))return unauthorized();return Response.json({provider:'Aras Kargo',configured:configured(),endpoint:endpoint(),capabilities:['gönderi kaydı','barkod','takip'],credentialsRequired:true});}
 
-export async function POST(req){
+export async function POST(req){ if(!(await isAdminRequest(req)))return unauthorized();
  if(!configured())return Response.json({error:'Aras Kargo entegrasyon bilgileri .env dosyasına girilmemiş. ARAS_USERNAME, ARAS_PASSWORD ve ARAS_INTEGRATION_CODE gerekli.'},{status:503});
  try{
   const b=await req.json();

@@ -1,3 +1,4 @@
+import { isAdminRequest, unauthorized } from '../../../../lib/auth';
 export const runtime='nodejs';
 
 const providers=[
@@ -11,6 +12,6 @@ const providers=[
  {id:'kolay-gelsin',name:'Kolay Gelsin',type:'official-api',env:['KOLAYGELSIN_API_KEY'],create:false,track:true,label:false}
 ];
 
-export async function GET(){
+export async function GET(req){ if(!(await isAdminRequest(req)))return unauthorized();
  return Response.json({providers:providers.map(p=>({...p,configured:p.env.every(k=>Boolean(process.env[k]))}))},{headers:{'Cache-Control':'no-store'}});
 }

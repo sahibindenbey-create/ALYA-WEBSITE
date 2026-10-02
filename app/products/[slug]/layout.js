@@ -1,4 +1,6 @@
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+import { productSlugExists } from "../../../lib/slug-exists";
 import { getProduct } from "../../products";
 import {
   absoluteUrl,
@@ -17,7 +19,7 @@ async function context(slug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const { mode, origin, product } = await context(slug);
-  if (!product) return { title: "Ürün bulunamadı | ALYA HOMES" };
+  if (!product) return { title: "Ürün | ALYA HOMES", robots: { index: false, follow: true } };
 
   const isShop = mode === "shop";
   const title = isShop
@@ -54,7 +56,7 @@ export async function generateMetadata({ params }) {
 export default async function ProductSeoLayout({ children, params }) {
   const { slug } = await params;
   const { mode, origin, product } = await context(slug);
-  if (!product) return children;
+  if (!product) { if (!(await productSlugExists(slug))) notFound(); return children; }
 
   const canonical = absoluteUrl(origin, `/products/${product.slug}`);
   const productSchema = {
@@ -84,7 +86,20 @@ export default async function ProductSeoLayout({ children, params }) {
             priceCurrency: "TRY",
             price: product.price,
             itemCondition: "https://schema.org/NewCondition",
+            availability: "https://schema.org/InStock",
             seller: { "@type": "Organization", name: "ALYA HOMES" },
+            shippingDetails: {
+              "@type": "OfferShippingDetails",
+              shippingRate: { "@type": "MonetaryAmount", value: Number(product.price) >= (Number(process.env.FREE_SHIPPING_THRESHOLD) || 1000) ? 0 : Number(process.env.STANDARD_SHIPPING_FEE) || 99, currency: "TRY" },
+              shippingDestination: { "@type": "DefinedRegion", addressCountry: "TR" },
+            },
+            hasMerchantReturnPolicy: {
+              "@type": "MerchantReturnPolicy",
+              applicableCountry: "TR",
+              returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+              merchantReturnDays: 14,
+              url: absoluteUrl(origin, "/iade-politikasi"),
+            },
           },
         }
       : {}),
