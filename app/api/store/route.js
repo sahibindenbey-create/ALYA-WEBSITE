@@ -1,3 +1,4 @@
+import { isCatalogRequest, stripPrices } from '../../../lib/catalog-mode';
 import { isAdminRequest, unauthorized } from '../../../lib/auth';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -110,10 +111,12 @@ async function syncNormalized(pool, state) {
   }
 }
 
-export async function GET() {
+export async function GET(request) {
   try {
     const { state, source } = await readStore();
-    return Response.json({ ...state, orders: [], source }, { headers: { 'Cache-Control': 'no-store' } });
+    const hide = isCatalogRequest(request) && !(await isAdminRequest(request));
+    const safe = hide ? stripPrices({ ...state, orders: [] }) : { ...state, orders: [] };
+    return Response.json({ ...safe, source }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     return Response.json({ ...empty, source: 'file', error: 'Veri kaynağına bağlanılamadı.' }, { status: 200 });
   }

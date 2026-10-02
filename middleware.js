@@ -58,6 +58,9 @@ export async function middleware(req) {
     path.startsWith('/admin') ||
     catalogBlockedPaths.some((p) => path === p || path.startsWith(`${p}/`));
 
+  // Merchant fiyat feed'i yalnızca mağaza sitesinde (katalogda fiyat gösterilmez)
+  if (catalogMode && path === '/google-merchant.xml') return new NextResponse('Not found', { status: 404, headers: { 'X-Robots-Tag': 'noindex' } });
+
   // Rehberler yalnızca katalog sitesinde
   if (!catalogMode && (path === '/rehberler' || path.startsWith('/rehberler/'))) {
     return NextResponse.redirect(new URL(`${path}${req.nextUrl.search}`, 'https://alyahomes.com'), 308);
@@ -113,5 +116,6 @@ export const config = {
     '/account/:path*',
     '/order-success/:path*',
     '/rehberler/:path*',
+    '/google-merchant.xml',
   ],
 };
