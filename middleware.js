@@ -58,6 +58,11 @@ export async function middleware(req) {
     path.startsWith('/admin') ||
     catalogBlockedPaths.some((p) => path === p || path.startsWith(`${p}/`));
 
+  // www -> çıplak alan adı (tekrarlayan içerik olmasın; canonical ile aynı)
+  if (host === 'www.alyahomes.com' || host === 'www.shop.alyahomes.com') {
+    return NextResponse.redirect(new URL(`${path}${req.nextUrl.search}`, base.replace('://www.', '://')), 308);
+  }
+
   // Merchant fiyat feed'i yalnızca mağaza sitesinde (katalogda fiyat gösterilmez)
   if (catalogMode && path === '/google-merchant.xml') return new NextResponse('Not found', { status: 404, headers: { 'X-Robots-Tag': 'noindex' } });
 
@@ -73,7 +78,8 @@ export async function middleware(req) {
     const r = NextResponse.next(); r.headers.set('X-Robots-Tag', 'noindex, nofollow'); return r;
   }
 
-  const isAdmin = await verifyAdminToken(req.cookies.get(ADMIN_COOKIE)?.value);
+  const needsAuthCheck = isApi || path === '/admin' || path.startsWith('/admin/');
+  const isAdmin = needsAuthCheck ? await verifyAdminToken(req.cookies.get(ADMIN_COOKIE)?.value) : false;
 
   // ---- Yönetim sayfaları ----
   if (path === '/admin' || path.startsWith('/admin/')) {
@@ -107,15 +113,6 @@ export async function middleware(req) {
 }
 
 export const config = {
-  matcher: [
-    '/admin/:path*',
-    '/api/:path*',
-    '/cart/:path*',
-    '/checkout/:path*',
-    '/wishlist/:path*',
-    '/account/:path*',
-    '/order-success/:path*',
-    '/rehberler/:path*',
-    '/google-merchant.xml',
-  ],
+  // Tüm sayfalar (www yönlendirmesi, noindex ve yönetici/API koruması için); statik varlıklar hariç
+  matcher: ['/((?!_next/static|_next/image|.*\\.(?:webp|png|jpg|jpeg|svg|ico|css|js|woff2?|mp4|webm)$).*)'],
 };

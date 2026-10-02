@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { products } from "../../products";
 import {guides} from "../../guides";
@@ -52,6 +53,7 @@ async function collectionContext(rawSlug) {
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const { mode, origin, decoded, detail } = await collectionContext(slug);
+  if (decoded !== "all" && !details[decoded]) return { title: "Koleksiyon bulunamadı | ALYA HOMES", robots: { index: false, follow: true } };
   const canonical = absoluteUrl(
     origin,
     decoded === "all"
@@ -93,7 +95,8 @@ export async function generateMetadata({ params }) {
 
 export default async function CollectionSeoLayout({ children, params }) {
   const { slug } = await params;
-  const { origin, decoded, detail, items } = await collectionContext(slug);
+  const { mode, origin, decoded, detail, items } = await collectionContext(slug);
+  if (decoded !== "all" && !details[decoded]) notFound();
   const canonical = absoluteUrl(
     origin,
     decoded === "all"
