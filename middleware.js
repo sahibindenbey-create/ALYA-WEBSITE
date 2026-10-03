@@ -19,6 +19,10 @@ const PUBLIC_API = [
   { m: 'POST', re: /^\/api\/payments$/, commerce: true },
   { m: 'GET',  re: /^\/api\/payments\/verify$/, commerce: true },
   { m: 'POST', re: /^\/api\/payments\/webhook$/ },     // route içinde HMAC imzası doğrulanır
+  { m: 'POST', re: /^\/api\/auth\/(request-code|verify-code|logout)$/, commerce: true },
+  { m: 'GET',  re: /^\/api\/auth\/me$/, commerce: true },
+  { m: 'GET',  re: /^\/api\/customers$/, commerce: true },   // route içinde: yalnızca kendi kaydı (oturum e-postası)
+  { m: 'PATCH', re: /^\/api\/customers$/, commerce: true },  // route içinde: yalnızca kendi kaydı
   { m: 'POST', re: /^\/api\/admin\/login$/ },
   { m: 'POST', re: /^\/api\/admin\/logout$/ },
 ];
