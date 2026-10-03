@@ -31,7 +31,7 @@ export default function Wishlist(){
         <div className="catalog-grid wishlist-grid">
           {wishlist.map(p=><article className="catalog-card wishlist-card" key={p.slug}>
             <Link href={`/products/${p.slug}`} className="wishlist-product-link">
-              <div className="catalog-image"><img src={p.image} alt={p.name}/></div>
+              <div className="catalog-image"><img src={p.image} alt={p.name} loading="lazy" decoding="async"/></div>
               <span className="code">{p.code}</span>
               <h2>{p.name}</h2>
               <p>{money(p.price)}</p>

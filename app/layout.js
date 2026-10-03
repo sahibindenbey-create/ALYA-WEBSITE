@@ -1,3 +1,4 @@
+import StyledJsxRegistry from "./StyledJsxRegistry";
 import './globals.css';
 import './alyahomes-reference.css';
 import './home.css';
@@ -22,6 +23,7 @@ import './retail-redesign.css';
 import './cookie-consent.css';
 import './guides.css';
 import './collection-guides.css';
+import './a11y-perf.css';
 import {headers} from 'next/headers';
 import {StoreProvider} from './store';
 import SiteHeader from './components/SiteHeader';
@@ -69,5 +71,5 @@ export default async function RootLayout({children}){
   const measurementId=process.env.GA_MEASUREMENT_ID||process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID||'G-F686G8HV49';
   const organizationSchema={'@context':'https://schema.org','@type':'Organization','@id':`${origin}/#organization`,name:COMPANY.shortName,legalName:COMPANY.name,url:origin,logo:absoluteUrl(origin,'/alya-homes-logo.png'),email:COMPANY.email,telephone:COMPANY.phone,address:{'@type':'PostalAddress',streetAddress:'Cevizli Mah. Tugay Yolu Cad. Maltepe Park AVM No:67/B4-18/19',addressLocality:'Maltepe',addressRegion:'İstanbul',addressCountry:'TR'},...(mode==='shop'?{hasMerchantReturnPolicy:{'@type':'MerchantReturnPolicy',applicableCountry:'TR',returnPolicyCountry:'TR',returnPolicyCategory:'https://schema.org/MerchantReturnFiniteReturnWindow',merchantReturnDays:14,returnMethod:'https://schema.org/ReturnByMail',returnFees:'https://schema.org/ReturnShippingFees',merchantReturnLink:absoluteUrl(origin,'/iade-politikasi')}}:{})};
   const websiteSchema={'@context':'https://schema.org','@type':'WebSite','@id':`${origin}/#website`,url:origin,name:'ALYA HOMES',inLanguage:'tr-TR',publisher:{'@id':`${origin}/#organization`}};
-  return <html lang="tr"><body><StoreProvider><SiteModeProvider mode={mode}><I18nProvider><SiteHeader/><ScrollHeaderController/>{children}<SiteFooter/><CookieConsentBanner enabled={Boolean(measurementId)}/></I18nProvider></SiteModeProvider></StoreProvider><GoogleAnalytics measurementId={measurementId}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(organizationSchema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(websiteSchema)}}/></body></html>;
+  return <html lang="tr"><body><StyledJsxRegistry><StoreProvider><SiteModeProvider mode={mode}><I18nProvider><a className="skip-link" href="#main-content">İçeriğe geç</a><SiteHeader/><ScrollHeaderController/><div id="main-content" tabIndex={-1}>{children}</div><SiteFooter/><CookieConsentBanner enabled={Boolean(measurementId)}/></I18nProvider></SiteModeProvider></StoreProvider></StyledJsxRegistry><GoogleAnalytics measurementId={measurementId}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(organizationSchema)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:serializeJsonLd(websiteSchema)}}/></body></html>;
 }

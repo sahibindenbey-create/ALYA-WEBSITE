@@ -130,7 +130,7 @@ export default function Home() {
 
       <section className="feature">
         <div className="feature-image">
-          <img src={featureDryingImage} alt={dryingProduct.name} />
+          <img src={featureDryingImage} alt={dryingProduct.name} loading="lazy" decoding="async" />
         </div>
         <div className="feature-copy">
           <small>{t("ALAN KAZANDIRAN ÇÖZÜMLER")}</small>
@@ -171,7 +171,7 @@ export default function Home() {
         <div className="category-grid">
           <Link href="/collections/kurutmalıklar" className="category">
             <div className="category-image">
-              <img src={dryingCategoryImage} alt="Kurutmalıklar" />
+              <img src={dryingCategoryImage} alt="Kurutmalıklar" loading="lazy" decoding="async" />
             </div>
             <div>
               <h3>{category("Kurutmalıklar")}</h3>
@@ -182,7 +182,7 @@ export default function Home() {
           </Link>
           <Link href="/collections/ütü%20masaları" className="category">
             <div className="category-image">
-              <img src={boardCategoryImage} alt="Ütü masaları" />
+              <img src={boardCategoryImage} alt="Ütü masaları" loading="lazy" decoding="async" />
             </div>
             <div>
               <h3>{category("Ütü Masaları")}</h3>

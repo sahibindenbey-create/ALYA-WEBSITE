@@ -25,7 +25,7 @@ export default function SiteFooter(){
  return <footer className="alya-footer">
   <div className="alya-footer-inner">
    <div className="alya-footer-brand">
-    <Link href="/" className="footer-brand"><img src="/alya-homes-logo-footer.png" alt="ALYA HOMES"/></Link>
+    <Link href="/" className="footer-brand"><img src="/alya-homes-logo-footer.png" alt="ALYA HOMES" loading="lazy" decoding="async"/></Link>
     <p>{t('Ev yaşam ürünlerinde işlevsellik, dayanıklılık ve zamansız tasarım.')}</p>
     <div className="footer-company">
       <strong>{COMPANY.name}</strong>
