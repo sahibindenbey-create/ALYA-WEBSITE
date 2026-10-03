@@ -35,6 +35,10 @@ export default {
       { source: '/:path*', headers: securityHeaders },
       { source: '/admin/:path*', headers: [{ key: 'Cache-Control', value: 'no-store' }] },
       { source: '/api/:path*', headers: [{ key: 'Cache-Control', value: 'no-store' }] },
+      // Ürün görselleri/videoları ve logolar: uzun süre önbellek (tekrar ziyaret ve LCP için)
+      { source: '/products-real/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }] },
+      { source: '/products/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }] },
+      ...['/alya-homes-logo.png','/alya-homes-logo-footer.png'].map((source) => ({ source, headers: [{ key: 'Cache-Control', value: 'public, max-age=2592000, stale-while-revalidate=86400' }] })),
     ];
   },
 };
