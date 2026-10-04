@@ -10,3 +10,5 @@ a:focus-visible,button:focus-visible,[role="button"]:focus-visible,input:focus-v
   .catalog-card-wrap h2 a,.catalog-card-wrap h3 a,.catalog-card-wrap h4 a{display:inline-flex;align-items:center;min-height:44px}
   .toolbar-actions select,.toolbar-actions button{min-height:44px}
 }
+
+.auth-msg{color:#b3261e;font-size:11px;margin:0}

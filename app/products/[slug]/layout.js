@@ -8,6 +8,7 @@ import {
   productSeoDescription,
   serializeJsonLd,
   siteModeFromHost,
+  SHOP_ORIGIN,
 } from "../../seo";
 
 async function context(slug) {
@@ -26,7 +27,10 @@ export async function generateMetadata({ params }) {
     ? `${product.name} | ${product.category} Satın Al | ALYA HOMES`
     : `${product.name} ${product.code} | ${product.category} | ALYA HOMES`;
   const description = productSeoDescription(product, isShop);
-  const canonical = absoluteUrl(origin, `/products/${product.slug}`);
+  // Aynı ürün iki sitede de var: katalogdaki ürün sayfasının canonical'i mağaza sayfasıdır (yinelenen içerik olmasın).
+  // Eski davranışa dönmek için ortam değişkeni: CATALOG_PRODUCT_CANONICAL=self
+  const canonicalOrigin = mode === "catalog" && process.env.CATALOG_PRODUCT_CANONICAL !== "self" ? SHOP_ORIGIN : origin;
+  const canonical = absoluteUrl(canonicalOrigin, `/products/${product.slug}`);
   const image = absoluteUrl(origin, product.image);
 
   return {

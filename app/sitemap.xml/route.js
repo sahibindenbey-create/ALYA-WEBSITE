@@ -59,7 +59,8 @@ export async function GET() {
         frequency,
       }),
     ),
-    ...products.map((product) =>
+    // Katalogdaki ürün sayfalarının canonical'i mağazadadır; site haritasında yalnızca canonical adresler yer alır
+    ...(mode === "catalog" && process.env.CATALOG_PRODUCT_CANONICAL !== "self" ? [] : products).map((product) =>
       urlNode({
         location: absoluteUrl(origin, `/products/${product.slug}`),
         priority: "0.8",
