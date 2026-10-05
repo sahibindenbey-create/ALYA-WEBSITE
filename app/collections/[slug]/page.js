@@ -1,4 +1,5 @@
 "use client";
+import {collectionKey} from '../../../lib/urls';
 import Link from 'next/link';
 import {ArrowRight, ChevronDown, SlidersHorizontal, X, Heart, ShoppingBag, Check} from 'lucide-react';
 import {use, useMemo, useState} from 'react';
@@ -13,7 +14,7 @@ const categoryTitle=raw=>categoryTitles[raw.toLocaleLowerCase('tr-TR')]||raw.rep
 export default function CollectionPage({params}){
  const {isCatalogMode}=useSiteMode();
  const {t,category}=useI18n();
- const {slug}=use(params);const raw=decodeURIComponent(slug||'all');const title=raw==='all'?'Tüm Ürünler':categoryTitle(raw);
+ const {slug}=use(params);const raw=collectionKey(slug);const title=raw==='all'?'Tüm Ürünler':categoryTitle(raw);
  const [sort,setSort]=useState('featured'),[query,setQuery]=useState(''),[material,setMaterial]=useState('all'),[minDry,setMinDry]=useState('all'),[filtersOpen,setFiltersOpen]=useState(false),[added,setAdded]=useState('');
  const {toggleWishlist,isWishlisted,getProducts,addToCart}=useStore();const products=getProducts();const base=raw==='all'?products:products.filter(p=>p.category.toLowerCase()===raw.toLowerCase());
  const materials=useMemo(()=>[...new Set(base.map(p=>p.specs?.malzeme).filter(Boolean))],[base]);

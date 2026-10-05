@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { LEGACY_REDIRECTS } from './lib/urls';
 import { ADMIN_COOKIE, verifyAdminToken, rateLimit, clientIp } from './lib/auth';
 
 const configuredCatalogMode =
@@ -66,6 +67,12 @@ export async function middleware(req) {
   if (host === 'www.alyahomes.com' || host === 'www.shop.alyahomes.com') {
     return NextResponse.redirect(new URL(`${path}${req.nextUrl.search}`, base.replace('://www.', '://')), 308);
   }
+
+  // Eski (boşluklu/Türkçe karakterli/alt çizgili) adresler -> temiz adresler (kalıcı yönlendirme)
+  try {
+    const legacy = LEGACY_REDIRECTS[decodeURIComponent(path).toLocaleLowerCase('tr-TR')];
+    if (legacy) return NextResponse.redirect(new URL(`${legacy}${req.nextUrl.search}`, base), 308);
+  } catch { /* geçersiz kodlama: devam */ }
 
   // Merchant fiyat feed'i yalnızca mağaza sitesinde (katalogda fiyat gösterilmez)
   if (catalogMode && path === '/google-merchant.xml') return new NextResponse('Not found', { status: 404, headers: { 'X-Robots-Tag': 'noindex' } });

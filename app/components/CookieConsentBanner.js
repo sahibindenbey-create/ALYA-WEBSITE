@@ -43,7 +43,7 @@ export default function CookieConsentBanner({enabled}){
   return <section className="cookie-consent" role="dialog" aria-modal="true" aria-labelledby="cookie-consent-title">
     <div>
       <strong id="cookie-consent-title">Çerez tercihleri</strong>
-      <p>Site işlevleri için zorunlu çerezleri kullanıyoruz. İzin verirseniz site kullanımını anlamak ve deneyimi geliştirmek için anonimleştirilmiş ölçüm çerezleri de kullanacağız. Ayrıntılar için <Link href="/cerez_politikasi">Çerez Politikası</Link>.</p>
+      <p>Site işlevleri için zorunlu çerezleri kullanıyoruz. İzin verirseniz site kullanımını anlamak ve deneyimi geliştirmek için anonimleştirilmiş ölçüm çerezleri de kullanacağız. Ayrıntılar için <Link href="/cerez-politikasi">Çerez Politikası</Link>.</p>
     </div>
     <div className="cookie-consent-actions">
       <button type="button" className="cookie-reject" onClick={()=>save(false)}>Yalnızca zorunlu</button>

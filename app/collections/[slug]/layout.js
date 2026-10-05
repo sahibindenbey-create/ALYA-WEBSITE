@@ -1,3 +1,4 @@
+import { collectionKey, collectionHref } from "../../../lib/urls";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -38,7 +39,7 @@ async function collectionContext(rawSlug) {
   const host = (await headers()).get("host") || "";
   const mode = siteModeFromHost(host);
   const origin = originForMode(mode);
-  const decoded = decodeURIComponent(rawSlug || "all").toLocaleLowerCase("tr-TR");
+  const decoded = collectionKey(rawSlug);
   const detail = details[decoded] || details.all;
   const items =
     decoded === "all"
@@ -58,7 +59,7 @@ export async function generateMetadata({ params }) {
     origin,
     decoded === "all"
       ? "/collections/all"
-      : `/collections/${encodeURIComponent(decoded)}`,
+      : collectionHref(decoded),
   );
   const title =
     mode === "shop"
@@ -101,7 +102,7 @@ export default async function CollectionSeoLayout({ children, params }) {
     origin,
     decoded === "all"
       ? "/collections/all"
-      : `/collections/${encodeURIComponent(decoded)}`,
+      : collectionHref(decoded),
   );
   const itemListSchema = {
     "@context": "https://schema.org",

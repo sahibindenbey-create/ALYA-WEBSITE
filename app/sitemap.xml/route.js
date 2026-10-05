@@ -12,18 +12,19 @@ export const dynamic = "force-dynamic";
 const staticPages = [
   ["/", "1.0", "weekly"],
   ["/collections/all", "0.9", "weekly"],
-  ["/collections/kurutmal%C4%B1klar", "0.9", "weekly"],
-  ["/collections/%C3%BCt%C3%BC%20masalar%C4%B1", "0.9", "weekly"],
+  ["/collections/kurutmaliklar", "0.9", "weekly"],
+  ["/collections/utu-masalari", "0.9", "weekly"],
   ["/yardim", "0.5", "monthly"],
+  ["/hakkimizda", "0.5", "monthly"],
   ["/iletisim", "0.5", "monthly"],
   ["/iade-politikasi", "0.5", "monthly"],
-  ["/guvenli_alisveris", "0.4", "monthly"],
+  ["/guvenli-alisveris", "0.4", "monthly"],
   ["/guvenlik-sertifikalari", "0.3", "yearly"],
-  ["/kisisel_verilerin_korunmasi", "0.2", "yearly"],
-  ["/cerez_politikasi", "0.2", "yearly"],
-  ["/uyelik_sozlesmesi", "0.2", "yearly"],
-  ["/kullanim_kosullari", "0.2", "yearly"],
-  ["/iletisim_aydinlatma_metni", "0.2", "yearly"],
+  ["/kisisel-verilerin-korunmasi", "0.2", "yearly"],
+  ["/cerez-politikasi", "0.2", "yearly"],
+  ["/uyelik-sozlesmesi", "0.2", "yearly"],
+  ["/kullanim-kosullari", "0.2", "yearly"],
+  ["/iletisim-aydinlatma-metni", "0.2", "yearly"],
   ["/ticari-iletisim-bilgilendirme-metni", "0.2", "yearly"],
 ];
 
@@ -35,8 +36,8 @@ const escapeXml = (value) =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&apos;");
 
-function urlNode({ location, priority, frequency, image, imageTitle }) {
-  return `<url><loc>${escapeXml(location)}</loc><changefreq>${frequency}</changefreq><priority>${priority}</priority>${
+function urlNode({ location, priority, frequency, image, imageTitle, lastmod }) {
+  return `<url><loc>${escapeXml(location)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<changefreq>${frequency}</changefreq><priority>${priority}</priority>${
     image
       ? `<image:image><image:loc>${escapeXml(image)}</image:loc><image:title>${escapeXml(imageTitle)}</image:title></image:image>`
       : ""
@@ -49,11 +50,12 @@ export async function GET() {
   const origin = originForMode(mode);
   const guidePages=mode==="catalog"?[
     ["/rehberler","0.8","weekly"],
-    ...guides.map(guide=>[`/rehberler/${guide.slug}`,"0.7","monthly"]),
+    ...guides.map(guide=>[`/rehberler/${guide.slug}`,"0.7","monthly",guide.modified||guide.published]),
   ]:[];
   const nodes = [
-    ...[...staticPages,...guidePages].map(([path, priority, frequency]) =>
+    ...[...staticPages,...guidePages].map(([path, priority, frequency, lastmod]) =>
       urlNode({
+        lastmod,
         location: absoluteUrl(origin, path),
         priority,
         frequency,
