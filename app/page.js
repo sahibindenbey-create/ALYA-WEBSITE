@@ -49,5 +49,11 @@ export async function generateMetadata() {
 }
 
 export default function Home() {
-  return <HomePage />;
+  return (
+    <>
+      {/* LCP: ana görsel CSS arka planı olduğundan tarayıcıya erken bildirilir */}
+      <link rel="preload" as="image" href="/home-hero-v2.webp" type="image/webp" fetchPriority="high" />
+      <HomePage />
+    </>
+  );
 }

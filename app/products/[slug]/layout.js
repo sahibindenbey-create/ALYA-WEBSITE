@@ -1,4 +1,6 @@
 import { headers } from "next/headers";
+import fs from "fs";
+import path from "path";
 import { notFound } from "next/navigation";
 import { productSlugExists } from "../../../lib/slug-exists";
 import { getProduct } from "../../products";
@@ -63,6 +65,21 @@ export default async function ProductSeoLayout({ children, params }) {
   if (!product) { if (!(await productSlugExists(slug))) notFound(); return children; }
 
   const canonical = absoluteUrl(origin, `/products/${product.slug}`);
+  // Ürün videosu (public/products-real/<kod>/product-video.mp4) varsa VideoObject işaretlemesi
+  const VIDEO_DATES = { "1402": "2026-09-29", "1403": "2026-09-29" };
+  const folder = String(product.code || "").match(/\d{4}$/)?.[0] || "";
+  const hasVideo = Boolean(VIDEO_DATES[folder]) && fs.existsSync(path.join(process.cwd(), "public", "products-real", folder, "product-video.mp4"));
+  const videoSchema = hasVideo
+    ? {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        name: `${product.name} ürün videosu`,
+        description: `${product.name} (${product.code}) ürününün tanıtım videosu.`,
+        thumbnailUrl: [absoluteUrl(origin, product.image)],
+        uploadDate: VIDEO_DATES[folder],
+        contentUrl: absoluteUrl(origin, `/products-real/${folder}/product-video.mp4`),
+      }
+    : null;
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -74,6 +91,7 @@ export default async function ProductSeoLayout({ children, params }) {
     category: product.category,
     brand: { "@type": "Brand", name: "ALYA HOMES" },
     manufacturer: { "@type": "Organization", name: "ALYA HOMES" },
+    ...(videoSchema ? { video: { "@type": "VideoObject", name: videoSchema.name, description: videoSchema.description, thumbnailUrl: videoSchema.thumbnailUrl, uploadDate: videoSchema.uploadDate, contentUrl: videoSchema.contentUrl } } : {}),
     url: canonical,
     additionalProperty: Object.entries(product.specs || {}).map(
       ([name, value]) => ({
@@ -96,6 +114,7 @@ export default async function ProductSeoLayout({ children, params }) {
               "@type": "OfferShippingDetails",
               shippingRate: { "@type": "MonetaryAmount", value: Number(product.price) >= (Number(process.env.FREE_SHIPPING_THRESHOLD) || 1000) ? 0 : Number(process.env.STANDARD_SHIPPING_FEE) || 99, currency: "TRY" },
               shippingDestination: { "@type": "DefinedRegion", addressCountry: "TR" },
+              ...(process.env.SHIPPING_HANDLING_DAYS_MAX && process.env.SHIPPING_TRANSIT_DAYS_MAX ? { deliveryTime: { "@type": "ShippingDeliveryTime", handlingTime: { "@type": "QuantitativeValue", minValue: Number(process.env.SHIPPING_HANDLING_DAYS_MIN || 0), maxValue: Number(process.env.SHIPPING_HANDLING_DAYS_MAX), unitCode: "DAY" }, transitTime: { "@type": "QuantitativeValue", minValue: Number(process.env.SHIPPING_TRANSIT_DAYS_MIN || 1), maxValue: Number(process.env.SHIPPING_TRANSIT_DAYS_MAX), unitCode: "DAY" } } } : {}),
             },
             hasMerchantReturnPolicy: {
               "@type": "MerchantReturnPolicy",
@@ -147,6 +166,9 @@ export default async function ProductSeoLayout({ children, params }) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(breadcrumbSchema) }}
       />
+      {videoSchema && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(videoSchema) }} />
+      )}
     </>
   );
 }

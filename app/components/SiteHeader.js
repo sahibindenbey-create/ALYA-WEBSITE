@@ -1,4 +1,5 @@
 "use client";
+import { collectionHref } from '../../lib/urls';
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import {
@@ -95,7 +96,7 @@ export default function SiteHeader() {
                 onMouseEnter={() => setHovered(category)}
               >
                 <Link
-                  href={`/collections/${encodeURIComponent(category.toLowerCase())}`}
+                  href={collectionHref(category)}
                   aria-haspopup="true"
                   aria-expanded={hovered === category}
                 >
@@ -113,7 +114,7 @@ export default function SiteHeader() {
                           <h3>{categoryLabel(category)}</h3>
                         </div>
                         <Link
-                          href={`/collections/${encodeURIComponent(category.toLowerCase())}`}
+                          href={collectionHref(category)}
                           onClick={() => setHovered(null)}
                         >
                           {t("Tümünü gör")} <ArrowRight size={15} />
@@ -188,7 +189,7 @@ export default function SiteHeader() {
           {navCategories.map((c) => (
             <Link
               key={c}
-              href={`/collections/${encodeURIComponent(c.toLowerCase())}`}
+              href={collectionHref(c)}
               onClick={() => setMenuOpen(false)}
             >
               {categoryLabel(c)}

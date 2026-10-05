@@ -57,7 +57,7 @@ export async function generateMetadata(){
     publisher:'ALYA HOMES',
     category:'Ev yaşam ürünleri',
     manifest:'/manifest.webmanifest',
-    icons:{icon:[{url:'/icon-192.png',sizes:'192x192',type:'image/png'},{url:'/icon-512.png',sizes:'512x512',type:'image/png'}],apple:'/icon-192.png'},
+    icons:{icon:[{url:'/favicon.ico',sizes:'48x48'},{url:'/icon-192.png',sizes:'192x192',type:'image/png'},{url:'/icon-512.png',sizes:'512x512',type:'image/png'}],apple:'/icon-192.png'},
     robots:{index:true,follow:true,googleBot:{index:true,follow:true,'max-image-preview':'large','max-snippet':-1,'max-video-preview':-1}},
     openGraph:{type:'website',locale:'tr_TR',siteName:'ALYA HOMES',title,description,images:[{url:absoluteUrl(origin,'/home-hero-v2.webp'),width:1600,height:900,alt:'ALYA HOMES ev yaşam ürünleri'}]},
     twitter:{card:'summary_large_image',title,description,images:[absoluteUrl(origin,'/home-hero-v2.webp')]},

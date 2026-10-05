@@ -138,7 +138,7 @@ export default function Home() {
           <p>
             {t("Katlanabilir ve kompakt ürünlerle yaşam alanınızı verimli kullanın. Sağlam malzemeler ve sade çizgiler günlük rutininize kolaylık katar.")}
           </p>
-          <Link href="/collections/kurutmalıklar" className="button outline">
+          <Link href="/collections/kurutmaliklar" className="button outline">
             {t("Koleksiyonu incele")} <ArrowRight size={16} />
           </Link>
         </div>
@@ -169,7 +169,7 @@ export default function Home() {
           </div>
         </div>
         <div className="category-grid">
-          <Link href="/collections/kurutmalıklar" className="category">
+          <Link href="/collections/kurutmaliklar" className="category">
             <div className="category-image">
               <img src={dryingCategoryImage} alt="Kurutmalıklar" loading="lazy" decoding="async" />
             </div>
@@ -180,7 +180,7 @@ export default function Home() {
               </span>
             </div>
           </Link>
-          <Link href="/collections/ütü%20masaları" className="category">
+          <Link href="/collections/utu-masalari" className="category">
             <div className="category-image">
               <img src={boardCategoryImage} alt="Ütü masaları" loading="lazy" decoding="async" />
             </div>

@@ -8,20 +8,20 @@ import {useSiteMode} from '../site-mode';
 import {COOKIE_SETTINGS_EVENT} from './GoogleAnalytics';
 
 const customerLinks=[
- ['Rehberler','https://alyahomes.com/rehberler'],['Yardım Merkezi','/yardim'],['İletişim','/iletisim'],['İade Politikası','/iade-politikasi'],['Güvenli Alışveriş','/guvenli_alisveris'],['Kampanyalar','/kampanyalar']
+ ['Rehberler','https://alyahomes.com/rehberler'],['Yardım Merkezi','/yardim'],['Hakkımızda','/hakkimizda'],['İletişim','/iletisim'],['İade Politikası','/iade-politikasi'],['Güvenli Alışveriş','/guvenli-alisveris'],['Kampanyalar','/kampanyalar']
 ];
 const legalLinks=[
- ['KVKK / Kişisel Verilerin Korunması','/kisisel_verilerin_korunmasi'],['Çerez Politikası','/cerez_politikasi'],['Üyelik Sözleşmesi','/uyelik_sozlesmesi'],['Kullanım Koşulları','/kullanim_kosullari']
+ ['KVKK / Kişisel Verilerin Korunması','/kisisel-verilerin-korunmasi'],['Çerez Politikası','/cerez-politikasi'],['Üyelik Sözleşmesi','/uyelik-sozlesmesi'],['Kullanım Koşulları','/kullanim-kosullari']
 ];
 const communicationLinks=[
- ['İletişim Aydınlatma Metni','/iletisim_aydinlatma_metni'],['Ticari İletişim Bilgilendirme Metni','/ticari-iletisim-bilgilendirme-metni'],['Güvenlik Sertifikaları','/guvenlik-sertifikalari']
+ ['İletişim Aydınlatma Metni','/iletisim-aydinlatma-metni'],['Ticari İletişim Bilgilendirme Metni','/ticari-iletisim-bilgilendirme-metni'],['Güvenlik Sertifikaları','/guvenlik-sertifikalari']
 ];
 
 export default function SiteFooter(){
  const {isCatalogMode}=useSiteMode();
  const {t}=useI18n();
- const visibleCustomerLinks=isCatalogMode?customerLinks.filter(([,href])=>!['/iade-politikasi','/guvenli_alisveris','/kampanyalar'].includes(href)):customerLinks;
- const visibleLegalLinks=isCatalogMode?legalLinks.filter(([,href])=>href!=='/uyelik_sozlesmesi'):legalLinks;
+ const visibleCustomerLinks=isCatalogMode?customerLinks.filter(([,href])=>!['/iade-politikasi','/guvenli-alisveris','/kampanyalar'].includes(href)):customerLinks;
+ const visibleLegalLinks=isCatalogMode?legalLinks.filter(([,href])=>href!=='/uyelik-sozlesmesi'):legalLinks;
  return <footer className="alya-footer">
   <div className="alya-footer-inner">
    <div className="alya-footer-brand">
