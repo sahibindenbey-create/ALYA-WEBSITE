@@ -380,7 +380,7 @@ export const products = [
     "PROBOARD STEEL",
     "AHBRD1601",
     "Ütü Masaları",
-    "/products/product-35.jpg",
+    real("1601", "1601-01.webp"),
     "Monoblok çelik tablalı ve çelik ayaklı PROBOARD STEEL.",
     {
       ütüleme: "45 × 120 cm",
@@ -413,7 +413,7 @@ export const products = [
     "SLIDE STEEL",
     "AHBRD1609",
     "Ütü Masaları",
-    "/products/product-39.jpg",
+    real("1609", "1609-01.webp"),
     "Çelik ayaklı, kayar/katlanır başlıklı ütü masası.",
     {
       ütüleme: "45 × 120 cm",
