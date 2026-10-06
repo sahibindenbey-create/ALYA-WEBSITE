@@ -249,7 +249,7 @@ export default function Home() {
         </div>
         <div>
           <Sparkles size={20} />
-          <strong>{t("3 yıl garanti")}</strong>
+          <strong>{t("2 yıl garanti")}</strong>
           <span>{t("Güvenle kullanın")}</span>
         </div>
         <div>

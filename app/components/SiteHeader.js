@@ -57,7 +57,7 @@ export default function SiteHeader() {
       <header>
         {!isCatalogMode && <div className="utility">
           <div className="utility-links">
-            <span>3 yıl garanti</span>
+            <span>2 yıl garanti</span>
             <span>30 gün içinde kolay iade</span>
             <span>Güvenli ödeme</span>
             <span>Türkiye / TRY</span>
