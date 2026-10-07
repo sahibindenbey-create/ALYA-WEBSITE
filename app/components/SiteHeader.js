@@ -140,6 +140,7 @@ export default function SiteHeader() {
                 )}
               </div>
             ))}
+            <Link href="/hakkimizda">{t("Hakkımızda")}</Link>
           </nav>
           <div className="actions">
             {isCatalogMode ? (
@@ -196,6 +197,9 @@ export default function SiteHeader() {
               <ArrowRight size={16} />
             </Link>
           ))}
+          <Link href="/hakkimizda" onClick={() => setMenuOpen(false)}>
+            {t("Hakkımızda")} <ArrowRight size={16} />
+          </Link>
           {isCatalogMode ? (
             <>
               <div className="catalog-mobile-language"><LanguageSelector mobile/></div>
