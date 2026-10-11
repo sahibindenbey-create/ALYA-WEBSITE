@@ -8,7 +8,7 @@ import {useSiteMode} from '../site-mode';
 import {COOKIE_SETTINGS_EVENT} from './GoogleAnalytics';
 
 const customerLinks=[
- ['Rehberler','https://alyahomes.com/rehberler'],['Yardım Merkezi','/yardim'],['Hakkımızda','/hakkimizda'],['İletişim','/iletisim'],['İade Politikası','/iade-politikasi'],['Güvenli Alışveriş','/guvenli-alisveris'],['Kampanyalar','/kampanyalar']
+ ['Rehberler','https://alyahomes.com/rehberler'],['Yardım Merkezi','/yardim'],['Hakkımızda','/hakkimizda'],['İletişim','/iletisim'],['İade Politikası','/iade-politikasi'],['Mesafeli Satış Sözleşmesi','/mesafeli-satis-sozlesmesi'],['Ön Bilgilendirme Formu','/on-bilgilendirme-formu'],['Teslimat ve Kargo','/teslimat-ve-kargo'],['Güvenli Alışveriş','/guvenli-alisveris'],['Kampanyalar','/kampanyalar']
 ];
 const legalLinks=[
  ['KVKK / Kişisel Verilerin Korunması','/kisisel-verilerin-korunmasi'],['Çerez Politikası','/cerez-politikasi'],['Üyelik Sözleşmesi','/uyelik-sozlesmesi'],['Kullanım Koşulları','/kullanim-kosullari']

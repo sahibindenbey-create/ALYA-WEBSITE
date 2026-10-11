@@ -20,3 +20,5 @@ a:focus-visible,button:focus-visible,[role="button"]:focus-visible,input:focus-v
 .installment-card th,.installment-card td{padding:8px 6px;text-align:center;border-top:1px solid #eee}
 .installment-card thead th{font-weight:600;background:#fff}
 .installments-note{margin:12px 0 0;font-size:11px;color:#777;line-height:1.5}
+
+.checkout-consent{display:flex;gap:10px;align-items:flex-start;margin:6px 0 14px;font-size:13px;line-height:1.5}.checkout-consent input{margin-top:3px;flex:none}.checkout-consent a{text-decoration:underline;text-underline-offset:3px}
