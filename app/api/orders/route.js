@@ -59,6 +59,7 @@ export async function POST(req){
   const orderNo=String(b.id||'').trim();
   if(!/^ALY-[A-Za-z0-9-]{4,56}$/.test(orderNo))return Response.json({error:'Geçersiz sipariş numarası'},{status:400});
   const customer=b.customer||{};
+  if(!admin&&customer.termsAccepted!==true)return Response.json({error:'Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi onayı gereklidir.'},{status:400});
   const email=String(customer.email||'').trim().toLowerCase();
   if(!email||email.length>320||!email.includes('@'))return Response.json({error:'Geçerli e-posta adresi gerekli'},{status:400});
   const paymentMethod=String(customer.paymentMethod||customer.payment||'').trim();
@@ -99,7 +100,7 @@ export async function POST(req){
    .input('sameAddress',sql.Bit,customer.sameAddress?1:0)
    .query(`INSERT dbo.AlyaOrders(OrderNo,CustomerId,Status,PaymentMethod,PaymentStatus,Carrier,TrackingNumber,Subtotal,Shipping,Total,CreatedAt,CustomerType,CompanyName,TaxNumber,TaxOffice,IdentityNumber,BillingAddressJson,ShippingAddressJson,SameAddress) OUTPUT INSERTED.Id VALUES(@no,@customerId,@status,@payment,@paymentStatus,@carrier,@tracking,@subtotal,@shipping,@total,@created,@customerType,@companyName,@taxNumber,@taxOffice,@identityNumber,@billingJson,@shippingJson,@sameAddress)`);
   const orderId=ins.recordset[0].Id;
-  await new sql.Request(tx).input('orderId',sql.BigInt,orderId).input('status',sql.NVarChar(60),status).query('INSERT dbo.AlyaOrderStatusHistory(OrderId,Status,Note) VALUES(@orderId,@status,N\'Sipariş oluşturuldu\')');
+  await new sql.Request(tx).input('orderId',sql.BigInt,orderId).input('status',sql.NVarChar(60),status).input('note',sql.NVarChar(500),customer.termsAccepted===true?`Sipariş oluşturuldu. Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi elektronik ortamda onaylandı (${String(customer.termsAcceptedAt||new Date().toISOString()).slice(0,30)})`:'Sipariş oluşturuldu').query('INSERT dbo.AlyaOrderStatusHistory(OrderId,Status,Note) VALUES(@orderId,@status,@note)');
   for(const item of items)await new sql.Request(tx).input('orderId',sql.BigInt,orderId).input('slug',sql.NVarChar(180),item.slug).input('code',sql.NVarChar(80),item.code).input('name',sql.NVarChar(250),item.name).input('unit',sql.Decimal(18,2),item.price).input('qty',sql.Int,item.qty).query('INSERT dbo.AlyaOrderItems(OrderId,ProductSlug,ProductCode,ProductName,UnitPrice,Quantity) VALUES(@orderId,@slug,@code,@name,@unit,@qty)');
   await tx.commit();
   return Response.json({ok:true,source:'sql',stockUpdated:true,id:orderId,orderNo,subtotal,shipping,total});
