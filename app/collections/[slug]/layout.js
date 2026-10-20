@@ -15,12 +15,12 @@ const details = {
   all: {
     title: "Tüm Ürünler",
     description:
-      "ALYA HOMES kurutmalık ve ütü masası koleksiyonunu keşfedin. İşlevsel, dayanıklı ve yer kazandıran ev yaşam ürünleri.",
+      "ALYA HOMES çamaşır kurutma askısı ve ütü masası koleksiyonunu keşfedin. İşlevsel, dayanıklı ve yer kazandıran ev yaşam ürünleri.",
   },
   "kurutmalıklar": {
-    title: "Çamaşır Kurutmalıkları",
+    title: "Çamaşır Kurutma Askıları",
     description:
-      "Katlanabilir, balkon tipi ve kanatlı ALYA HOMES çamaşır kurutmalıkları. Alüminyum ve dayanıklı gövde seçeneklerini inceleyin.",
+      "Katlanabilir, balkon tipi ve kanatlı ALYA HOMES çamaşır kurutma askıları. Alüminyum gövdesi sayesinde paslanmaz, hafif ve uzun ömürlü modelleri inceleyin.",
   },
   "ütü masaları": {
     title: "Ütü Masaları",

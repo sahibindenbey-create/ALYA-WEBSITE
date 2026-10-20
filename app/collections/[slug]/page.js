@@ -9,7 +9,7 @@ import {useSiteMode} from '../../site-mode';
 const money=n=>n==null?'Fiyat için iletişime geçin':new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY',maximumFractionDigits:0}).format(n);
 const drying=p=>{const m=String(p.specs?.kurutma||'').match(/[0-9]+/);return m?Number(m[0]):0;};
 const categoryTitles={'kurutmalıklar':'Kurutmalıklar','ütü masaları':'Ütü Masaları','tüm ürünler':'Tüm Ürünler'};
-const categoryCopy={'Kurutmalıklar':'İç ve dış mekân kullanımı için alüminyum ve paslanmaz gövdeli, kolay saklanan kurutmalık çözümleri.','Ütü Masaları':'Alüminyum ve çelik gövdeli, farklı kullanım ihtiyaçlarına göre tasarlanmış ütü masalarını keşfedin.','Tüm Ürünler':'Ev yaşam alanları için dayanıklı malzeme, sade tasarım ve günlük kullanıma odaklanan ALYA HOMES koleksiyonu.'};
+const categoryCopy={'Kurutmalıklar':'İç ve dış mekân kullanımı için alüminyum gövdesi sayesinde paslanmaz, hafif ve uzun ömürlü, kolay saklanan çamaşır kurutma askısı çözümleri.','Ütü Masaları':'Alüminyum ve çelik gövdeli, farklı kullanım ihtiyaçlarına göre tasarlanmış ütü masalarını keşfedin.','Tüm Ürünler':'Ev yaşam alanları için dayanıklı malzeme, sade tasarım ve günlük kullanıma odaklanan ALYA HOMES koleksiyonu.'};
 const categoryTitle=raw=>categoryTitles[raw.toLocaleLowerCase('tr-TR')]||raw.replace(/-/g,' ').replace(/(^|\s)([a-zçğıöşü])/giu,(_,space,letter)=>`${space}${letter.toLocaleUpperCase('tr-TR')}`);
 export default function CollectionPage({params}){
  const {isCatalogMode}=useSiteMode();

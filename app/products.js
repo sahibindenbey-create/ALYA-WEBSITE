@@ -16,8 +16,8 @@ export const products = [
     "WINGS MATT",
     "AHDRY1401",
     "Kurutmalıklar",
-    real("1401", "Fuji-Capture One 0331.webp"),
-    "Alüminyum ve paslanmaz yapıda, iç ve dış mekân kullanımına uygun çamaşır kurutmalık.",
+    real("1401", "Fuji-Capture One 0334.webp"),
+    "Alüminyum gövdesi sayesinde paslanmaz, hafif ve uzun ömürlü; iç ve dış mekân kullanımına uygun çamaşır kurutma askısı.",
     {
       kurutma: "18 m",
       ölçü: "200 × 55 cm",
@@ -33,7 +33,7 @@ export const products = [
     "AHDRY1402",
     "Kurutmalıklar",
     real("1402", "Fuji-Capture One 0301.webp"),
-    "Katlanabilir kelebek formunda alüminyum ve paslanmaz kurutmalık.",
+    "Katlanabilir kelebek formunda alüminyum ve paslanmaz çamaşır kurutma askısı.",
     {
       kurutma: "16 m",
       ölçü: "142 × 55 cm",
@@ -49,7 +49,7 @@ export const products = [
     "AHDRY1403",
     "Kurutmalıklar",
     real("1403", "Fuji-Capture One 0339.webp"),
-    "Kompakt, katlanabilir ve alüminyum/paslanmaz gövdeli kurutmalık.",
+    "Kompakt, katlanabilir ve alüminyum/paslanmaz gövdeli çamaşır kurutma askısı.",
     {
       kurutma: "12 m",
       ölçü: "104 × 50 cm",
@@ -65,7 +65,7 @@ export const products = [
     "AHDRY1404",
     "Kurutmalıklar",
     real("1404", "1404.webp"),
-    "Balkon kullanımına yönelik ayarlanabilir bağlantılı kurutmalık.",
+    "Balkon kullanımına yönelik ayarlanabilir bağlantılı çamaşır kurutma askısı.",
     {
       kurutma: "7 m",
       ölçü: "65 × 40 cm",
@@ -81,7 +81,7 @@ export const products = [
     "AHDRY1405",
     "Kurutmalıklar",
     real("1405", "1405.webp"),
-    "Balkon için orta ölçülü ayarlanabilir alüminyum/paslanmaz kurutmalık.",
+    "Balkon için orta ölçülü ayarlanabilir alüminyum/paslanmaz çamaşır kurutma askısı.",
     {
       kurutma: "9 m",
       ölçü: "78 × 40 cm",
@@ -97,7 +97,7 @@ export const products = [
     "AHDRY1406",
     "Kurutmalıklar",
     real("1406", "1406.webp"),
-    "Balkon için geniş yüzeyli ayarlanabilir kurutmalık.",
+    "Balkon için geniş yüzeyli ayarlanabilir çamaşır kurutma askısı.",
     {
       kurutma: "11 m",
       ölçü: "95 × 40 cm",
@@ -145,7 +145,7 @@ export const products = [
     "AHDRY1409",
     "Kurutmalıklar",
     real("1409", "Fuji-Capture One 0354.webp"),
-    "Yan kanatlı katlanabilir kurutmalık.",
+    "Yan kanatlı katlanabilir çamaşır kurutma askısı.",
     {
       kurutma: "18 m",
       ölçü: "104 × 50 cm",
@@ -163,7 +163,7 @@ export const products = [
     "AHDRY1451",
     "Kurutmalıklar",
     real("1451", "Fuji-Capture One 0331.webp"),
-    "Alüminyum ve paslanmaz gövdeli RAW serisi kanatlı kurutmalık.",
+    "Alüminyum ve paslanmaz gövdeli RAW serisi kanatlı çamaşır kurutma askısı.",
     {
       kurutma: "18 m",
       ölçü: "200 × 55 cm",
@@ -181,7 +181,7 @@ export const products = [
     "AHDRY1452",
     "Kurutmalıklar",
     real("1452", "Fuji-Capture One 0301.webp"),
-    "Tamamı alüminyum, paslanmaz ve iç/dış mekâna uygun RAW serisi kelebek kurutmalık.",
+    "Tamamı alüminyum, paslanmaz ve iç/dış mekâna uygun RAW serisi kelebek çamaşır kurutma askısı.",
     {
       kurutma: "16 m",
       ölçü: "142 × 55 cm",
@@ -199,7 +199,7 @@ export const products = [
     "AHDRY1453",
     "Kurutmalıklar",
     real("1453", "Fuji-Capture One 0339.webp"),
-    "RAW serisi temel katlanabilir kurutmalık.",
+    "RAW serisi temel katlanabilir çamaşır kurutma askısı.",
     {
       kurutma: "12 m",
       ölçü: "104 × 50 cm",
@@ -217,7 +217,7 @@ export const products = [
     "AHDRY1454",
     "Kurutmalıklar",
     real("1454", "1404.webp"),
-    "RAW serisi balkon tipi kurutmalık.",
+    "RAW serisi balkon tipi çamaşır kurutma askısı.",
     {
       kurutma: "7 m",
       ölçü: "65 × 40 cm",
@@ -233,7 +233,7 @@ export const products = [
     "AHDRY1455",
     "Kurutmalıklar",
     real("1455", "1405.webp"),
-    "RAW serisi orta balkon tipi kurutmalık.",
+    "RAW serisi orta balkon tipi çamaşır kurutma askısı.",
     {
       kurutma: "9 m",
       ölçü: "78 × 40 cm",
@@ -249,7 +249,7 @@ export const products = [
     "AHDRY1456",
     "Kurutmalıklar",
     real("1456", "1406.webp"),
-    "RAW serisi geniş balkon tipi kurutmalık.",
+    "RAW serisi geniş balkon tipi çamaşır kurutma askısı.",
     {
       kurutma: "11 m",
       ölçü: "95 × 40 cm",
@@ -267,7 +267,7 @@ export const products = [
     "AHDRY1457",
     "Kurutmalıklar",
     real("1457", "Fuji-Capture One 0294.webp"),
-    "RAW serisi çift kanatlı kurutmalık.",
+    "RAW serisi çift kanatlı çamaşır kurutma askısı.",
     {
       kurutma: "21 m",
       ölçü: "142 cm",
@@ -299,7 +299,7 @@ export const products = [
     "AHDRY1459",
     "Kurutmalıklar",
     real("1459", "Fuji-Capture One 0354.webp"),
-    "RAW serisi yan kanatlı katlanabilir kurutmalık.",
+    "RAW serisi yan kanatlı katlanabilir çamaşır kurutma askısı.",
     {
       kurutma: "18 m",
       ölçü: "104 × 50 cm",
@@ -317,7 +317,7 @@ export const products = [
     "AHBRD1301",
     "Ütü Masaları",
     real("1301", "1301-01.jpeg"),
-    "45 × 120 cm ütüleme alanına sahip, alüminyum monoblok tablalı ütü masası.",
+    "45 × 120 cm ütüleme alanına sahip; alüminyum gövdesi sayesinde paslanmaz, hafif ve uzun ömürlü ütü masası.",
     {
       ütüleme: "45 × 120 cm",
       yükseklik: "68–95 cm",

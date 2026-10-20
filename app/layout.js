@@ -46,8 +46,8 @@ export async function generateMetadata(){
   const mode=await getSiteMode();
   const catalog=mode==='catalog';
   const origin=originForMode(mode);
-  const title=catalog?'ALYA HOMES | Kurutmalık ve Ütü Masası':'ALYA HOMES Shop | Kurutmalık ve Ütü Masası';
-  const description=catalog?'ALYA HOMES kurutmalık ve ütü masası koleksiyonu. İşlevsel, dayanıklı ve yer kazandıran ev yaşam ürünlerini keşfedin.':'ALYA HOMES kurutmalık ve ütü masası modellerini online inceleyin ve güvenle satın alın.';
+  const title=catalog?'ALYA HOMES | Çamaşır Kurutma Askısı ve Ütü Masası':'ALYA HOMES Shop | Çamaşır Kurutma Askısı ve Ütü Masası';
+  const description=catalog?'ALYA HOMES çamaşır kurutma askısı ve ütü masası koleksiyonu. İşlevsel, dayanıklı ve yer kazandıran ev yaşam ürünlerini keşfedin.':'ALYA HOMES çamaşır kurutma askısı ve ütü masası modellerini online inceleyin ve güvenle satın alın.';
   return {
     metadataBase:new URL(origin),
     title:{default:title,template:'%s'},
