@@ -67,13 +67,15 @@ export const guides=[
   },
   {
     slug:'utu-masasi-olcusu-nasil-secilir',
-    published:'2026-09-30',modified:'2026-10-05',
-    title:'Ütü Masası Ölçüsü Nasıl Seçilir?',
-    description:'Tabla ölçüsü, ayarlanabilir yükseklik, gövde malzemesi ve saklama alanına göre ütü masası seçme rehberi.',
+    published:'2026-09-30',modified:'2026-10-22',
+    title:'Ütü Masası Ölçüsü Nasıl Seçilir? Standart Ölçüler ve Yükseklik',
+    description:'Ütü masası ölçüsü nasıl alınır? Standart ütü masası ölçüleri, tabla uzunluğu, çalışma yüksekliği ve gövde malzemesine göre seçim rehberi.',
     category:'Ütü Masası Rehberi',
     collection:'/collections/utu-masalari',
     intro:'Doğru ütü masası ölçüsü, yalnızca büyük bir tabla seçmek anlamına gelmez. Kullanıcının boyu, ütülenen tekstil türü, ürünün kurulacağı alan ve kapalı halde saklama ölçüsü birlikte düşünülmelidir.',
     sections:[
+      {title:'Standart ütü masası ölçüleri nelerdir?',paragraphs:['Ütü masalarında tek bir zorunlu standart yoktur; ürünler genellikle yaklaşık 110–130 cm tabla uzunluğu ve 30–45 cm tabla genişliği aralığında üretilir. Daha uzun ve geniş tabla, nevresim ve perde gibi büyük tekstillerde kumaşı daha az yeniden konumlandırmayı sağlar.','ALYA HOMES PROBOARD ALUMINIUM modelinde ütüleme alanı 45 × 120 cm, çalışma yüksekliği 68–95 cm aralığındadır. Ölçüleri her ürünün teknik özellikler bölümünde bulabilirsiniz.']},
+      {title:'Ütü masası ölçüsü nasıl alınır?',paragraphs:['Çalışma yüksekliği için dik dururken dirseğinizi 90 derece bükün; ütü yüzeyi yaklaşık bu seviyeye gelecek şekilde ayarlanabilmelidir. Bu nedenle ürünün tek bir sabit yükseklik yerine minimum ve maksimum aralığını vermesi önemlidir.','Tabla uzunluğunu ise ütülediğiniz tekstillere göre seçin; gömlek ve günlük giysiler için orta boy, nevresim ve perde için daha uzun tabla işinizi kolaylaştırır. Kapalı haldeki uzunluğu ve kalınlığı, saklayacağınız dolap veya kapı arkası alanına göre ayrıca ölçün.']},
       {title:'Tabla alanını kullanım alışkanlığına göre seçin',paragraphs:['Gömlek ve günlük kıyafetlerde orta boy bir tabla yeterli olabilir. Nevresim, perde ve geniş tekstiller sık ütüleniyorsa daha geniş ve uzun tabla, kumaşı daha az yeniden konumlandırmaya yardımcı olur.','Tabla ucunun biçimi kol, omuz ve dar bölgelerde çalışma kolaylığını etkileyebilir. Ürün görsellerini ve ölçü çizimlerini birlikte inceleyin.']},
       {title:'Çalışma yüksekliği ergonomiyi etkiler',paragraphs:['Ayarlanabilir yükseklik, farklı kullanıcıların omuzlarını kaldırmadan ve uzun süre öne eğilmeden çalışmasına yardımcı olur. Ütü yaparken dirseğin rahat hareket edebileceği bir seviyenin seçilmesi önemlidir.','Ürünün minimum ve maksimum yükseklik aralığını kontrol edin. Sadece toplam ürün boyuna bakmak çalışma seviyesini anlamak için yeterli değildir.']},
       {title:'Kurulum ve saklama ölçüsünü unutmayın',paragraphs:['Ütü masasının açık halde çevresinde güvenli hareket alanı bulunmalıdır. Kablo geçişi, priz konumu ve ütünün dinlenme alanı kurulumu etkileyebilir.','Kullanım sonrası dolap arkasına veya dar bir bölmeye kaldırılacaksa kapalı kalınlık, uzunluk ve ürün ağırlığı satın almadan önce kontrol edilmelidir.']},
@@ -82,6 +84,8 @@ export const guides=[
       ['Geniş ütü masası her kullanıcı için uygun mudur?','Geniş tabla büyük tekstillerde avantaj sağlar; ancak kurulum ve saklama alanı yetersizse daha kompakt bir ölçü daha kullanışlı olabilir.'],
       ['Ütü masası yüksekliği nasıl olmalı?','Kullanıcının omuzlarını kaldırmadan ve belirgin biçimde öne eğilmeden çalışabildiği seviye hedeflenmelidir. Ayarlanabilir modeller farklı kullanıcılara uyum sağlar.'],
       ['Satın almadan önce hangi ölçüler kontrol edilmeli?','Tabla eni ve boyu, çalışma yüksekliği aralığı, açık ürün ölçüsü, katlı ölçü ve net ağırlık birlikte kontrol edilmelidir.'],
+      ['Standart ütü masası ölçüleri nedir?','Zorunlu tek bir standart yoktur; ürünlerde tabla uzunluğu genellikle yaklaşık 110–130 cm, genişlik ise 30–45 cm arasındadır. Ürünün teknik özelliklerindeki ölçüyü kontrol edin.'],
+      ['Ütü masası uzunluğu ne kadar olmalı?','Gömlek ve günlük kıyafetler için orta boy tabla yeterlidir; nevresim ve perde gibi geniş tekstillerde 120 cm ve üzeri tabla kullanımı kolaylaştırır.'],
     ],
   },
   {
